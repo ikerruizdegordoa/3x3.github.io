@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<html>
+<head><meta charset="UTF-8">
+<title> 4x4 </title>
+</head>
+<body>
+
+	<br><br>
+	<h1 align="center"> TUTORIAL 5x5 </h1>
+	<hr><br><br>
+	
+	<ol type="1">
+		<li> Resolver los Centros (Bloques de 3x3) </li>
+			<ol type="A">
+				<li> Centro Blanco y Centro Amarillo: </li>
+					<ul type="square">
+						<li> Forma primero una barra central de 1x3 (usando el centro fijo). </li>
+						<li> Crea dos barras laterales de 1x3 y únelas a la barra central para formar un bloque de 3x3. </li>
+						<li> Haz lo mismo con el centro amarillo opuesto usando Rw U Rw' para no deshacer el blanco. </li>
+					</ul>
+				<li> Cuatro Centros Laterales: </li>
+					<ul type="square">
+						<li> Con el blanco y el amarillo en los lados izquierdo y derecho, resuelve los centros adyacentes uno a uno mediante la creación e inserción de barras de 1x3. </li>
+					</ul>
+			</ol>
+		<li> Emparejar Aristas (Crear los 12 Bloques de 3 piezas) </li>
+			<ol type="A">
+				<li> Emparejar las primeras 8 o 10 aristas: </li>
+					<ul type="square">
+						<li> Localiza la arista central del trío y colócala en el centro de la capa frontal. </li>
+						<li> Trae las dos aristas laterales correspondientes a las capas adyacentes usando giros de capas internas (u o d). </li>
+						<li> Guarda la arista armada en la capa superior (U) y reemplázala por una desordenada antes de regresar los centros con u' o d'. </li>
+					</ul>
+				<li> Emparejar las Últimas 2 Aristas (Paridad de Aristas): </li>
+				<ul type="square">
+						<li> Cuando solo quedan 2 aristas compuestas por resolver, no hay aristas desarmadas libres para intercambiar. </li>
+						<li> Coloca las dos aristas una frente a la otra alineadas horizontalmente. Si una de las piezas externas de la arista está invertida respecto a las demás, aplica el algoritmo de volteo de arista:Rw2 B2 U2 Lw U2 Rw' U2 Rw U2 F2 Rw F2 Lw' B2 Rw2 </li>
+					</ul>
+			</ol>
+		<li> Resolver como un 3x3 Estándar </li>
+			<ol type="A">
+				<li> Trata los centros de 3x3 como piezas centrales individuales. </li>
+				<li> Trata cada grupo de 3 aristas como si fuera una sola arista de un 3x3. </li>
+				<li> Aplica todos los pasos del método de principiantes del 3x3 (Cruz, esquinas, capa central, cruz superior, etc.). </li>
+			</ol>
+	</ol>
+	
+	<br>
+	
+	<img src="img/5x5caso1.png" width="100" height="100">
+	<img src="img/5x5caso2.png" width="100" height="100">
+	<img src="img/5x5caso3.png" width="100" height="100">
+	
+	<br><br><hr>
+
+
+</body>
+</html>

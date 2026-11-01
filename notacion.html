@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Notación</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notación Oficial WCA</title>
 
     <style>
         /* Variables para Tema Claro (Día) */
@@ -13,6 +14,7 @@
             --accent-color: #0284c7;
             --border-color: #e2e8f0;
             --box-bg: #f8fafc;
+            --kbd-bg: #e2e8f0;
         }
 
         /* Variables para Tema Oscuro (Noche) */
@@ -23,6 +25,7 @@
             --accent-color: #38bdf8;
             --border-color: #334155;
             --box-bg: #1e293b;
+            --kbd-bg: #334155;
         }
 
         html.modo-noche {
@@ -46,24 +49,25 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 15px;
+            text-align: center;
         }
 
         h2 {
             color: var(--accent-color);
-            margin-top: 20px;
+            margin-top: 25px;
             margin-bottom: 10px;
         }
 
-        p {
+        p, li {
             color: var(--text-main);
-            margin-bottom: 15px;
-            text-align: justify;
+            margin-bottom: 12px;
+            text-align: left;
         }
 
         hr {
             border: 0;
             border-top: 1px solid var(--border-color);
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         /* Listas */
@@ -74,19 +78,28 @@
 
         li {
             margin-bottom: 8px;
-            color: var(--text-main);
         }
 
         /* Resaltado de notación y letras */
         .notacion-letra {
             font-family: monospace;
             font-weight: bold;
-            background-color: var(--box-bg);
+            background-color: var(--kbd-bg);
             color: var(--accent-color);
             padding: 2px 7px;
             border-radius: 5px;
             border: 1px solid var(--border-color);
             display: inline-block;
+        }
+
+        /* Bloques destacados de ayuda */
+        .nota-ayuda {
+            background-color: var(--box-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-size: 0.95rem;
         }
 
         /* Imágenes e ilustraciones */
@@ -104,7 +117,6 @@
     </style>
 
     <script>
-        // Carga e inicialización inmediata antes de renderizar para evitar destellos
         if (localStorage.getItem('tema') === 'noche') {
             document.documentElement.classList.add('modo-noche');
             window.addEventListener('DOMContentLoaded', () => {
@@ -115,80 +127,70 @@
 </head>
 <body>
 
-    <h1 align="center">NOTACIÓN</h1>
-    <hr><br>
+    <h1>NOTACIÓN OFICIAL WCA</h1>
+    <hr>
     
-    <h2>Notación básica para el Cubo de Rubik 3x3</h2>
-    <p>Para comenzar con la notación cogeremos el cubo desde una cara de referencia; comprobaremos que disponemos de seis giros: derecha, izquierda, superior, inferior, cara frontal y por último, cara trasera. Si te encuentras la letra sola el giro es en sentido horario y si lleva un apóstrofe el giro es en sentido antihorario.</p>
+    <h2>1. Capas Principales (3x3)</h2>
+    <p>Para interpretar un algoritmo, primero sostenemos el cubo en una orientación fija. Cada letra representa una cara basada en sus iniciales en inglés. El giro estándar (la letra sola) se realiza en <strong>sentido horario</strong> mirando esa cara de frente.</p>
     
     <img src="img/notación3x3.png" width="500" height="250" alt="Notación Básica 3x3">    
-    <br>
-    <p>Cada letra hace referencia a una capa y están en inglés.</p>
-    
-    <ul type="disc">
-        <li><span class="notacion-letra">U</span> (Up): Capa Superior (Cara blanca)</li>
-        <li><span class="notacion-letra">D</span> (Down): Capa Inferior (Cara amarilla)</li>
-        <li><span class="notacion-letra">R</span> (Right): Capa Derecha (Cara Roja)</li>
-        <li><span class="notacion-letra">L</span> (Left): Capa Izquierda (Cara naranja)</li>
-        <li><span class="notacion-letra">F</span> (Front): Capa Frontal (Cara verde)</li>
-        <li><span class="notacion-letra">B</span> (Back): Capa Trasera (Cara Azul)</li>
+
+    <ul>
+        <li><code class="notacion-letra">U</code> (Up): Capa Superior</li>
+        <li><code class="notacion-letra">D</code> (Down): Capa Inferior</li>
+        <li><code class="notacion-letra">F</code> (Front): Capa Frontal</li>
+        <li><code class="notacion-letra">B</code> (Back): Capa Trasera</li>
+        <li><code class="notacion-letra">R</code> (Right): Capa Derecha</li>
+        <li><code class="notacion-letra">L</code> (Left): Capa Izquierda</li>
     </ul>
-    
-    <p>Con estas siglas ya tendríamos todas las capas básicas referenciadas.</p>
-    
+
+    <div class="nota-ayuda">
+        <strong>💡 Regla del reloj:</strong> Para saber hacia dónde gira una cara como <code class="notacion-letra">B</code> o <code class="notacion-letra">D</code>, imagínate mirando esa cara directamente de frente y gira en la dirección de las agujas del reloj.
+    </div>
+
     <hr>
-    
-    <h2>Notación de las capas centrales</h2>
-    <p>Ya conoces los giros de las capas básicas, ahora vamos a ver los giros de las capas centrales. Estas se usan mucho menos, pero es importante conocerlas por si salen en algún algoritmo. Tan solo tenemos tres capas "M", "E" y "S".</p>
-    
-    <ul type="disc">
-        <li><b>Capa <span class="notacion-letra">M</span>:</b> Esta capa se sitúa entre las capas "L" y "R" y se comporta igual que la capa "L" para el giro. Es decir, para saber para qué lado la tenemos que girar tenemos que imaginar que el reloj está en la cara "L".</li>
-        <li><b>Capa <span class="notacion-letra">E</span>:</b> La capa "E" está situada entre las capas "D" y "U" y gira para el mismo sentido que la capa "D".</li>
-        <li><b>Capa <span class="notacion-letra">S</span>:</b> Por último, la capa "S", esta se sitúa entre las capas "B" y "F" y gira para el mismo sentido que la capa "F".</li>
+
+    <h2>2. Modificadores de Giro</h2>
+    <p>Cualquier capa puede tener variaciones según los símbolos que acompañan a la letra:</p>
+
+    <ul>
+        <li><strong>Sentido horario (ej. <code class="notacion-letra">U</code>):</strong> Giro de 90° a favor de las agujas del reloj.</li>
+        <li><strong>Sentido antihorario (ej. <code class="notacion-letra">U'</code>):</strong> Lleva un apóstrofe (<em>prime</em>). Giro de 90° en contra de las agujas del reloj.</li>
+        <li><strong>Doble giro (ej. <code class="notacion-letra">U2</code>):</strong> Giro de 180° en cualquier sentido.</li>
+        <li><strong>Capa doble (ej. <code class="notacion-letra">Uw</code> o <code class="notacion-letra">u</code>):</strong> Gira la capa indicada junto con la capa adyacente interna.</li>
     </ul>
-    
-    <img src="img/notacion-capas-centrales.png" width="500" height="150" alt="Notación Capas Centrales">
-    
-    <hr>
-    
-    <h2>Tipos de giros</h2>
-    <p>Ahora debemos tener en cuenta que todas las capas pueden tener diferentes giros; por ejemplo, la capa superior U puede tener los siguientes giros:</p>
-    
-    <ul type="disc">
-        <li>Sentido horario (en sentido de las agujas del reloj)</li>
-        <li>Antihorario (contrario a las agujas del reloj)</li>
-        <li>Doble giro (este no importaría si se hace horario o antihorario, puesto que llegamos al mismo punto)</li>
-        <li>Giro de dos capas (esto quiere decir que giramos la capa U y la adyacente)</li>
-    </ul>
-    
-    <p>Para representar estos casos en notación se haría de la siguiente forma (ejemplo con la capa superior U):</p>
-    
-    <ul type="disc">
-        <li>Sentido horario: <span class="notacion-letra">U</span></li>
-        <li>Sentido antihorario: <span class="notacion-letra">U'</span></li>
-        <li>Doble giro: <span class="notacion-letra">U2</span></li>
-        <li>Giro de dos capas: <span class="notacion-letra">Uw</span> (también se puede representar el giro de dos capas con la letra en minúscula. Ejemplo: <span class="notacion-letra">u</span>)</li>
-    </ul>
-    
+
     <img src="img/notacon-giro-doble.png" width="300" height="150" alt="Notación Giro Doble">
-    
+
     <hr>
-    
-    <h2>Rotaciones del cubo</h2>
-    <p>Esto ya es lo último. En el cubo de rubik nos podemos encontrar con rotaciones. En estas lo que haremos será rotar el cubo completo para cambiar de capa desde la que aplicamos los movimientos. El cubo lo podemos rotar en los tres ejes X, Y y Z.</p>
-    
-    <ul type="disc">
-        <li><b>Eje X:</b> Para rotar el cubo en el eje X lo cogemos con dos dedos, uno en la pieza central de la capa L y otro en la pieza central de la capa R y lo giramos sobre su eje.</li>
-        <li><b>Eje Y:</b> Para rotar el cubo en el eje Y tenemos que coger el cubo con un dedo en la pieza central de U y otro en la pieza central de la capa D y girarlo sobre su eje.</li>
-        <li><b>Eje Z:</b> Para rotar el cubo en el eje Z tenemos que coger el cubo con un dedo en la pieza central de la capa F y otro en la pieza central de la capa B y lo rotamos sobre su eje.</li>
+
+    <h2>3. Capas Centrales (M, E, S)</h2>
+    <p>Se utilizan principalmente en métodos avanzados (como Roux) o algoritmos específicos. Siguen la orientación de una de las capas exteriores de referencia:</p>
+
+    <ul>
+        <li><strong>Capa <code class="notacion-letra">M</code> (Middle):</strong> Situada entre <code class="notacion-letra">L</code> y <code class="notacion-letra">R</code>. Su sentido horario sigue a la cara <code class="notacion-letra">L</code> (hacia abajo).</li>
+        <li><strong>Capa <code class="notacion-letra">E</code> (Equator):</strong> Situada entre <code class="notacion-letra">U</code> y <code class="notacion-letra">D</code>. Su sentido horario sigue a la cara <code class="notacion-letra">D</code> (hacia la derecha).</li>
+        <li><strong>Capa <code class="notacion-letra">S</code> (Standing):</strong> Situada entre <code class="notacion-letra">F</code> y <code class="notacion-letra">B</code>. Su sentido horario sigue a la cara <code class="notacion-letra">F</code>.</li>
     </ul>
-    
+
+    <img src="img/notacion-capas-centrales.png" width="500" height="150" alt="Notación Capas Centrales">
+
+    <hr>
+
+    <h2>4. Rotaciones del Cubo (Ejes X, Y, Z)</h2>
+    <p>Indican que se debe reorientar el cubo completo en el espacio sin deshacer ninguna capa. Cada eje toma como referencia el movimiento de una cara exterior:</p>
+
+    <ul>
+        <li><strong>Eje <code class="notacion-letra">x</code>:</strong> Rota todo el cubo siguiendo el sentido de la cara <code class="notacion-letra">R</code> (hacia arriba/atrás). Sujetar por las caras <code class="notacion-letra">L</code> y <code class="notacion-letra">R</code>.</li>
+        <li><strong>Eje <code class="notacion-letra">y</code>:</strong> Rota todo el cubo siguiendo el sentido de la cara <code class="notacion-letra">U</code> (hacia la izquierda). Sujetar por las caras <code class="notacion-letra">U</code> y <code class="notacion-letra">D</code>.</li>
+        <li><strong>Eje <code class="notacion-letra">z</code>:</strong> Rota todo el cubo siguiendo el sentido de la cara <code class="notacion-letra">F</code> (hacia la derecha/de lado). Sujetar por las caras <code class="notacion-letra">F</code> y <code class="notacion-letra">B</code>.</li>
+    </ul>
+
     <img src="img/notacion-rotacion.png" alt="Notación Rotaciones del Cubo">
-    
-    <br><hr>
+
+    <hr>
 
     <script>
-        // Sincronización mediante BroadcastChannel con el botón del Navegador
         const canalTema = new BroadcastChannel('canal_tema_web');
 
         function aplicarTema(esNoche) {
@@ -201,7 +203,6 @@
             }
         }
 
-        // Escuchar la orden emitida desde navegadir.html
         canalTema.onmessage = (e) => {
             if (e.data && typeof e.data.modoNoche === 'boolean') {
                 aplicarTema(e.data.modoNoche);

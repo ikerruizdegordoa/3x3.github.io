@@ -469,7 +469,13 @@
                 <div class="preview-dual-box">
                     <div class="preview-card">
                         <h3>Plano 2D (Desplegado)</h3>
-                        <div id="preview2D"></div>
+                        <twisty-player 
+                            id="player2D" 
+                            puzzle="3x3x3"
+                            visualization="2D"
+                            control-panel="none"
+                            background="none">
+                        </twisty-player>
                     </div>
                     <div class="preview-card">
                         <h3>Modelo 3D Interactivo</h3>
@@ -537,143 +543,6 @@
             'sq1': 'square1'
         };
 
-        const COLORES = {
-            U: '#ffffff',
-            D: '#ffd700',
-            F_COLOR: '#009b48',
-            B_COLOR: '#0045ad',
-            L_COLOR: '#ff5800',
-            R_COLOR: '#b71234',
-        };
-
-        class Rubik2DSimulator {
-            constructor(dim = 3) {
-                this.dim = dim;
-                this.reset();
-            }
-
-            reset() {
-                const d = this.dim;
-                this.state = {
-                    U: Array(d * d).fill(COLORES.U),
-                    D: Array(d * d).fill(COLORES.D),
-                    F: Array(d * d).fill(COLORES.F_COLOR),
-                    B: Array(d * d).fill(COLORES.B_COLOR),
-                    L: Array(d * d).fill(COLORES.L_COLOR),
-                    R: Array(d * d).fill(COLORES.R_COLOR),
-                };
-            }
-
-            rotateFaceClockwise(cara) {
-                const d = this.dim;
-                const copia = [...this.state[cara]];
-                for (let r = 0; r < d; r++) {
-                    for (let c = 0; c < d; c++) {
-                        this.state[cara][c * d + (d - 1 - r)] = copia[r * d + c];
-                    }
-                }
-            }
-
-            applyMove(move) {
-                let base = move[0];
-                let num = 1;
-                if (move.includes("'")) num = 3;
-                if (move.includes("2")) num = 2;
-
-                for (let i = 0; i < num; i++) {
-                    this.executeBaseMove(base);
-                }
-            }
-
-            executeBaseMove(m) {
-                const d = this.dim;
-                if (m === 'U') {
-                    this.rotateFaceClockwise('U');
-                    let temp = [];
-                    for(let i=0; i<d; i++) temp.push(this.state.F[i]);
-                    for(let i=0; i<d; i++) this.state.F[i] = this.state.R[i];
-                    for(let i=0; i<d; i++) this.state.R[i] = this.state.B[i];
-                    for(let i=0; i<d; i++) this.state.B[i] = this.state.L[i];
-                    for(let i=0; i<d; i++) this.state.L[i] = temp[i];
-                } else if (m === 'D') {
-                    this.rotateFaceClockwise('D');
-                    let startF = (d-1)*d, startR = (d-1)*d, startB = (d-1)*d, startL = (d-1)*d;
-                    let temp = [];
-                    for(let i=0; i<d; i++) temp.push(this.state.F[startF + i]);
-                    for(let i=0; i<d; i++) this.state.F[startF + i] = this.state.L[startL + i];
-                    for(let i=0; i<d; i++) this.state.L[startL + i] = this.state.B[startB + i];
-                    for(let i=0; i<d; i++) this.state.B[startB + i] = this.state.R[startR + i];
-                    for(let i=0; i<d; i++) this.state.R[startR + i] = temp[i];
-                } else if (m === 'R') {
-                    this.rotateFaceClockwise('R');
-                    for(let i=0; i<d; i++) {
-                        let idxU = i*d + (d-1), idxF = i*d + (d-1), idxD = i*d + (d-1), idxB = (d-1-i)*d;
-                        let temp = this.state.U[idxU];
-                        this.state.U[idxU] = this.state.F[idxF];
-                        this.state.F[idxF] = this.state.D[idxD];
-                        this.state.D[idxD] = this.state.B[idxB];
-                        this.state.B[idxB] = temp;
-                    }
-                } else if (m === 'L') {
-                    this.rotateFaceClockwise('L');
-                    for(let i=0; i<d; i++) {
-                        let idxU = i*d, idxB = (d-1-i)*d + (d-1), idxD = i*d, idxF = i*d;
-                        let temp = this.state.U[idxU];
-                        this.state.U[idxU] = this.state.B[idxB];
-                        this.state.B[idxB] = this.state.D[idxD];
-                        this.state.D[idxD] = this.state.F[idxF];
-                        this.state.F[idxF] = temp;
-                    }
-                } else if (m === 'F') {
-                    this.rotateFaceClockwise('F');
-                    for(let i=0; i<d; i++) {
-                        let idxU = (d-1)*d + i, idxR = i*d, idxD = (d-1-i), idxL = (d-1-i)*d + (d-1);
-                        let temp = this.state.U[idxU];
-                        this.state.U[idxU] = this.state.L[idxL];
-                        this.state.L[idxL] = this.state.D[idxD];
-                        this.state.D[idxD] = this.state.R[idxR];
-                        this.state.R[idxR] = temp;
-                    }
-                }
-            }
-
-            renderSVG() {
-                const d = this.dim;
-                const size = d <= 3 ? 10 : 6;
-                const gap = 1;
-                const faceSize = d * size + (d - 1) * gap;
-                const pad = 3;
-
-                const width = faceSize * 4 + pad * 5;
-                const height = faceSize * 3 + pad * 4;
-
-                let svg = `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
-
-                const facePositions = {
-                    U: { x: faceSize + pad * 2, y: pad },
-                    L: { x: pad, y: faceSize + pad * 2 },
-                    F: { x: faceSize + pad * 2, y: faceSize + pad * 2 },
-                    R: { x: faceSize * 2 + pad * 3, y: faceSize + pad * 2 },
-                    B: { x: faceSize * 3 + pad * 4, y: faceSize + pad * 2 },
-                    D: { x: faceSize + pad * 2, y: faceSize * 2 + pad * 3 }
-                };
-
-                for (let cara in facePositions) {
-                    let pos = facePositions[cara];
-                    for (let r = 0; r < d; r++) {
-                        for (let c = 0; c < d; c++) {
-                            let color = this.state[cara][r * d + c];
-                            let px = pos.x + c * (size + gap);
-                            let py = pos.y + r * (size + gap);
-                            svg += `<rect x="${px}" y="${py}" width="${size}" height="${size}" rx="1" fill="${color}" stroke="#cbd5e1" stroke-width="0.5"/>`;
-                        }
-                    }
-                }
-                svg += `</svg>`;
-                return svg;
-            }
-        }
-
         function elementoAleatorio(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
         function generarScrambleStandard(caras, sufijos, longitud) {
@@ -712,7 +581,7 @@
         const pantalla = document.getElementById('pantalla');
         const selectorCategoria = document.getElementById('categoria');
         const elementoScramble = document.getElementById('scramble');
-        const preview2D = document.getElementById('preview2D');
+        const player2D = document.getElementById('player2D');
         const player3D = document.getElementById('player3D');
         const listaTiempos = document.getElementById('listaTiempos');
         const btnLimpiar = document.getElementById('btnLimpiar');
@@ -723,15 +592,13 @@
         const statTotal = document.getElementById('statTotal');
 
         function actualizarVistas(scramble, cat) {
-            let dim = 3;
-            if (cat === '2x2') dim = 2;
-            else if (cat === '4x4') dim = 4;
-            const sim = new Rubik2DSimulator(dim);
-            const movs = scramble.split(/\s+/);
-            movs.forEach(m => sim.applyMove(m));
-            preview2D.innerHTML = sim.renderSVG();
-
             const puzzleName = PUZZLE_MAP[cat] || '3x3x3';
+            
+            // Actualización del reproductor 2D oficial de cubing.js
+            player2D.setAttribute('puzzle', puzzleName);
+            player2D.setAttribute('alg', scramble);
+
+            // Actualización del reproductor 3D
             player3D.setAttribute('puzzle', puzzleName);
             player3D.setAttribute('alg', scramble);
         }

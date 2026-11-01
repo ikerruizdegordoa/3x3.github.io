@@ -1,73 +1,210 @@
 <!DOCTYPE html>
 <html lang="es">
-<html>
-<head><meta charset="UTF-8">
-<title> 2x2 </title>
+<head>
+    <meta charset="UTF-8">
+    <title>3x3</title>
+
+    <style>
+        /* Variables para Tema Claro (Día) */
+        :root {
+            --bg-body: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --accent-color: #0284c7;
+            --border-color: #e2e8f0;
+            --box-bg: #f8fafc;
+        }
+
+        /* Variables para Tema Oscuro (Noche) */
+        body.modo-noche {
+            --bg-body: #0f172a;
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --accent-color: #38bdf8;
+            --border-color: #334155;
+            --box-bg: #1e293b;
+        }
+
+        html.modo-noche {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        /* Estilos base */
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px 30px;
+            margin: 0;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Listas y pasos */
+        ol, ul {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        ul li {
+            color: var(--text-sub);
+        }
+
+        /* Destacado de algoritmos */
+        .algoritmo {
+            font-family: monospace;
+            font-weight: bold;
+            background-color: var(--box-bg);
+            color: var(--accent-color);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            display: inline-block;
+        }
+
+        /* Galería de imágenes */
+        .contenedor-imagenes {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .contenedor-imagenes img {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--box-bg);
+            padding: 5px;
+            object-fit: cover;
+        }
+    </style>
+
+    <script>
+        // Carga e inicialización inmediata antes de renderizar para evitar destellos
+        if (localStorage.getItem('tema') === 'noche') {
+            document.documentElement.classList.add('modo-noche');
+            window.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('modo-noche');
+            });
+        }
+    </script>
 </head>
 <body>
 
-	<br><br>
-	<h1 align="center"> TUTORIAL 3X3 </h1>
-	<hr><br><br>
-	
-	<ol type="1">
-		<li> Cruz Blanca </li>
-			<ul type="square">
-				<li> Busca el centro blanco y mantenlo en la cara superior. </li>
-				<li> Localiza las 4 aristas blancas (piezas con 2 colores) y colócalas alrededor del centro blanco, asegurándote de que el segundo color de cada arista coincida con el centro lateral correspondiente. </li>
-			</ul>
-		<li> Esquinas Blancas (Completar la Primera Capa) </li>
-			<ul type="square">
-				<li> Manda la cruz blanca hacia la cara inferior (abajo). </li>
-				<li> Busca una esquina blanca en la capa superior y colócala sobre el hueco donde debe ir (haciendo coincidir los 3 colores). </li>
-				<li> Repite R U R' U' hasta que la esquina baje con el blanco hacia abajo. Haz lo mismo con las 4 esquinas. </li>
-			</ul>
-		<li> Capa Central (Insertar Aristas) </li>
-			<ul type="square">
-				<li> Busca en la capa superior una arista que no tenga color amarillo y alinea su color frontal con su centro. </li>
-				<li> Para insertarla a la derecha: U R U' R' U' F' U F </li>
-				<li> Para insertarla a la izquierda: U' L' U L U F U' F' </li>
-			</ul>
-		<li> Cruz Amarilla </li>
-			<ul type="square">
-				<li> Con la cara blanca abajo, mira el patrón de piezas amarillas en la cara superior y aplica el algoritmo F R U R' U' F': </li>
-				<li> Punto: Aplícalo una vez para formar una "L". </li>
-				<li> "L" invertida: Ponla mirando a las 12 y a las 9 en el reloj y aplícalo para formar una línea horizontal. </li>
-				<li> Línea horizontal: Aplícalo una última vez para formar la cruz amarilla. </li>
-			</ul>
-		<li> Alinear la Cruz Amarilla con los Centros </li>
-			<ul type="square">
-				<li> Gira la capa superior (U) para buscar que dos aristas de la cruz coincidan con sus centros laterales: </li>
-				<li> Coloca una arista coincidente atrás y la otra a la derecha (o una en frente y otra atrás si están opuestas). </li>
-				<li> Aplica: R U R' U R U2 R' U </li>
-			</ul>
-		<li> Colocar Esquinas Amarillas en su Sitio </li>
-			<ul type="square">
-				<li> Busca una esquina que esté en su posición correcta (aunque esté girada): </li>
-				<li> Si tienes una, colócala en la esquina superior derecha frontal. </li>
-				<li> Aplica: U R U' L' U R' U' L </li>
-				<li> Repite el proceso si las demás esquinas aún no están en su lugar. Si no tenías ninguna bien, aplica el algoritmo desde cualquier lado para crear una. </li>
-			</ul>
-		<li> Orientar Esquinas Amarillas (Resolver el Cubo) </li>
-			<ul type="square">
-				<li> Voltea el cubo: la cara blanca vuelve a estar arriba y las esquinas amarillas sin orientar quedan abajo. </li>
-				<li> Coloca una esquina amarilla sin resolver en la esquina inferior derecha. </li>
-				<li> Repite R U R' U' consecutivamente hasta que el amarillo de esa esquina baje del todo. </li>
-				<li> Importante: Solo gira la capa inferior (D) para traer la siguiente esquina sin resolver al mismo hueco y repite el proceso sin mover el resto del cubo hasta armarlo por completo. </li>
-			</ul>
-	</ol>
-	
-	<br>
-	
-	<img src="img/3x3caso1.png" width="110" height="100">
-	<img src="img/3x3caso2.png" width="100" height="100">
-	<img src="img/3x3caso3.png" width="100" height="100">	
-	<img src="img/3x3caso4.png" width="100" height="100">	
-	<img src="img/3x3caso5.png" width="100" height="100">	
-	<img src="img/3x3caso6.png" width="100" height="100">	
-	
-	<br><br><hr>
+    <h1 align="center">TUTORIAL 3X3</h1>
+    <hr><br>
+    
+    <ol type="1">
+        <li><b>Cruz Blanca</b>
+            <ul type="square">
+                <li>Busca el centro blanco y mantenlo en la cara superior.</li>
+                <li>Localiza las 4 aristas blancas (piezas con 2 colores) y colócalas alrededor del centro blanco, asegurándote de que el segundo color de cada arista coincida con el centro lateral correspondiente.</li>
+            </ul>
+        </li>
 
+        <li><b>Esquinas Blancas (Completar la Primera Capa)</b>
+            <ul type="square">
+                <li>Manda la cruz blanca hacia la cara inferior (abajo).</li>
+                <li>Busca una esquina blanca en la capa superior y colócala sobre el hueco donde debe ir (haciendo coincidir los 3 colores).</li>
+                <li>Repite <span class="algoritmo">R U R' U'</span> hasta que la esquina baje con el blanco hacia abajo. Haz lo mismo con las 4 esquinas.</li>
+            </ul>
+        </li>
 
+        <li><b>Capa Central (Insertar Aristas)</b>
+            <ul type="square">
+                <li>Busca en la capa superior una arista que no tenga color amarillo y alinea su color frontal con su centro.</li>
+                <li>Para insertarla a la derecha: <span class="algoritmo">U R U' R' U' F' U F</span></li>
+                <li>Para insertarla a la izquierda: <span class="algoritmo">U' L' U L U F U' F'</span></li>
+            </ul>
+        </li>
+
+        <li><b>Cruz Amarilla</b>
+            <ul type="square">
+                <li>Con la cara blanca abajo, mira el patrón de piezas amarillas en la cara superior y aplica el algoritmo <span class="algoritmo">F R U R' U' F'</span>:</li>
+                <li><b>Punto:</b> Aplícalo una vez para formar una "L".</li>
+                <li><b>"L" invertida:</b> Ponla mirando a las 12 y a las 9 en el reloj y aplícalo para formar una línea horizontal.</li>
+                <li><b>Línea horizontal:</b> Aplícalo una última vez para formar la cruz amarilla.</li>
+            </ul>
+        </li>
+
+        <li><b>Alinear la Cruz Amarilla con los Centros</b>
+            <ul type="square">
+                <li>Gira la capa superior (U) para buscar que dos aristas de la cruz coincidan con sus centros laterales:</li>
+                <li>Coloca una arista coincidente atrás y la otra a la derecha (o una en frente y otra atrás si están opuestas).</li>
+                <li>Aplica: <span class="algoritmo">R U R' U R U2 R' U</span></li>
+            </ul>
+        </li>
+
+        <li><b>Colocar Esquinas Amarillas en su Sitio</b>
+            <ul type="square">
+                <li>Busca una esquina que esté en su posición correcta (aunque esté girada):</li>
+                <li>Si tienes una, colócala en la esquina superior derecha frontal.</li>
+                <li>Aplica: <span class="algoritmo">U R U' L' U R' U' L</span></li>
+                <li>Repite el proceso si las demás esquinas aún no están en su lugar. Si no tenías ninguna bien, aplica el algoritmo desde cualquier lado para crear una.</li>
+            </ul>
+        </li>
+
+        <li><b>Orientar Esquinas Amarillas (Resolver el Cubo)</b>
+            <ul type="square">
+                <li>Voltea el cubo: la cara blanca vuelve a estar arriba y las esquinas amarillas sin orientar quedan abajo.</li>
+                <li>Coloca una esquina amarilla sin resolver en la esquina inferior derecha.</li>
+                <li>Repite <span class="algoritmo">R U R' U'</span> consecutivamente hasta que el amarillo de esa esquina baje del todo.</li>
+                <li><b>Importante:</b> Solo gira la capa inferior (D) para traer la siguiente esquina sin resolver al mismo hueco y repite el proceso sin mover el resto del cubo hasta armarlo por completo.</li>
+            </ul>
+        </li>
+    </ol>
+    
+    <br>
+    
+    <div class="contenedor-imagenes">
+        <img src="img/3x3caso1.png" width="110" height="100" alt="Caso 1 3x3">
+        <img src="img/3x3caso2.png" width="100" height="100" alt="Caso 2 3x3">
+        <img src="img/3x3caso3.png" width="100" height="100" alt="Caso 3 3x3">  
+        <img src="img/3x3caso4.png" width="100" height="100" alt="Caso 4 3x3">  
+        <img src="img/3x3caso5.png" width="100" height="100" alt="Caso 5 3x3">  
+        <img src="img/3x3caso6.png" width="100" height="100" alt="Caso 6 3x3">  
+    </div>
+
+    <br><hr>
+
+    <script>
+        // Sincronización mediante BroadcastChannel con el botón del Navegador
+        const canalTema = new BroadcastChannel('canal_tema_web');
+
+        function aplicarTema(esNoche) {
+            if (esNoche) {
+                document.body.classList.add('modo-noche');
+                document.documentElement.classList.add('modo-noche');
+            } else {
+                document.body.classList.remove('modo-noche');
+                document.documentElement.classList.remove('modo-noche');
+            }
+        }
+
+        // Escuchar la orden emitida desde navegadir.html
+        canalTema.onmessage = (e) => {
+            if (e.data && typeof e.data.modoNoche === 'boolean') {
+                aplicarTema(e.data.modoNoche);
+            }
+        };
+    </script>
 </body>
 </html>

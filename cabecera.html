@@ -1,26 +1,107 @@
 <!DOCTYPE html>
 <html lang="es">
-<html>
-<head><meta charset="UTF-8">
-<title> Cabecera </title>
+<head>
+    <meta charset="UTF-8">
+    <title>Cabecera</title>
+
+    <style>
+        /* Variables para el Tema Claro (Día) */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #0f172a;
+        }
+
+        /* Variables para el Tema Oscuro (Noche) */
+        body.modo-noche {
+            --bg-color: #0f172a;
+            --text-color: #ffffff;
+        }
+
+        html.modo-noche {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        /* Estilos base */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            margin: 0 15px;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 0 5px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        img {
+            border-radius: 6px;
+            object-fit: cover;
+        }
+    </style>
+
+    <script>
+        // Carga e inicialización inmediata antes de renderizar
+        if (localStorage.getItem('tema') === 'noche') {
+            document.documentElement.classList.add('modo-noche');
+            window.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('modo-noche');
+            });
+        }
+    </script>
 </head>
 <body>
-	
-	<table align="center">
-		<tr>
-			<td><img src="img/megaminx.jpg" width="160" height="150"></td>
-			<td><img src="img/pyraminx.png" width="160" height="150"></td>
-			<td><img src="img/4x4.jpg" width="130" height="130"></td>
-			<td><img src="img/2x2.jpg"></td>
-			<td><img src="img/3x3.png"></td>
-			<td><h1> CUBO DE RUBIK </h1></td>
-			<td><img src="img/3x3.png"></td>
-			<td><img src="img/2x2.jpg"></td>
-			<td><img src="img/4x4.jpg" width="130" height="130"></td>
-			<td><img src="img/pyraminx.png" width="160" height="150"></td>
-			<td><img src="img/megaminx.jpg" width="160" height="150"></td>
-		</tr>
-	</table>
+    
+    <table align="center">
+        <tr>
+            <td><img src="img/megaminx.png" width="160" height="150" alt="Megaminx"></td>
+            <td><img src="img/pyraminx.png" width="160" height="150" alt="Pyraminx"></td>
+            <td><img src="img/4x4.png" width="130" height="130" alt="4x4"></td>
+            <td><img src="img/2x2.png" alt="2x2"></td>
+            <td><img src="img/3x3.png" alt="3x3"></td>
+            <td><h1> CUBO DE RUBIK </h1></td>
+            <td><img src="img/3x3.png" alt="3x3"></td>
+            <td><img src="img/2x2.png" alt="2x2"></td>
+            <td><img src="img/4x4.png" width="130" height="130" alt="4x4"></td>
+            <td><img src="img/pyraminx.png" width="160" height="150" alt="Pyraminx"></td>
+            <td><img src="img/megaminx.png" width="160" height="150" alt="Megaminx"></td>
+        </tr>
+    </table>
 
+    <script>
+        // Sincronización mediante BroadcastChannel con el botón del Navegador
+        const canalTema = new BroadcastChannel('canal_tema_web');
+
+        function aplicarTema(esNoche) {
+            if (esNoche) {
+                document.body.classList.add('modo-noche');
+                document.documentElement.classList.add('modo-noche');
+            } else {
+                document.body.classList.remove('modo-noche');
+                document.documentElement.classList.remove('modo-noche');
+            }
+        }
+
+        // Escuchar la orden emitida desde navegadir.html
+        canalTema.onmessage = (e) => {
+            if (e.data && typeof e.data.modoNoche === 'boolean') {
+                aplicarTema(e.data.modoNoche);
+            }
+        };
+    </script>
 </body>
 </html>

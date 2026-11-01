@@ -1,10 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
-<html>
-<head><meta charset="UTF-8">
-<title> Estructura de la web </title>
+<head>
+    <meta charset="UTF-8">
+    <title>Estructura de la web</title>
 
-	<style>
+    <style>
+        /* Variables para Tema Claro (Día) */
+        :root {
+            --bg-body: #ffffff;
+            --border-gap: #e2e8f0;
+        }
+
+        /* Variables para Tema Oscuro (Noche) */
+        body.modo-noche {
+            --bg-body: #0f172a;
+            --border-gap: #0f172a;
+        }
+
+        html.modo-noche {
+            background-color: #0f172a;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,10 +29,12 @@
 
         body {
             display: grid;
-            grid-template-rows: 165px 1fr 60px;
-            grid-template-columns: 250px 1fr;
-            height: 920px;
+            grid-template-rows: 205px 1fr 200px;
+            grid-template-columns: 300px 1fr;
+            height: 1100px;
             gap: 2px;
+            background-color: var(--border-gap);
+            transition: background-color 0.3s ease;
         }
 
         .cabecera {
@@ -43,13 +61,24 @@
             width: 100%;
             height: 100%;
             border: none;
+            background-color: var(--bg-body);
+            transition: background-color 0.3s ease;
         }
     </style>
 
+    <script>
+        // Carga e inicialización inmediata antes de renderizar para evitar destellos
+        if (localStorage.getItem('tema') === 'noche') {
+            document.documentElement.classList.add('modo-noche');
+            window.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('modo-noche');
+            });
+        }
+    </script>
 </head>
 <body>
 
-	<!-- CABECERA -->
+    <!-- CABECERA -->
     <iframe class="cabecera" src="cabecera.html" name="cabecera"></iframe>
 
     <!-- NAVEGADOR -->
@@ -61,5 +90,44 @@
     <!-- PIE DE PÁGINA -->
     <iframe class="pie" src="pie.html" name="pie"></iframe>
 
+    <script>
+        // Sincronización mediante BroadcastChannel con el botón del Navegador
+        const canalTema = new BroadcastChannel('canal_tema_web');
+
+        function aplicarTema(esNoche) {
+            if (esNoche) {
+                document.body.classList.add('modo-noche');
+                document.documentElement.classList.add('modo-noche');
+            } else {
+                document.body.classList.remove('modo-noche');
+                document.documentElement.classList.remove('modo-noche');
+            }
+
+            // Mantenemos como respaldo la propagación directa por DOM
+            const marcos = document.querySelectorAll('iframe, frame');
+            marcos.forEach(marco => {
+                try {
+                    if (marco.contentDocument && marco.contentDocument.body) {
+                        if (esNoche) {
+                            marco.contentDocument.body.classList.add('modo-noche');
+                            marco.contentDocument.documentElement.classList.add('modo-noche');
+                        } else {
+                            marco.contentDocument.body.classList.remove('modo-noche');
+                            marco.contentDocument.documentElement.classList.remove('modo-noche');
+                        }
+                    }
+                } catch (e) {
+                    // Ignorar posibles restricciones de origen en desarrollo local
+                }
+            });
+        }
+
+        // Escuchar la orden emitida desde navegadir.html / navegador.html
+        canalTema.onmessage = (e) => {
+            if (e.data && typeof e.data.modoNoche === 'boolean') {
+                aplicarTema(e.data.modoNoche);
+            }
+        };
+    </script>
 </body>
 </html>

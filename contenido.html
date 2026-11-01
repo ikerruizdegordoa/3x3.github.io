@@ -1,12 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
-<html>
-<head><meta charset="UTF-8">
-<title> CONTENIDO </title>
+<head>
+    <meta charset="UTF-8">
+    <title>CONTENIDO</title>
+    <style>
+        /* Variables para el Tema Claro (Día) */
+        :root {
+            --bg-color: #ffffff;
+        }
+
+        /* Variables para el Tema Oscuro (Noche) */
+        body.modo-noche {
+            --bg-color: #0f172a;
+        }
+
+        html.modo-noche {
+            background-color: #0f172a;
+        }
+
+        /* Estilos base */
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+    </style>
+
+    <script>
+        // Carga e inicialización inmediata antes de renderizar
+        if (localStorage.getItem('tema') === 'noche') {
+            document.documentElement.classList.add('modo-noche');
+            window.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('modo-noche');
+            });
+        }
+    </script>
 </head>
 <body>
 
-	<img src="img/fondo.png" width="1635" height="668">
+    <img src="img/fondo.png" width="100%" height="668" alt="Fondo Contenido">
 
+    <script>
+        // Sincronización mediante BroadcastChannel con el botón del Navegador
+        const canalTema = new BroadcastChannel('canal_tema_web');
+
+        function aplicarTema(esNoche) {
+            if (esNoche) {
+                document.body.classList.add('modo-noche');
+                document.documentElement.classList.add('modo-noche');
+            } else {
+                document.body.classList.remove('modo-noche');
+                document.documentElement.classList.remove('modo-noche');
+            }
+        }
+
+        // Escuchar la orden emitida desde navegadir.html
+        canalTema.onmessage = (e) => {
+            if (e.data && typeof e.data.modoNoche === 'boolean') {
+                aplicarTema(e.data.modoNoche);
+            }
+        };
+    </script>
 </body>
 </html>

@@ -1,59 +1,193 @@
 <!DOCTYPE html>
 <html lang="es">
-<html>
-<head><meta charset="UTF-8">
-<title> 4x4 </title>
+<head>
+    <meta charset="UTF-8">
+    <title>5x5</title>
+
+    <style>
+        /* Variables para Tema Claro (Día) */
+        :root {
+            --bg-body: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --accent-color: #0284c7;
+            --border-color: #e2e8f0;
+            --box-bg: #f8fafc;
+        }
+
+        /* Variables para Tema Oscuro (Noche) */
+        body.modo-noche {
+            --bg-body: #0f172a;
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --accent-color: #38bdf8;
+            --border-color: #334155;
+            --box-bg: #1e293b;
+        }
+
+        html.modo-noche {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        /* Estilos base */
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px 30px;
+            margin: 0;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Listas y pasos */
+        ol, ul {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        ul li {
+            color: var(--text-sub);
+        }
+
+        /* Destacado de algoritmos */
+        .algoritmo {
+            font-family: monospace;
+            font-weight: bold;
+            background-color: var(--box-bg);
+            color: var(--accent-color);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            display: inline-block;
+            word-break: break-word;
+        }
+
+        /* Galería de imágenes */
+        .contenedor-imagenes {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .contenedor-imagenes img {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--box-bg);
+            padding: 5px;
+            object-fit: cover;
+        }
+    </style>
+
+    <script>
+        // Carga e inicialización inmediata antes de renderizar para evitar destellos
+        if (localStorage.getItem('tema') === 'noche') {
+            document.documentElement.classList.add('modo-noche');
+            window.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('modo-noche');
+            });
+        }
+    </script>
 </head>
 <body>
 
-	<br><br>
-	<h1 align="center"> TUTORIAL 5x5 </h1>
-	<hr><br><br>
-	
-	<ol type="1">
-		<li> Resolver los Centros (Bloques de 3x3) </li>
-			<ol type="A">
-				<li> Centro Blanco y Centro Amarillo: </li>
-					<ul type="square">
-						<li> Forma primero una barra central de 1x3 (usando el centro fijo). </li>
-						<li> Crea dos barras laterales de 1x3 y únelas a la barra central para formar un bloque de 3x3. </li>
-						<li> Haz lo mismo con el centro amarillo opuesto usando Rw U Rw' para no deshacer el blanco. </li>
-					</ul>
-				<li> Cuatro Centros Laterales: </li>
-					<ul type="square">
-						<li> Con el blanco y el amarillo en los lados izquierdo y derecho, resuelve los centros adyacentes uno a uno mediante la creación e inserción de barras de 1x3. </li>
-					</ul>
-			</ol>
-		<li> Emparejar Aristas (Crear los 12 Bloques de 3 piezas) </li>
-			<ol type="A">
-				<li> Emparejar las primeras 8 o 10 aristas: </li>
-					<ul type="square">
-						<li> Localiza la arista central del trío y colócala en el centro de la capa frontal. </li>
-						<li> Trae las dos aristas laterales correspondientes a las capas adyacentes usando giros de capas internas (u o d). </li>
-						<li> Guarda la arista armada en la capa superior (U) y reemplázala por una desordenada antes de regresar los centros con u' o d'. </li>
-					</ul>
-				<li> Emparejar las Últimas 2 Aristas (Paridad de Aristas): </li>
-				<ul type="square">
-						<li> Cuando solo quedan 2 aristas compuestas por resolver, no hay aristas desarmadas libres para intercambiar. </li>
-						<li> Coloca las dos aristas una frente a la otra alineadas horizontalmente. Si una de las piezas externas de la arista está invertida respecto a las demás, aplica el algoritmo de volteo de arista:Rw2 B2 U2 Lw U2 Rw' U2 Rw U2 F2 Rw F2 Lw' B2 Rw2 </li>
-					</ul>
-			</ol>
-		<li> Resolver como un 3x3 Estándar </li>
-			<ol type="A">
-				<li> Trata los centros de 3x3 como piezas centrales individuales. </li>
-				<li> Trata cada grupo de 3 aristas como si fuera una sola arista de un 3x3. </li>
-				<li> Aplica todos los pasos del método de principiantes del 3x3 (Cruz, esquinas, capa central, cruz superior, etc.). </li>
-			</ol>
-	</ol>
-	
-	<br>
-	
-	<img src="img/5x5caso1.png" width="100" height="100">
-	<img src="img/5x5caso2.png" width="100" height="100">
-	<img src="img/5x5caso3.png" width="100" height="100">
-	
-	<br><br><hr>
+    <h1 align="center">TUTORIAL 5X5</h1>
+    <hr><br>
+    
+    <ol type="1">
+        <li><b>Resolver los Centros (Bloques de 3x3)</b>
+            <ol type="A">
+                <li><b>Centro Blanco y Centro Amarillo:</b>
+                    <ul type="square">
+                        <li>Forma primero una barra central de 1x3 (usando el centro fijo).</li>
+                        <li>Crea dos barras laterales de 1x3 y únelas a la barra central para formar un bloque de 3x3.</li>
+                        <li>Haz lo mismo con el centro amarillo opuesto usando <span class="algoritmo">Rw U Rw'</span> para no deshacer el blanco.</li>
+                    </ul>
+                </li>
+                <li><b>Cuatro Centros Laterales:</b>
+                    <ul type="square">
+                        <li>Con el blanco y el amarillo en los lados izquierdo y derecho, resuelve los centros adyacentes uno a uno mediante la creación e inserción de barras de 1x3.</li>
+                    </ul>
+                </li>
+            </ol>
+        </li>
 
+        <li><b>Emparejar Aristas (Crear los 12 Bloques de 3 piezas)</b>
+            <ol type="A">
+                <li><b>Emparejar las primeras 8 o 10 aristas:</b>
+                    <ul type="square">
+                        <li>Localiza la arista central del trío y colócala en el centro de la capa frontal.</li>
+                        <li>Trae las dos aristas laterales correspondientes a las capas adyacentes usando giros de capas internas (<span class="algoritmo">u</span> o <span class="algoritmo">d</span>).</li>
+                        <li>Guarda la arista armada en la capa superior (U) y reemplázala por una desordenada antes de regresar los centros con <span class="algoritmo">u'</span> o <span class="algoritmo">d'</span>.</li>
+                    </ul>
+                </li>
+                <li><b>Emparejar las Últimas 2 Aristas (Paridad de Aristas):</b>
+                    <ul type="square">
+                        <li>Cuando solo quedan 2 aristas compuestas por resolver, no hay aristas desarmadas libres para intercambiar.</li>
+                        <li>Coloca las dos aristas una frente a la otra alineadas horizontalmente. Si una de las piezas externas de la arista está invertida respecto a las demás, aplica el algoritmo de volteo de arista: <span class="algoritmo">Rw2 B2 U2 Lw U2 Rw' U2 Rw U2 F2 Rw F2 Lw' B2 Rw2</span></li>
+                    </ul>
+                </li>
+            </ol>
+        </li>
 
+        <li><b>Resolver como un 3x3 Estándar</b>
+            <ol type="A">
+                <li>Trata los centros de 3x3 como piezas centrales individuales.</li>
+                <li>Trata cada grupo de 3 aristas como si fuera una sola arista de un 3x3.</li>
+                <li>Aplica todos los pasos del método de principiantes del 3x3 (Cruz, esquinas, capa central, cruz superior, etc.).</li>
+            </ol>
+        </li>
+    </ol>
+    
+    <br>
+    
+    <div class="contenedor-imagenes">
+        <img src="img/5x5caso1.png" width="100" height="100" alt="Caso 1 5x5">
+        <img src="img/5x5caso2.png" width="100" height="100" alt="Caso 2 5x5">
+        <img src="img/5x5caso3.png" width="100" height="100" alt="Caso 3 5x5">
+    </div>
+
+    <br><hr>
+
+    <script>
+        // Sincronización mediante BroadcastChannel con el botón del Navegador
+        const canalTema = new BroadcastChannel('canal_tema_web');
+
+        function aplicarTema(esNoche) {
+            if (esNoche) {
+                document.body.classList.add('modo-noche');
+                document.documentElement.classList.add('modo-noche');
+            } else {
+                document.body.classList.remove('modo-noche');
+                document.documentElement.classList.remove('modo-noche');
+            }
+        }
+
+        // Escuchar la orden emitida desde navegadir.html
+        canalTema.onmessage = (e) => {
+            if (e.data && typeof e.data.modoNoche === 'boolean') {
+                aplicarTema(e.data.modoNoche);
+            }
+        };
+    </script>
 </body>
 </html>

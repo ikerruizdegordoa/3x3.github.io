@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Tutorial Cubo 3x3 - Principiante, CFOP Reducido y CFOP Avanzado Completo</title>
 
     <!-- Carga del reproductor 3D interactivo (cubing.js) -->
@@ -44,15 +44,22 @@
             color: #ffffff;
         }
 
-        /* Estilos base */
+        /* Reset global para evitar desbordamientos horizontales */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        /* Estilos base responsive */
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px 30px;
+            padding: 20px 4vw;
             margin: 0;
             line-height: 1.6;
             transition: background-color 0.3s ease, color 0.3s ease;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         h1 {
@@ -61,28 +68,32 @@
             letter-spacing: 1px;
             margin-bottom: 15px;
             text-align: center;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
         }
 
         h2 {
             color: var(--accent-color);
             margin-top: 30px;
             margin-bottom: 15px;
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
         }
 
         h3 {
             color: var(--accent-color);
             margin-top: 20px;
             margin-bottom: 10px;
+            font-size: clamp(1.05rem, 2.5vw, 1.3rem);
         }
 
         p, li {
             color: var(--text-main);
             margin-bottom: 12px;
             text-align: left;
+            font-size: clamp(0.95rem, 1.8vw, 1.05rem);
         }
 
         ul, ol {
-            margin-left: 20px;
+            padding-left: 20px;
             margin-bottom: 15px;
         }
 
@@ -104,18 +115,19 @@
             background-color: var(--box-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 20px;
+            padding: clamp(12px, 3vw, 20px);
             margin-bottom: 25px;
+            width: 100%;
         }
 
         .paso-card h3, .fase-card h3 {
             color: var(--accent-color);
             margin-top: 0;
             margin-bottom: 12px;
-            font-size: 1.2rem;
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .paso-numero, .fase-badge {
@@ -126,6 +138,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            flex-shrink: 0;
         }
 
         .paso-numero {
@@ -150,17 +163,19 @@
             border-radius: 6px;
             border: 1px solid var(--border-color);
             display: inline-block;
-            font-size: 0.95rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
             letter-spacing: 0.5px;
             word-break: break-all;
+            max-width: 100%;
         }
 
-        /* Grid de Casos CFOP con Visores 3D */
+        /* Grid de Casos CFOP Responsive para Móvil, Tablet y Escritorio */
         .grid-casos {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
             gap: 15px;
             margin-top: 15px;
+            width: 100%;
         }
 
         .caso-item {
@@ -172,6 +187,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            width: 100%;
         }
 
         .caso-item h4 {
@@ -180,9 +196,12 @@
             font-size: 0.95rem;
         }
 
+        /* Visor 3D totalmente escalable */
         twisty-player {
-            width: 140px;
-            height: 140px;
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            aspect-ratio: 1 / 1;
             margin-bottom: 8px;
         }
 
@@ -218,7 +237,26 @@
 
         .paso-contenido {
             flex: 1;
-            min-width: 280px;
+            min-width: min(100%, 280px);
+        }
+
+        /* Adaptación específica para pantallas muy pequeñas (< 480px) */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px 10px;
+            }
+
+            .paso-card, .fase-card {
+                padding: 12px 10px;
+            }
+
+            .grid-casos {
+                grid-template-columns: 1fr;
+            }
+
+            twisty-player {
+                max-width: 160px;
+            }
         }
     </style>
 

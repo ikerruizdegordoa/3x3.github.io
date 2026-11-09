@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cabecera</title>
 
     <style>
@@ -23,74 +22,35 @@
             color: #ffffff;
         }
 
-        /* Reset para evitar desbordamientos */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
         /* Estilos base */
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 10px 2vw;
+            padding: 10px 0;
             transition: background-color 0.3s ease, color 0.3s ease;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            width: 100%;
-            overflow-x: hidden;
-        }
-
-        /* Contenedor flexible responsive */
-        .cabecera-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: clamp(4px, 1vw, 10px);
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            flex-wrap: nowrap;
         }
 
         h1 {
-            margin: 0 10px;
+            margin: 0 15px;
             color: var(--text-color);
             transition: color 0.3s ease;
-            font-size: clamp(1.1rem, 2.8vw, 2.2rem);
-            text-align: center;
-            white-space: nowrap;
         }
 
-        /* Imágenes escalables */
-        .cabecera-img {
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 0 5px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        img {
             border-radius: 6px;
             object-fit: cover;
-            height: auto;
-            max-width: 100%;
-            transition: transform 0.2s ease;
-        }
-
-        .img-lg { width: clamp(40px, 7vw, 160px); }
-        .img-md { width: clamp(35px, 6vw, 130px); }
-        .img-sm { width: clamp(30px, 5vw, 100px); }
-
-        /* Optimización específica para teléfonos móviles */
-        @media (max-width: 768px) {
-            .cabecera-container {
-                gap: 4px;
-            }
-            .img-lg {
-                display: none; /* Oculta los megaminx exteriores en pantallas reducidas para ganar espacio */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .img-md {
-                display: none; /* Oculta las Pyraminx en móviles muy estrechos */
-            }
-            h1 {
-                font-size: 1.3rem;
-            }
         }
     </style>
 
@@ -106,21 +66,21 @@
 </head>
 <body>
     
-    <header class="cabecera-container">
-        <img src="img/megaminx.png" class="cabecera-img img-lg" alt="Megaminx">
-        <img src="img/pyraminx.png" class="cabecera-img img-md" alt="Pyraminx">
-        <img src="img/4x4.png" class="cabecera-img img-sm" alt="4x4">
-        <img src="img/2x2.png" class="cabecera-img img-sm" alt="2x2">
-        <img src="img/3x3.png" class="cabecera-img img-sm" alt="3x3">
-        
-        <h1>CUBO DE RUBIK</h1>
-        
-        <img src="img/3x3.png" class="cabecera-img img-sm" alt="3x3">
-        <img src="img/2x2.png" class="cabecera-img img-sm" alt="2x2">
-        <img src="img/4x4.png" class="cabecera-img img-sm" alt="4x4">
-        <img src="img/pyraminx.png" class="cabecera-img img-md" alt="Pyraminx">
-        <img src="img/megaminx.png" class="cabecera-img img-lg" alt="Megaminx">
-    </header>
+    <table align="center">
+        <tr>
+            <td><img src="img/megaminx.png" width="160" height="150" alt="Megaminx"></td>
+            <td><img src="img/pyraminx.png" width="160" height="150" alt="Pyraminx"></td>
+            <td><img src="img/4x4.png" width="130" height="130" alt="4x4"></td>
+            <td><img src="img/2x2.png" alt="2x2"></td>
+            <td><img src="img/3x3.png" alt="3x3"></td>
+            <td><h1> CUBO DE RUBIK </h1></td>
+            <td><img src="img/3x3.png" alt="3x3"></td>
+            <td><img src="img/2x2.png" alt="2x2"></td>
+            <td><img src="img/4x4.png" width="130" height="130" alt="4x4"></td>
+            <td><img src="img/pyraminx.png" width="160" height="150" alt="Pyraminx"></td>
+            <td><img src="img/megaminx.png" width="160" height="150" alt="Megaminx"></td>
+        </tr>
+    </table>
 
     <script>
         // Sincronización mediante BroadcastChannel con el botón del Navegador
@@ -136,7 +96,7 @@
             }
         }
 
-        // Escuchar la orden emitida desde navegador.html
+        // Escuchar la orden emitida desde navegadir.html
         canalTema.onmessage = (e) => {
             if (e.data && typeof e.data.modoNoche === 'boolean') {
                 aplicarTema(e.data.modoNoche);

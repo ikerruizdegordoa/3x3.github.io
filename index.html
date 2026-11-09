@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estructura de la web</title>
 
     <style>
@@ -27,19 +28,23 @@
             box-sizing: border-box;
         }
 
+        /* Layout Grid principal fluido para escritorios y portátiles */
         body {
             display: grid;
-            grid-template-rows: 205px 1fr 200px;
-            grid-template-columns: 300px 1fr;
-            height: 1100px;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: minmax(220px, 280px) 1fr;
+            min-height: 100vh;
+            width: 100vw;
             gap: 2px;
             background-color: var(--border-gap);
             transition: background-color 0.3s ease;
+            overflow-x: hidden;
         }
 
         .cabecera {
             grid-column: 1 / -1;
             grid-row: 1;
+            height: 140px;
         }
 
         .navegador {
@@ -55,6 +60,8 @@
         .pie {
             grid-column: 1 / -1;
             grid-row: 3;
+            height: auto;
+            min-height: 120px;
         }
 
         iframe {
@@ -63,6 +70,37 @@
             border: none;
             background-color: var(--bg-body);
             transition: background-color 0.3s ease;
+        }
+
+        /* Adaptación fluida para Móviles y Tablets */
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr auto;
+            }
+
+            .cabecera {
+                grid-column: 1;
+                grid-row: 1;
+                height: 90px;
+            }
+
+            .navegador {
+                grid-column: 1;
+                grid-row: 2;
+                max-height: 220px; /* En móviles el menú ocupa un alto razonable con scroll propio */
+            }
+
+            .contenido {
+                grid-column: 1;
+                grid-row: 3;
+                min-height: 60vh;
+            }
+
+            .pie {
+                grid-column: 1;
+                grid-row: 4;
+            }
         }
     </style>
 

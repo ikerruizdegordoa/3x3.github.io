@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>navegadir</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navegador</title>
+
     <style>
         /* Variables para el Tema Claro (Día) */
         :root {
@@ -12,6 +14,7 @@
             --link-hover: #0369a1;
             --border-color: #e2e8f0;
             --btn-bg: #f1f5f9;
+            --hover-item-bg: #f8fafc;
         }
 
         /* Variables para el Tema Oscuro (Noche) */
@@ -22,6 +25,7 @@
             --link-hover: #7dd3fc;
             --border-color: #334155;
             --btn-bg: #1e293b;
+            --hover-item-bg: #1e293b;
         }
 
         /* Aplicación de tema inmediata antes de renderizar body */
@@ -30,25 +34,94 @@
             color: #ffffff;
         }
 
+        /* Reset global para evitar desbordamientos */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         /* Estilos base */
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 15px;
+            padding: 12px;
+            margin: 0;
             transition: background-color 0.3s ease, color 0.3s ease;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         hr {
             border: 0;
             border-top: 1px solid var(--border-color);
+            margin: 15px 0;
+        }
+
+        p {
+            font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+
+        /* Estilo del Botón de Cambio de Tema */
+        .contenedor-tema {
+            text-align: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .btn-tema {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: var(--btn-bg);
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-tema:hover {
+            border-color: var(--link-color);
+        }
+
+        /* Lista de Navegación */
+        ul.menu-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* Alineación de enlaces e iconos de cubo */
+        li.menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        li.menu-item:hover {
+            background-color: var(--hover-item-bg);
         }
 
         a {
             color: var(--link-color);
             text-decoration: none;
             font-weight: bold;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             transition: color 0.2s ease;
+            flex-grow: 1;
         }
 
         a:hover {
@@ -56,39 +129,24 @@
             text-decoration: underline;
         }
 
-        /* Estilo del Botón de Cambio de Tema */
-        .contenedor-tema {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .btn-tema {
-            width: 100%;
-            padding: 8px 12px;
-            background-color: var(--btn-bg);
-            color: var(--text-color);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-tema:hover {
-            border-color: var(--link-color);
-        }
-
-        /* Alineación de iconos de cubo */
-        li {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         img {
             border-radius: 4px;
-            object-fit: cover;
+            object-fit: contain;
+            width: clamp(35px, 8vw, 50px);
+            height: auto;
+            aspect-ratio: 1 / 1;
+            flex-shrink: 0;
+        }
+
+        /* Adaptación en pantallas muy estrechas */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+
+            li.menu-item {
+                padding: 8px 4px;
+            }
         }
     </style>
     
@@ -106,35 +164,27 @@
         <button id="btnTema" class="btn-tema">🌙 Modo Noche</button>
     </div>
 
-    <ul type="square">
-		
-		<br>
-		<li><a href="timer.html" target="contenido">Timer</a></li>
-        <br>
-		<li><a href="noticias.html" target="contenido">Noticias</a></li>
-        <br>
-        <hr>
-        <p><b>Selecciona el cubo que quieres aprender a resolver:</b></p>
-        <hr><br>
-        
-        <li><a href="conceptos.html" target="contenido">Conceptos básicos</a></li>
-        <br>
-        <li><a href="notacion.html" target="contenido">Notación</a></li>
-        <br>
-        <li><a href="2x2.html" target="contenido">2x2x2</a> <img src="img/2x2.png" width="60" height="55" alt="2x2"></li>
-        <br>
-        <li><a href="3x3.html" target="contenido">3x3x3</a> <img src="img/3x3.png" width="55" height="55" alt="3x3"></li>
-        <br>
-        <li><a href="4x4.html" target="contenido">4x4x4</a> <img src="img/4x4.png" width="55" height="55" alt="4x4"></li>
-        <br>
-        <li><a href="5x5.html" target="contenido">5x5x5</a> <img src="img/5x5.png" width="60" height="55" alt="5x5"></li>
-        <br>
-        <li><a href="pyraminx.html" target="contenido">Pyraminx</a> <img src="img/pyraminx.png" width="55" height="55" alt="Pyraminx"></li>
-        <br>
-        <li><a href="megaminx.html" target="contenido">Megaminx</a> <img src="img/megaminx.png" width="55" height="55" alt="Megaminx"></li>
-        <br><hr><hr><br>
-        
+    <ul class="menu-nav">
+        <li class="menu-item"><a href="timer.html" target="contenido">Timer</a></li>
+        <li class="menu-item"><a href="noticias.html" target="contenido">Noticias</a></li>
     </ul>
+
+    <hr>
+    <p><b>Selecciona el cubo que quieres aprender a resolver:</b></p>
+    <hr>
+
+    <ul class="menu-nav">
+        <li class="menu-item"><a href="conceptos.html" target="contenido">Conceptos básicos</a></li>
+        <li class="menu-item"><a href="notacion.html" target="contenido">Notación</a></li>
+        <li class="menu-item"><a href="2x2.html" target="contenido">2x2x2</a> <img src="img/2x2.png" alt="2x2"></li>
+        <li class="menu-item"><a href="3x3.html" target="contenido">3x3x3</a> <img src="img/3x3.png" alt="3x3"></li>
+        <li class="menu-item"><a href="4x4.html" target="contenido">4x4x4</a> <img src="img/4x4.png" alt="4x4"></li>
+        <li class="menu-item"><a href="5x5.html" target="contenido">5x5x5</a> <img src="img/5x5.png" alt="5x5"></li>
+        <li class="menu-item"><a href="pyraminx.html" target="contenido">Pyraminx</a> <img src="img/pyraminx.png" alt="Pyraminx"></li>
+        <li class="menu-item"><a href="megaminx.html" target="contenido">Megaminx</a> <img src="img/megaminx.png" alt="Megaminx"></li>
+    </ul>
+
+    <hr>
 
     <script>
         const btnTema = document.getElementById('btnTema');

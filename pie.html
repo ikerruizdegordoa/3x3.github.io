@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>pie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pie de Página</title>
 
     <style>
         /* Variables para el Tema Claro (Día) */
@@ -12,6 +13,7 @@
             --title-color: #0284c7;
             --link-color: #0284c7;
             --link-hover: #0369a1;
+            --border-color: #e2e8f0;
         }
 
         /* Variables para el Tema Oscuro (Noche) */
@@ -21,6 +23,7 @@
             --title-color: #38bdf8;
             --link-color: #38bdf8;
             --link-hover: #7dd3fc;
+            --border-color: #334155;
         }
 
         html.modo-noche {
@@ -28,31 +31,66 @@
             color: #ffffff;
         }
 
+        /* Reset global para evitar desbordamientos */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         /* Estilos base */
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 15px 10px;
+            padding: 15px 4vw;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             transition: background-color 0.3s ease, color 0.3s ease;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* Contenedor flexible adaptable */
+        .pie-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(12px, 2vw, 25px);
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .pie-bloque {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pie-texto {
+            flex: 1 1 300px;
+            max-width: 500px;
         }
 
         h2 {
             color: var(--title-color);
             margin: 0;
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
             transition: color 0.3s ease;
+            white-space: nowrap;
         }
 
         p {
             margin: 0;
             line-height: 1.5;
+            font-size: clamp(0.88rem, 1.8vw, 0.98rem);
         }
 
         a {
             color: var(--link-color);
             text-decoration: none;
             font-weight: bold;
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
             transition: color 0.2s ease;
         }
 
@@ -61,18 +99,31 @@
             text-decoration: underline;
         }
 
-        img {
+        /* Código QR responsive */
+        .qr-img {
             border-radius: 8px;
             object-fit: cover;
             display: block;
+            width: clamp(120px, 18vw, 180px);
+            height: auto;
+            aspect-ratio: 1 / 1;
+            transition: transform 0.2s ease;
         }
 
-        table {
-            border-collapse: collapse;
+        .qr-img:hover {
+            transform: scale(1.03);
         }
 
-        td {
-            vertical-align: middle;
+        /* Adaptación en pantallas estrechas (móviles) */
+        @media (max-width: 600px) {
+            .pie-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .pie-texto {
+                flex: 1 1 auto;
+            }
         }
     </style>
 
@@ -88,20 +139,25 @@
 </head>
 <body>
 
-    <table align="center" cellpadding="8">
-        <tr>
-            <td><h2>DONACIONES:</h2></td>
-            <td><p><b>Si el contenido de esta página web te ha ayudado, puedes hacer una donación al creador, porque así podrá mejorar y actualizar el contenido. Muchas gracias :)</b></p></td>
-            <td>
-                <a href="https://www.paypal.com/qrcodes/p2pqrc/NCNDSJVPZML5C" target="_blank">
-                    <img src="img/paypal.jpg" width="200" height="200" alt="Código QR PayPal">
-                </a>
-            </td>
-            <td>
-                <a href="https://www.paypal.com/qrcodes/p2pqrc/NCNDSJVPZML5C" target="_blank">Click aquí para hacer donación :)</a>
-            </td>
-        </tr>
-    </table>
+    <footer class="pie-container">
+        <div class="pie-bloque">
+            <h2>DONACIONES:</h2>
+        </div>
+
+        <div class="pie-bloque pie-texto">
+            <p><b>Si el contenido de esta página web te ha ayudado, puedes hacer una donación al creador, porque así podrá mejorar y actualizar el contenido. Muchas gracias :)</b></p>
+        </div>
+
+        <div class="pie-bloque">
+            <a href="https://www.paypal.com/qrcodes/p2pqrc/NCNDSJVPZML5C" target="_blank" rel="noopener">
+                <img src="img/paypal.jpg" class="qr-img" alt="Código QR PayPal">
+            </a>
+        </div>
+
+        <div class="pie-bloque">
+            <a href="https://www.paypal.com/qrcodes/p2pqrc/NCNDSJVPZML5C" target="_blank" rel="noopener">Click aquí para hacer donación :)</a>
+        </div>
+    </footer>
 
     <script>
         // Sincronización mediante BroadcastChannel con el botón del Navegador
@@ -117,7 +173,7 @@
             }
         }
 
-        // Escuchar la orden emitida desde navegadir.html
+        // Escuchar la orden emitida desde navegador.html
         canalTema.onmessage = (e) => {
             if (e.data && typeof e.data.modoNoche === 'boolean') {
                 aplicarTema(e.data.modoNoche);

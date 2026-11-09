@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CONTENIDO</title>
     <style>
         /* Variables para el Tema Claro (Día) */
@@ -18,23 +19,42 @@
             background-color: #0f172a;
         }
 
+        /* Reset global para evitar desbordamientos */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         /* Estilos base */
         body {
             background-color: var(--bg-color);
             margin: 0;
-            padding: 0;
+            padding: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            width: 100%;
+            overflow: hidden;
             transition: background-color 0.3s ease;
         }
 
-        img {
+        /* Imagen de fondo totalmente fluida y proporcional */
+        .img-contenido {
             max-width: 100%;
+            max-height: 90vh;
+            width: auto;
             height: auto;
+            object-fit: contain;
             display: block;
             border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
         }
     </style>
 
@@ -50,7 +70,7 @@
 </head>
 <body>
 
-    <img src="img/fondo.png" width="100%" height="668" alt="Fondo Contenido">
+    <img src="img/fondo.png" class="img-contenido" alt="Fondo Contenido">
 
     <script>
         // Sincronización mediante BroadcastChannel con el botón del Navegador
@@ -66,7 +86,7 @@
             }
         }
 
-        // Escuchar la orden emitida desde navegadir.html
+        // Escuchar la orden emitida desde navegador.html
         canalTema.onmessage = (e) => {
             if (e.data && typeof e.data.modoNoche === 'boolean') {
                 aplicarTema(e.data.modoNoche);

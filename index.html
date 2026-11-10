@@ -2,132 +2,1706 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Estructura de la web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cubo de Rubik - Web Unificada</title>
+
+    <!-- Carga del reproductor 3D interactivo y 2D (cubing.js oficial) -->
+    <script type="module">
+        import "https://cdn.cubing.net/js/cubing/twisty";
+    </script>
 
     <style>
-        /* Variables para Tema Claro (Día) */
+        /* ==================== VARIABLES Y TEMA ==================== */
         :root {
             --bg-body: #ffffff;
-            --border-gap: #e2e8f0;
+            --bg-card: #ffffff;
+            --bg-subcard: #f8fafc;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --accent-color: #0284c7;
+            --border-color: #e2e8f0;
+            --border-card: #cbd5e1;
+            --box-bg: #f8fafc;
+            --code-bg: #e2e8f0;
+            --kbd-bg: #e2e8f0;
+            --kbd-text: #0f172a;
+            --warning-bg: #fef3c7;
+            --warning-border: #f59e0b;
+            --warning-text: #92400e;
+            --btn-bg: #f1f5f9;
+            --pantalla-bg: #f8fafc;
+            --pantalla-text: #0284c7;
+            --pantalla-border: #0284c7;
         }
 
-        /* Variables para Tema Oscuro (Noche) */
         body.modo-noche {
             --bg-body: #0f172a;
-            --border-gap: #0f172a;
+            --bg-card: #1e293b;
+            --bg-subcard: #020617;
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --accent-color: #38bdf8;
+            --border-color: #334155;
+            --border-card: #334155;
+            --box-bg: #1e293b;
+            --code-bg: #334155;
+            --kbd-bg: #334155;
+            --kbd-text: #f8fafc;
+            --warning-bg: #451a03;
+            --warning-border: #b45309;
+            --warning-text: #fef3c7;
+            --btn-bg: #1e293b;
+            --pantalla-bg: #020617;
+            --pantalla-text: #38bdf8;
+            --pantalla-border: #0284c7;
         }
 
         html.modo-noche {
             background-color: #0f172a;
+            color: #ffffff;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            display: grid;
-            grid-template-rows: 205px 1fr 200px;
-            grid-template-columns: 300px 1fr;
-            height: 1100px;
-            gap: 2px;
-            background-color: var(--border-gap);
-            transition: background-color 0.3s ease;
-        }
-
-        .cabecera {
-            grid-column: 1 / -1;
-            grid-row: 1;
-        }
-
-        .navegador {
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-        .contenido {
-            grid-column: 2;
-            grid-row: 2;
-        }
-
-        .pie {
-            grid-column: 1 / -1;
-            grid-row: 3;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
             background-color: var(--bg-body);
-            transition: background-color 0.3s ease;
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ==================== ESTRUCTURA GLOBAL GRID ==================== */
+        .layout-grid {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            gap: 2px;
+            background-color: var(--border-color);
+        }
+
+        header.cabecera-principal {
+            grid-column: 1 / -1;
+            background-color: var(--bg-body);
+            padding: 15px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        /* BOTÓN HAMBURGUESA MÓVIL */
+        .btn-menu-movil {
+            display: none;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--btn-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 1.5rem;
+            padding: 5px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        nav.navegador-principal {
+            grid-column: 1;
+            background-color: var(--bg-body);
+            padding: 20px;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        main.contenido-principal {
+            grid-column: 2;
+            background-color: var(--bg-body);
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        footer.pie-principal {
+            grid-column: 1 / -1;
+            background-color: var(--bg-body);
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        /* ==================== CABECERA Y NAVEGADOR ==================== */
+        .cabecera-tabla {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        .cabecera-tabla td {
+            padding: 0 5px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .cabecera-tabla h1 {
+            color: var(--text-main);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            white-space: nowrap;
+        }
+
+        .img-cabecera {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn-tema {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--btn-bg);
+            color: var(--text-main);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-tema:hover {
+            border-color: var(--accent-color);
+        }
+
+        /* ==================== ESTILOS DEL SELECTOR DE IDIOMA NATIVO ==================== */
+        #google_translate_element {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .goog-te-gadget {
+            font-family: inherit !important;
+            color: transparent !important;
+            font-size: 0px !important;
+        }
+
+        .goog-te-gadget .goog-te-combo {
+            width: 100% !important;
+            padding: 8px 10px !important;
+            background-color: var(--btn-bg) !important;
+            color: var(--text-main) !important;
+            border: 2px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            outline: none !important;
+            font-family: inherit !important;
+            font-size: 14px !important;
+            box-sizing: border-box !important;
+        }
+
+        .goog-te-gadget .goog-te-combo:hover {
+            border-color: var(--accent-color) !important;
+        }
+
+        .goog-te-gadget span, .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+        body {
+            top: 0px !important;
+        }
+
+        .nav-lista {
+            list-style: none;
+        }
+
+        .nav-lista li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-lista a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-lista a:hover {
+            text-decoration: underline;
+        }
+
+        /* ==================== VISTAS SECCIONES (SPA) ==================== */
+        .seccion-pagina {
+            display: none;
+        }
+
+        .seccion-pagina.activa {
+            display: block;
+        }
+
+        /* ==================== ESTILOS COMUNES DE TUTORIALES ==================== */
+        h1.titulo-sec, h2.titulo-sec {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        h2 { color: var(--accent-color); margin-top: 30px; margin-bottom: 15px; }
+        h3 { color: var(--accent-color); margin-top: 20px; margin-bottom: 10px; }
+        h4 { color: var(--accent-color); margin: 0 0 8px 0; font-size: 0.95rem; }
+        hr { border: 0; border-top: 1px solid var(--border-color); margin: 25px 0; }
+        .separador-seccion { border: 0; border-top: 3px solid var(--accent-color); margin: 40px 0 30px 0; opacity: 0.6; }
+        
+        ol, ul { padding-left: 20px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        .algoritmo, .notacion-letra {
+            font-family: monospace;
+            font-weight: bold;
+            background-color: var(--code-bg);
+            color: var(--accent-color);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            display: inline-block;
+            word-break: break-all;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .contenedor-imagenes {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .contenedor-imagenes img, .paso-card img, .caso-item img, table img {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--box-bg);
+            padding: 5px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .paso-card, .fase-card {
+            background-color: var(--box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .paso-numero, .fase-badge {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            padding: 2px 8px;
+        }
+
+        .paso-numero {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+
+        .paso-flex { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+        .paso-contenido { flex: 1; min-width: 250px; }
+
+        .grid-casos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .caso-item {
+            background-color: var(--bg-body);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        twisty-player {
+            width: 140px;
+            height: 140px;
+            margin-bottom: 8px;
+        }
+
+        .nota-ayuda {
+            background-color: var(--box-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        /* ==================== ESTILOS TIMER ==================== */
+        .timer-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+        }
+        .estadisticas-contenedor, .contenedor-timer, .registro-contenedor {
+            background-color: var(--bg-card);
+            padding: 25px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .grid-stats { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
+        .card-stat { background-color: var(--bg-subcard); padding: 15px; border-radius: 12px; border: 1px solid var(--border-card); }
+        .card-stat .titulo { font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .card-stat .valor { font-family: monospace; font-size: 1.4rem; font-weight: bold; color: var(--accent-color); }
+        .card-stat .valor.mejor { color: #16a34a; }
+        .card-stat .valor.peor { color: #dc2626; }
+        
+        .pantalla-timer { font-size: 3.5rem; font-family: monospace; font-weight: bold; color: var(--pantalla-text); margin: 20px 0; border: 2px solid var(--pantalla-border); padding: 15px; border-radius: 12px; background-color: var(--pantalla-bg); }
+        .scramble-box { background-color: var(--bg-subcard); padding: 15px 20px; border-radius: 12px; border: 1px solid var(--border-card); margin-bottom: 15px; font-family: monospace; min-height: 70px; display: flex; align-items: center; justify-content: center; word-break: break-word; }
+        .preview-dual-box { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        
+        .lista-tiempos { list-style: none; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .item-tiempo { background-color: var(--bg-subcard); padding: 12px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-card); }
+        .info-tiempo { display: flex; flex-direction: column; text-align: left; flex-grow: 1; }
+        .valor-tiempo { font-family: monospace; font-size: 1.3rem; font-weight: bold; color: var(--accent-color); }
+        .valor-tiempo.penalizado { color: #d97706; }
+        .valor-tiempo.dnf { color: #dc2626; text-decoration: line-through; }
+        .scramble-historial { font-family: monospace; font-size: 0.75rem; color: var(--text-sub); margin-top: 4px; word-break: break-all; }
+        .acciones-tiempo { display: flex; gap: 6px; }
+        .btn-penalizacion { background-color: var(--btn-bg); color: var(--text-sub); border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+        .btn-penalizacion.activo-mas2 { background-color: #d97706; color: #ffffff; }
+        .btn-penalizacion.activo-dnf { background-color: #dc2626; color: #ffffff; }
+        .btn-eliminar { background-color: transparent; color: var(--text-sub); border: none; padding: 6px; cursor: pointer; font-size: 0.9rem; }
+        .btn-eliminar:hover { color: #dc2626; }
+        .sin-tiempos { color: var(--text-sub); font-size: 0.9rem; font-style: italic; padding: 15px 0; text-align: center; }
+
+        /* ==================== NOTICIAS ==================== */
+        table.tarjeta-noticia {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+            background-color: var(--box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .texto-pie-imagen { color: var(--text-sub); font-size: 0.85rem; margin-top: 8px; }
+
+        /* ==================== MEDIA QUERIES (RESPONSIVIDAD MÓVIL Y TABLET) ==================== */
+        @media (max-width: 1100px) {
+            .img-cabecera-extra { display: none; }
+        }
+
+        @media (max-width: 900px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn-menu-movil {
+                display: block;
+            }
+            header.cabecera-principal h1 {
+                font-size: 1.4rem;
+                margin-left: 40px;
+            }
+            .img-cabecera {
+                width: 45px;
+                height: 45px;
+            }
+            nav.navegador-principal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100vh;
+                z-index: 1000;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+                overflow-y: auto;
+                transform: translateX(-100%);
+            }
+            nav.navegador-principal.abierto {
+                transform: translateX(0);
+            }
+            main.contenido-principal {
+                grid-column: 1;
+                padding: 15px;
+            }
+            .timer-layout {
+                grid-template-columns: 1fr;
+            }
+            .preview-dual-box {
+                grid-template-columns: 1fr;
+            }
+            .pantalla-timer {
+                font-size: 2.5rem;
+            }
+            footer.pie-principal table, footer.pie-principal tbody, footer.pie-principal tr, footer.pie-principal td {
+                display: block;
+                width: 100%;
+            }
+            footer.pie-principal td {
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .img-cabecera { display: none; }
+            .grid-casos { grid-template-columns: 1fr; }
+            twisty-player { width: 100%; height: 160px; }
         }
     </style>
-
-    <script>
-        // Carga e inicialización inmediata antes de renderizar para evitar destellos
-        if (localStorage.getItem('tema') === 'noche') {
-            document.documentElement.classList.add('modo-noche');
-            window.addEventListener('DOMContentLoaded', () => {
-                document.body.classList.add('modo-noche');
-            });
-        }
-    </script>
 </head>
 <body>
 
-    <!-- CABECERA -->
-    <iframe class="cabecera" src="cabecera.html" name="cabecera"></iframe>
+    <div class="layout-grid">
+        <!-- ==================== CABECERA CON CUBOS UNIFORMES ==================== -->
+        <header class="cabecera-principal">
+            <button id="btnMenuMovil" class="btn-menu-movil">☰</button>
+            <table class="cabecera-tabla">
+                <tr>
+                    <td class="img-cabecera-extra"><img src="img/megaminx.png" class="img-cabecera" alt="Megaminx"></td>
+                    <td class="img-cabecera-extra"><img src="img/pyraminx.png" class="img-cabecera" alt="Pyraminx"></td>
+                    <td><img src="img/4x4.png" class="img-cabecera" alt="4x4"></td>
+                    <td><img src="img/2x2.png" class="img-cabecera" alt="2x2"></td>
+                    <td><img src="img/3x3.png" class="img-cabecera" alt="3x3"></td>
+                    <td><h1> CUBO DE RUBIK </h1></td>
+                    <td><img src="img/3x3.png" class="img-cabecera" alt="3x3"></td>
+                    <td><img src="img/2x2.png" class="img-cabecera" alt="2x2"></td>
+                    <td><img src="img/4x4.png" class="img-cabecera" alt="4x4"></td>
+                    <td class="img-cabecera-extra"><img src="img/pyraminx.png" class="img-cabecera" alt="Pyraminx"></td>
+                    <td class="img-cabecera-extra"><img src="img/megaminx.png" class="img-cabecera" alt="Megaminx"></td>
+                </tr>
+            </table>
+        </header>
 
-    <!-- NAVEGADOR -->
-    <iframe class="navegador" src="navegador.html" name="navegador"></iframe>
+        <!-- ==================== NAVEGADOR ==================== -->
+        <nav class="navegador-principal" id="navegador">
+            <button id="btnTema" class="btn-tema">🌙 Modo Noche</button>
+            
+            <!-- CONTENEDOR DEL BOTÓN DE IDIOMA GOOGLE TRANSLATE -->
+            <div id="google_translate_element"></div>
 
-    <!-- CONTENIDO -->
-    <iframe class="contenido" src="contenido.html" name="contenido"></iframe>
+            <ul class="nav-lista">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#timer">Timer</a></li>
+                <li><a href="#noticias">Noticias</a></li>
+                <br><hr><br>
+                <p><b>Selecciona el cubo que quieres aprender a resolver:</b></p>
+                <br>
+                <li><a href="#conceptos">Conceptos básicos</a></li>
+                <li><a href="#notacion">Notación</a></li>
+                <li><a href="#2x2">2x2x2</a> <img src="img/2x2.png" width="30" height="30" alt="2x2"></li>
+                <li><a href="#3x3">3x3x3</a> <img src="img/3x3.png" width="30" height="30" alt="3x3"></li>
+                <li><a href="#4x4">4x4x4</a> <img src="img/4x4.png" width="30" height="30" alt="4x4"></li>
+                <li><a href="#5x5">5x5x5</a> <img src="img/5x5.png" width="30" height="30" alt="5x5"></li>
+                <li><a href="#pyraminx">Pyraminx</a> <img src="img/pyraminx.png" width="30" height="30" alt="Pyraminx"></li>
+                <li><a href="#megaminx">Megaminx</a> <img src="img/megaminx.png" width="30" height="30" alt="Megaminx"></li>
+            </ul>
+        </nav>
 
-    <!-- PIE DE PÁGINA -->
-    <iframe class="pie" src="pie.html" name="pie"></iframe>
+        <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+        <main class="contenido-principal">
 
+            <!-- SECCIÓN: INICIO -->
+            <section id="inicio" class="seccion-pagina activa">
+                <div style="text-align: center;">
+                    <img src="img/fondo.png" style="max-width: 100%; border-radius: 12px;" alt="Fondo Contenido">
+                </div>
+            </section>
+
+            <!-- SECCIÓN: TIMER SPEEDCUBING COMPLETO -->
+            <section id="timer" class="seccion-pagina">
+                <div class="timer-layout">
+                    <div class="estadisticas-contenedor">
+                        <h2>Estadísticas</h2>
+                        <div class="grid-stats">
+                            <div class="card-stat">
+                                <div class="titulo">Mejor Tiempo</div>
+                                <div class="valor mejor" id="statMejor">--:--.--</div>
+                            </div>
+                            <div class="card-stat">
+                                <div class="titulo">Peor Tiempo</div>
+                                <div class="valor peor" id="statPeor">--:--.--</div>
+                            </div>
+                            <div class="card-stat">
+                                <div class="titulo">Promedio Global</div>
+                                <div class="valor" id="statPromedio">--:--.--</div>
+                            </div>
+                            <div class="card-stat">
+                                <div class="titulo">Total Solves</div>
+                                <div class="valor" id="statTotal">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="contenedor-timer">
+                            <h1 class="titulo-sec">TIMER SPEEDCUBING</h1>
+                            <div style="margin-bottom: 20px;">
+                                <label for="categoria" style="font-size:0.85rem; color:var(--text-sub); text-transform:uppercase; letter-spacing:1px;">Categoría Oficial WCA: </label>
+                                <select id="categoria" style="padding:8px 12px; border-radius:8px; border:2px solid var(--border-card); font-weight:bold; background:var(--bg-body); color:var(--accent-color);">
+                                    <option value="2x2">2x2x2</option>
+                                    <option value="3x3" selected>3x3x3 / BLD / OH</option>
+                                    <option value="4x4">4x4x4</option>
+                                    <option value="5x5">5x5x5</option>
+                                    <option value="6x6">6x6x6</option>
+                                    <option value="7x7">7x7x7</option>
+                                    <option value="clock">Clock</option>
+                                    <option value="megaminx">Megaminx</option>
+                                    <option value="pyraminx">Pyraminx</option>
+                                    <option value="skewb">Skewb</option>
+                                    <option value="sq1">Square-1</option>
+                                </select>
+                            </div>
+                            <div class="scramble-box">
+                                <div id="scramble" style="font-size:1.1rem;">Cargando scramble...</div>
+                            </div>
+                            <div class="preview-dual-box">
+                                <div class="caso-item">
+                                    <h4 style="margin-bottom:8px;">Plano 2D (Desplegado)</h4>
+                                    <twisty-player id="player2D" puzzle="3x3x3" visualization="2D" control-panel="none" background="none"></twisty-player>
+                                </div>
+                                <div class="caso-item">
+                                    <h4 style="margin-bottom:8px;">Modelo 3D Interactivo</h4>
+                                    <twisty-player id="player3D" puzzle="3x3x3" visualization="3D" control-panel="none" background="none"></twisty-player>
+                                </div>
+                            </div>
+                            <div class="pantalla-timer" id="pantalla">00:00.00</div>
+                            <div style="font-size: 0.85rem; color: var(--text-sub);">
+                                <p>Toca la pantalla o presiona <kbd>Espacio</kbd> para <strong>Iniciar / Pausar</strong></p>
+                                <p>Presiona <kbd>R</kbd> para <strong>Reiniciar tiempo actual</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="registro-contenedor" style="margin-top: 25px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                                <h2 style="font-size:1.1rem; color:var(--accent-color); text-transform:uppercase;">Historial de Resoluciones</h2>
+                                <button id="btnLimpiar" style="background-color: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">Borrar Todo</button>
+                            </div>
+                            <ul class="lista-tiempos" id="listaTiempos">
+                                <li class="sin-tiempos">Aún no has registrado ninguna resolución.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: NOTICIAS -->
+            <section id="noticias" class="seccion-pagina">
+                <h1 class="titulo-sec">NOTICIAS</h1>
+                <hr><br>
+                <table class="tarjeta-noticia" align="center"> 
+                    <tr align="center"><td><h3>UN RÉCORD MUNDIAL A SUS 9 AÑOS</h3></td></tr>
+                    <tr align="center"><td><p>Teodor Zajder, de Polonia, logró romper la barrera de los tres segundos al resolver el Cubo de Rubik. El talentoso niño, que tiene solo nueve años, ha causado una gran sensación resolviendo el cubo en 2.76 segundos.</p></td></tr>
+                    <tr align="center">
+                        <td>
+                            <a href="https://www.instagram.com/reel/DU_S-5YjM1X/?hl=es" target="_blank">
+                                <img src="img/noticia2.png" alt="Noticia Teodor Zajder">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr align="center"><td><p class="texto-pie-imagen"><i>Pinchar en la imagen para acceder a la noticia.</i></p></td></tr>
+                </table>
+
+                <hr>
+
+                <table class="tarjeta-noticia" align="center"> 
+                    <tr align="center"><td><h3>La niña de 6 años que bate el récord del Cubo Rubik 2 veces en 3 días</h3></td></tr>
+                    <tr align="center"><td><p>El Cubo Rubik en solo 4,27 segundos. Esa es la hazaña que logró, con 6 años, Lian Yunzhi. En solo tres días, la niña batió el récord mundial femenino dos veces e hizo historia al convertirse en la única competidora en resolver el famoso y colorido cubo en un tiempo promedio inferior a 4,5 segundos. En el último año, Lian ha dedicado entre dos y tres horas diarias a practicar algoritmos buscando soluciones para resolver el cubo.</p></td></tr>
+                    <tr align="center">
+                        <td>
+                            <a href="https://www.elmundo.es/internacional/2026/09/22/6ab26c19fc6c8385728b457c-video.html?dmplayersource=share-send" target="_blank">
+                                <img src="img/noticia1.png" alt="Noticia Lian Yunzhi">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr align="center"><td><p class="texto-pie-imagen"><i>Pinchar en la imagen para acceder a la noticia.</i></p></td></tr>
+                </table>
+            </section>
+
+            <!-- SECCIÓN: CONCEPTOS BÁSICOS COMPLETO -->
+            <section id="conceptos" class="seccion-pagina">
+                <h1 class="titulo-sec">CONCEPTOS BÁSICOS</h1>
+                <hr>
+                <h2>Fundamentos para resolver el Cubo de Rubik</h2>
+
+                <h3>1. Anatomía y Estructura del Cubo</h3>
+                <p>El cubo de Rubik 3x3 está compuesto por 26 piezas visibles organizadas en tres tipos:</p>
+                <ul>
+                    <li><strong>Centros (6 piezas):</strong> Tienen una sola pegatina. Estructuralmente están fijos al núcleo interno y determinan el color definitivo de cada cara. No cambian de posición relativa entre sí.</li>
+                    <li><strong>Aristas (12 piezas):</strong> Tienen dos pegatinas y se sitúan entre dos centros.</li>
+                    <li><strong>Esquinas (8 piezas):</strong> Tienen tres pegatinas y ocupan las esquinas del rompecabezas.</li>
+                </ul>
+                <p><strong>Esquema de colores estándar (WCA):</strong> El blanco es opuesto al amarillo, el verde al azul, y el rojo al naranja. Con el blanco arriba y el verde al frente, el color rojo siempre queda a la derecha.</p>
+                <img src="img/piezas.png" alt="Piezas del Cubo">
+                <hr>
+
+                <h3>2. Notación Internacional (WCA)</h3>
+                <p>Para seguir algoritmos y guías de resolución se utiliza la notación estándar basada en las iniciales de las caras en inglés:</p>
+                <ul>
+                    <li><code>U</code> (Up) - Cara superior | <code>D</code> (Down) - Cara inferior</li>
+                    <li><code>F</code> (Front) - Cara frontal | <code>B</code> (Back) - Cara posterior</li>
+                    <li><code>R</code> (Right) - Cara derecha | <code>L</code> (Left) - Cara izquierda</li>
+                </ul>
+                <p><strong>Modificadores de giro:</strong> La letra sola significa un giro de 90° en sentido horario. Si lleva comilla (ej. <code>R'</code>), el giro es antihorario. Si lleva un '2' (ej. <code>U2</code>), se realiza un doble giro (180°).</p>
+                <hr>
+
+                <h3>3. Estructura por Capas y la "Corona"</h3>
+                <p>El aprendizaje se fundamenta en el método <strong>Layer-by-Layer (Capa por Capa)</strong>, resolviendo el cubo por tres niveles horizontales de abajo hacia arriba en lugar de completarlo cara por cara.</p>
+                <p>Para avanzar correctamente es vital comprender la <strong>Corona</strong>: no basta con completar los colores de una cara (como la blanca), sino que los colores laterales de esas piezas deben coincidir perfectamente con los centros adyacentes.</p>
+                <img src="img/corona.png" width="150" height="140" alt="Corona">
+                <hr>
+
+                <h3>4. Tipos de Movimientos y Algoritmos Base</h3>
+                <p>Existen dos acciones fundamentales sobre las piezas:</p>
+                <ul>
+                    <li><strong>Orientación:</strong> Rotar una pieza sobre su propio eje para que el color correcto apunte hacia arriba o hacia la cara adecuada.</li>
+                    <li><strong>Permutación:</strong> Trasladar una pieza de un lugar a otro dentro del cubo.</li>
+                </ul>
+                <p>Un <strong>algoritmo</strong> es una secuencia ordenada de giros que modifica piezas específicas sin desarmar lo que ya se ha resuelto. El disparador o <em>trigger</em> más conocido es el <strong>Sexy Move</strong> (<code>R U R' U'</code>), fundamental por su rapidez e integración en fases más avanzadas como CFOP.</p>
+                <hr>
+
+                <h3>5. Paridad y Familias de Rompecabezas</h3>
+                <p>Los rompecabezas se clasifican según su orden:</p>
+                <ul>
+                    <li><strong>Cubos Impares (3x3, 5x5):</strong> Tienen centros fijos inamovibles que sirven de guía continua.</li>
+                    <li><strong>Cubos Pares (2x2, 4x4):</strong> Carecen de centros fijos y pueden presentar <em>paridades</em> (estados o bloqueos físicos imposibles de ver en un 3x3).</li>
+                </ul>
+                <p>Mediante el <strong>principio de reducción</strong>, los cubos grandes (4x4, 5x5, Megaminx) se resuelven agrupando centros y aristas hasta convertirlos conceptualmente en un cubo 3x3 tradicional.</p>
+                
+                <div class="contenedor-imagenes">
+                    <img src="img/paridad1.png" width="150" height="140" alt="Paridad 1">
+                    <img src="img/paridad2.png" width="150" height="140" alt="Paridad 2">
+                </div>
+                
+                <hr>
+
+                <h3>6. ¿Por dónde empezar? Hoja de Ruta Recomendada</h3>
+                <p>Aprender a resolver el cubo de Rubik es un proceso progresivo. Sigue este orden estructurado:</p>
+
+                <ol>
+                    <li>
+                        <strong>Método Principiante (Capa por Capa / LBL):</strong> Punto de partida indispensable con 5 o 6 algoritmos sencillos.
+                    </li>
+                    <li>
+                        <strong>Transición a CFOP / Fridrich Reducido (4LL):</strong> F2L Intuitivo, 2-Look OLL (9 algoritmos) y 2-Look PLL (6 algoritmos).
+                    </li>
+                    <li>
+                        <strong>CFOP Completo:</strong> Full PLL (21 algoritmos) y Full OLL (57 algoritmos).
+                    </li>
+                    <li>
+                        <strong>Submétodos Avanzados y Sets de Optimización:</strong> COLL, WV, SV, VLS y ZBLL.
+                    </li>
+                </ol>
+
+                <div class="nota-ayuda">
+                    <strong>💡 La Regla de Oro: 1 Algoritmo al día</strong>
+                    <p>Para afianzarlos correctamente en la memoria muscular: aprende máximo 1 algoritmo al día, ejecútalo despacio, descompón el algoritmo en triggers (ej. <code>R U R' U'</code>) y practica la repetición espaciada.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: NOTACIÓN OFICIAL WCA COMPLETO -->
+            <section id="notacion" class="seccion-pagina">
+                <h1 class="titulo-sec">NOTACIÓN OFICIAL WCA</h1>
+                <hr>
+                
+                <h2>1. Capas Principales (3x3)</h2>
+                <p>Para interpretar un algoritmo, primero sostenemos el cubo en una orientación fija. Cada letra representa una cara basada en sus iniciales en inglés. El giro estándar (la letra sola) se realiza en <strong>sentido horario</strong> mirando esa cara de frente.</p>
+                
+                <img src="img/notación3x3.png" width="500" height="250" alt="Notación Básica 3x3">    
+
+                <ul>
+                    <li><code class="notacion-letra">U</code> (Up): Capa Superior</li>
+                    <li><code class="notacion-letra">D</code> (Down): Capa Inferior</li>
+                    <li><code class="notacion-letra">F</code> (Front): Capa Frontal</li>
+                    <li><code class="notacion-letra">B</code> (Back): Capa Trasera</li>
+                    <li><code class="notacion-letra">R</code> (Right): Capa Derecha</li>
+                    <li><code class="notacion-letra">L</code> (Left): Capa Izquierda</li>
+                </ul>
+
+                <div class="nota-ayuda">
+                    <strong>💡 Regla del reloj:</strong> Para saber hacia dónde gira una cara como <code class="notacion-letra">B</code> o <code class="notacion-letra">D</code>, imagínate mirando esa cara directamente de frente y gira en la dirección de las agujas del reloj.
+                </div>
+
+                <hr>
+
+                <h2>2. Modificadores de Giro</h2>
+                <p>Cualquier capa puede tener variaciones según los símbolos que acompañan a la letra:</p>
+
+                <ul>
+                    <li><strong>Sentido horario (ej. <code class="notacion-letra">U</code>):</strong> Giro de 90° a favor de las agujas del reloj.</li>
+                    <li><strong>Sentido antihorario (ej. <code class="notacion-letra">U'</code>):</strong> Lleva un apóstrofe (<em>prime</em>). Giro de 90° en contra de las agujas del reloj.</li>
+                    <li><strong>Doble giro (ej. <code class="notacion-letra">U2</code>):</strong> Giro de 180° en cualquier sentido.</li>
+                    <li><strong>Capa doble (ej. <code class="notacion-letra">Uw</code> o <code class="notacion-letra">u</code>):</strong> Gira la capa indicada junto con la capa adyacente interna.</li>
+                </ul>
+
+                <img src="img/notacon-giro-doble.png" width="300" height="100" alt="Notación Giro Doble">
+
+                <hr>
+
+                <h2>3. Capas Centrales (M, E, S)</h2>
+                <p>Se utilizan principalmente en métodos avanzados (como Roux) o algoritmos específicos:</p>
+
+                <ul>
+                    <li><strong>Capa <code class="notacion-letra">M</code> (Middle):</strong> Situada entre <code class="notacion-letra">L</code> y <code class="notacion-letra">R</code>. Su sentido horario sigue a la cara <code class="notacion-letra">L</code> (hacia abajo).</li>
+                    <li><strong>Capa <code class="notacion-letra">E</code> (Equator):</strong> Situada entre <code class="notacion-letra">U</code> y <code class="notacion-letra">D</code>. Su sentido horario sigue a la cara <code class="notacion-letra">D</code> (hacia la derecha).</li>
+                    <li><strong>Capa <code class="notacion-letra">S</code> (Standing):</strong> Situada entre <code class="notacion-letra">F</code> y <code class="notacion-letra">B</code>. Su sentido horario sigue a la cara <code class="notacion-letra">F</code>.</li>
+                </ul>
+
+                <img src="img/notacion-capas-centrales.png" width="500" height="110" alt="Notación Capas Centrales">
+
+                <hr>
+
+                <h2>4. Rotaciones del Cubo (Ejes X, Y, Z)</h2>
+                <p>Indican que se debe reorientar el cubo completo en el espacio sin deshacer ninguna capa:</p>
+
+                <ul>
+                    <li><strong>Eje <code class="notacion-letra">x</code>:</strong> Rota todo el cubo siguiendo el sentido de la cara <code class="notacion-letra">R</code> (hacia arriba/atrás).</li>
+                    <li><strong>Eje <code class="notacion-letra">y</code>:</strong> Rota todo el cubo siguiendo el sentido de la cara <code class="notacion-letra">U</code> (hacia la izquierda).</li>
+                    <li><strong>Eje <code class="notacion-letra">z</code>:</strong> Rota todo el cubo siguiendo el sentido de la cara <code class="notacion-letra">F</code> (hacia la derecha/de lado).</li>
+                </ul>
+
+                <img src="img/notacion-rotacion.png" alt="Notación Rotaciones del Cubo">
+            </section>
+
+            <!-- SECCIÓN: TUTORIAL 2X2 COMPLETO -->
+            <section id="2x2" class="seccion-pagina">
+                <h1 class="titulo-sec">TUTORIAL 2X2</h1>
+                <hr><br>
+
+                <ol type="1">
+                    <li><b>Armar la Primera Capa.</b> El objetivo es juntar las 4 esquinas blancas, asegurándote de que los colores laterales adyacentes también coincidan entre sí.
+                        <ul type="square">
+                            <li><b>Busca la pieza base:</b> Localiza una esquina blanca y colócala en la esquina superior izquierda de la cara frontal.</li>
+                            <li><b>Ubica la siguiente pieza:</b> Busca en el cubo otra esquina que tenga blanco y el mismo color lateral que tu pieza base.</li>
+                            <li><b>Inserta la pieza:</b> Colócala justo debajo de donde debe ir y aplica la secuencia de inserción desde la derecha:</li>
+                            <li><b>Secuencia de inserción:</b> <span class="algoritmo">R' D' R D</span> (Repite de 1 a 5 veces).</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Orientar la Capa Superior.</b> Voltea el cubo de modo que la cara blanca quede abajo. El objetivo es hacer que todas las pegatinas amarillas queden mirando hacia arriba.
+                        <ul type="square">
+                            <li><b>Algoritmo de orientación:</b> <span class="algoritmo">R U R' U R U2 R'</span></li>
+                            <li><b>Si tienes 1 esquina amarilla arriba:</b> Colócala en la esquina inferior izquierda de la cara superior y ejecuta el algoritmo.</li>
+                            <li><b>Si tienes 0 esquinas amarillas arriba:</b> Busca una pieza con pegatina amarilla en la cara lateral izquierda mirando hacia ti y ejecuta el algoritmo.</li>
+                            <li><b>Si tienes 2 esquinas amarillas arriba:</b> Coloca las dos esquinas amarillas en la parte posterior y ejecuta el algoritmo.</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Permutar la Capa Superior.</b> Con la cara amarilla completa arriba y la blanca abajo, observa los laterales:
+                        <ol type="A">
+                            <li><b>Caso A:</b> Tienes 2 esquinas contiguas del mismo color.
+                                <ul type="square">
+                                    <li>Gira la capa superior hasta hacerlas coincidir con su color y ponlas hacia atrás.</li>
+                                    <li><b>Algoritmo de permutación:</b> <span class="algoritmo">R' F R' B2 R F' R' B2 R2</span></li>
+                                </ul>
+                            </li>
+                            <li><b>Caso B:</b> Ninguna esquina contigua coincide.
+                                <ul type="square">
+                                    <li>Aplica <span class="algoritmo">R' F R' B2 R F' R' B2 R2</span> desde cualquier posición.</li>
+                                    <li>Esto creará una pareja coincidente (Caso A). Alinea hacia atrás y repite.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+
+                <br>
+                <div class="contenedor-imagenes">
+                    <img src="img/2x2caso1.png" width="110" height="100" alt="Caso 1 2x2">
+                    <img src="img/2x2caso2.png" width="110" height="100" alt="Caso 2 2x2">
+                    <img src="img/2x2caso3.png" width="110" height="100" alt="Caso 3 2x2">
+                </div>
+            </section>
+
+            <!-- SECCIÓN: TUTORIAL 3X3 COMPLETO -->
+            <section id="3x3" class="seccion-pagina">
+                <h1 class="titulo-sec">TUTORIAL CUBO 3X3</h1>
+                <hr>
+                
+                <!-- SECCIÓN 1: PRINCIPIANTE -->
+                <h2>Parte 1: Método Principiante (Paso a Paso)</h2>
+                <p>El método por capas (Layer-by-Layer) es la forma más fácil e intuitiva de aprender a resolver el cubo por primera vez. Consta de 7 sencillos pasos:</p>
+
+                <div class="paso-card">
+                    <h3><span class="paso-numero">1</span> Cruz Blanca (con centros alineados)</h3>
+                    <div class="paso-flex">
+                        <div class="paso-contenido">
+                            <p>El objetivo es formar una cruz blanca en la cara inferior haciendo que el segundo color de cada arista coincida perfectamente con su centro lateral.</p>
+                            <ul>
+                                <li><strong>Truco de la Margarita:</strong> Mantén el centro amarillo arriba. Busca las 4 aristas blancas y colócalas alrededor del centro amarillo.</li>
+                                <li><strong>Bajar la arista:</strong> Alinea el color lateral con su centro y gira esa cara 180° (<code>F2</code>). Repite con las 4 aristas.</li>
+                            </ul>
+                        </div>
+                        <img src="img/3x3caso1.png" width="120" alt="Cruz Blanca">
+                    </div>
+                </div>
+
+                <div class="paso-card">
+                    <h3><span class="paso-numero">2</span> Esquinas Blancas (Primera Capa)</h3>
+                    <div class="paso-flex">
+                        <div class="paso-contenido">
+                            <p>Con la cruz blanca hacia abajo, sitúa cada esquina blanca encima de su hueco correspondiente y repite <span class="algoritmo">R U R' U'</span> hasta insertarla correctamente.</p>
+                        </div>
+                        <img src="img/3x3caso2.png" width="120" alt="Esquinas Blancas">
+                    </div>
+                </div>
+
+                <div class="paso-card">
+                    <h3><span class="paso-numero">3</span> Segunda Capa (Capa Central)</h3>
+                    <div class="paso-flex">
+                        <div class="paso-contenido">
+                            <p>Inserta las aristas sin amarillo formando una "T" con su centro:</p>
+                            <ul>
+                                <li><strong>Inserción a la Derecha:</strong> <span class="algoritmo">U R U' R' U' F' U F</span></li>
+                                <li><strong>Inserción a la Izquierda:</strong> <span class="algoritmo">U' L' U L U F U' F'</span></li>
+                            </ul>
+                        </div>
+                        <img src="img/3x3caso3.png" width="120" alt="Segunda Capa">
+                    </div>
+                </div>
+
+                <div class="paso-card">
+                    <h3><span class="paso-numero">4</span> Cruz Amarilla</h3>
+                    <div class="paso-flex">
+                        <div class="paso-contenido">
+                            <p>Aplica <span class="algoritmo">F R U R' U' F'</span> para pasar de Punto ➔ "L" invertida ➔ Línea horizontal ➔ Cruz completa.</p>
+                        </div>
+                        <img src="img/3x3caso4.png" width="120" alt="Cruz Amarilla">
+                    </div>
+                </div>
+
+                <div class="paso-card">
+                    <h3><span class="paso-numero">5</span> Alinear Cruz Amarilla</h3>
+                    <div class="paso-flex">
+                        <div class="paso-contenido">
+                            <p>Busca 2 aristas coincidentes con sus centros, pon una atrás y otra a la derecha, y ejecuta: <span class="algoritmo">R U R' U R U2 R' U</span></p>
+                        </div>
+                        <img src="img/3x3caso5.png" width="120" alt="Alinear Cruz">
+                    </div>
+                </div>
+
+                <div class="paso-card">
+                    <h3><span class="paso-numero">6</span> Colocar Esquinas Amarillas</h3>
+                    <div class="paso-flex">
+                        <div class="paso-contenido">
+                            <p>Con una esquina bien ubicada en la posición superior-derecha-frontal, aplica: <span class="algoritmo">U R U' L' U R' U' L</span></p>
+                        </div>
+                        <img src="img/3x3caso6.png" width="120" alt="Colocar Esquinas">
+                    </div>
+                </div>
+
+                <div class="paso-card">
+                    <h3><span class="paso-numero">7</span> Orientar Esquinas Amarillas</h3>
+                    <p>Aplica <span class="algoritmo">R' D' R D</span> consecutivamente hasta orientar cada esquina. Gira <strong>solo la capa superior</strong> para traer la siguiente esquina al mismo punto sin rotar el cubo.</p>
+                </div>
+
+                <!-- SECCIÓN 2: CFOP REDUCIDO -->
+                <hr class="separador-seccion">
+                <h2>Parte 2: Método CFOP Reducido (4LL)</h2>
+                <p>Guía rápida para la transición del método principiante al avanzado aprendiendo solo 15 algoritmos clave.</p>
+
+                <div class="fase-card">
+                    <h3><span class="fase-badge">4LL</span> Resumen de Fases</h3>
+                    <ul>
+                        <li><strong>Cross:</strong> Cruz blanca directa abajo en la inspección.</li>
+                        <li><strong>F2L Intuitivo:</strong> Unir parejas de esquina y arista.</li>
+                        <li><strong>2-Look OLL:</strong> Cruz superior (3 casos) + Esquinas superiores (7 casos).</li>
+                        <li><strong>2-Look PLL:</strong> Esquinas finales (T / Y) + Aristas finales (Ua / Ub / H / Z).</li>
+                    </ul>
+                </div>
+
+                <!-- SECCIÓN 3: CFOP AVANZADO COMPLETO -->
+                <hr class="separador-seccion">
+                <h2>Parte 3: Método CFOP Avanzado Completo (Full F2L + Full OLL + Full PLL)</h2>
+                <p>Compendio total de los 119 casos oficiales de CFOP Avanzado. Cada caso cuenta con su visor 3D en vivo cargado desarmado en el estado inicial exacto.</p>
+
+                <!-- FULL F2L (41 CASOS) -->
+                <div class="fase-card">
+                    <h3><span class="fase-badge">F2L</span> 1. First 2 Layers Avanzado (41 Casos Completos)</h3>
+                    <p>Inserción simultánea de las 4 parejas de esquina y arista de los dos primeros niveles.</p>
+
+                    <h3>F2L Básicos y Fáciles (Casos 1 al 6)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>F2L 1</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U'" control-panel="none" background="none"></twisty-player><span class="algoritmo">U R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 2</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U' L U" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' U' L' U L</span></div>
+                        <div class="caso-item"><h4>F2L 3</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' R" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' R' F R F'</span></div>
+                        <div class="caso-item"><h4>F2L 4</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R' F R F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R' F' R</span></div>
+                        <div class="caso-item"><h4>F2L 5</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U' R U' R' U" control-panel="none" background="none"></twisty-player><span class="algoritmo">U' R U R' U R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 6</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U L U L' U L U'" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' U L' U' L U' L' U' L</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">F2L con Arista en la Capa Superior (Casos 7 al 16)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>F2L 7</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U2 R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' U2 R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 8</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L U' L' U2 L' U' L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U L U2 L' U' L</span></div>
+                        <div class="caso-item"><h4>F2L 9</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R U R' U R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' U' R U' R' U R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 10</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U L U' L' U' L' U L' U' L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U L U L' U L U' L' U L</span></div>
+                        <div class="caso-item"><h4>F2L 11</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U' R U R' U" control-panel="none" background="none"></twisty-player><span class="algoritmo">U' R U' R' U R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 12</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L U L' U L U' L' U'" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' U L' U L U' L' U' L</span></div>
+                        <div class="caso-item"><h4>F2L 13</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U L U' L' U2 L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U2 L U L' U' L</span></div>
+                        <div class="caso-item"><h4>F2L 14</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U R U2 R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U2 R' U' R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 15</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U L U' L' U L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U' L U L' U' L</span></div>
+                        <div class="caso-item"><h4>F2L 16</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U L' U' L U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U L' U' L U' R'</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">F2L Esquina Apuntando hacia Arriba (Casos 17 al 24)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>F2L 17</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U R U2 R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U2 R' U' R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 18</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U L U' L' U2 L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U2 L U L' U' L</span></div>
+                        <div class="caso-item"><h4>F2L 19</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R U2 R' U'" control-panel="none" background="none"></twisty-player><span class="algoritmo">U R U2 R' U R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 20</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U' L U L' U2 L U" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' U' L' U2 L U' L' U L</span></div>
+                        <div class="caso-item"><h4>F2L 21</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U R U2 R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U2 R' U' R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 22</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F' U F U' F' U2 F" control-panel="none" background="none"></twisty-player><span class="algoritmo">F' U2 F U F' U' F</span></div>
+                        <div class="caso-item"><h4>F2L 23</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U R U2 R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R U2 R' U' R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 24</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U L U' L' U2 L U' L' U L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U' L U L' U2 L U L' U' L</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">F2L Piezas Atrapadas en Ranuras (Casos 25 al 41)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>F2L 25</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' U R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 26</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U' L U L' U' L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U L U' L' U L</span></div>
+                        <div class="caso-item"><h4>F2L 27</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 28</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L' U L U' L' U L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U' L U L' U' L</span></div>
+                        <div class="caso-item"><h4>F2L 29</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F' U2 F R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' F' U2 F</span></div>
+                        <div class="caso-item"><h4>F2L 30</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U2 F' L' U' L" control-panel="none" background="none"></twisty-player><span class="algoritmo">y' L' U L F U2 F'</span></div>
+                        <div class="caso-item"><h4>F2L 31</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' R U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R' F R F'</span></div>
+                        <div class="caso-item"><h4>F2L 32</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U R U2 R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R U2 R' U' R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 33</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U2 R U' R' U R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' U' R U R' U2 R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 34</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U2 R U R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R U' R' U2 R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 35</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R U2 R' U' R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' U R U2 R' U R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 36</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R U R' U' R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R U' R' U R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 37</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R' U' R U2 R U2 R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' d R' U2 R U2 R' U R</span></div>
+                        <div class="caso-item"><h4>F2L 38</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R' U R U2 R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R U2 R' U' R U R'</span></div>
+                        <div class="caso-item"><h4>F2L 39</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R U2 R' U' R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' U R U2 R' U R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 40</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R U R' U' R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R U' R' U R U' R'</span></div>
+                        <div class="caso-item"><h4>F2L 41</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U2 R U R' U' R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' U R U' R' U2 R U' R'</span></div>
+                    </div>
+                </div>
+
+                <!-- FULL OLL (57 CASOS COMPLETO) -->
+                <div class="fase-card">
+                    <h3><span class="fase-badge">OLL</span> 2. Orientation of the Last Layer (57 Casos Completos)</h3>
+                    <p>Orientación directa de todas las pegatinas amarillas en un solo movimiento.</p>
+
+                    <h3>1. Puntos (OLL 1 al 8)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>OLL 1</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' R U2 F R' F' R U2 R2" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U2 R2 F R F' U2 R' F R F'</span></div>
+                        <div class="caso-item"><h4>OLL 2</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="f U R U' R' f' F U R U' R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R U R' U' F' f R U R' U' f'</span></div>
+                        <div class="caso-item"><h4>OLL 3</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' F' U f U R U' R' f'" control-panel="none" background="none"></twisty-player><span class="algoritmo">f R U R' U' f' U' F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 4</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' F' U' f U R U' R' f'" control-panel="none" background="none"></twisty-player><span class="algoritmo">f R U R' U' f' U F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 5</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="l' U' L U' L' U2 l" control-panel="none" background="none"></twisty-player><span class="algoritmo">l' U2 L U L' U l</span></div>
+                        <div class="caso-item"><h4>OLL 6</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="r U R' U R U2 r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U2 R' U' R U' r'</span></div>
+                        <div class="caso-item"><h4>OLL 7</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="r U2 R' U' R U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U R U2 r'</span></div>
+                        <div class="caso-item"><h4>OLL 8</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="l' U2 L U L' U l" control-panel="none" background="none"></twisty-player><span class="algoritmo">l' U' L U' L' U2 l</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">2. Formas de Rayos y Cuadrados (OLL 9 al 20)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>OLL 9</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R2 F' R U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R' F R2 U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 10</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' R U R U' R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U R U' R' U' R' F R F'</span></div>
+                        <div class="caso-item"><h4>OLL 11</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="r U R' U R U' R' U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U R U' R' U' r'</span></div>
+                        <div class="caso-item"><h4>OLL 12</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' F' U' F U R U' R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R U R' U' F' U F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 13</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R' F R2 U R' U' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F U R U' R2 F' R U R U' R'</span></div>
+                        <div class="caso-item"><h4>OLL 14</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U F' R' F R U' R' F' R" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' F R U R' F' R F U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 15</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="l' U2 L U L' U' L U L' U l" control-panel="none" background="none"></twisty-player><span class="algoritmo">l' U' L U' L' U L U' L' U2 l</span></div>
+                        <div class="caso-item"><h4>OLL 16</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="r U2 R' U' R U R' U' R U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U R U' R' U R U2 r'</span></div>
+                        <div class="caso-item"><h4>OLL 17</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="r U R' U' M U R U' R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R U R' U' M' U R U' r'</span></div>
+                        <div class="caso-item"><h4>OLL 18</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' F' r U2 R' U' R U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U R U2 r' F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 19</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' F' l' U2 L U L' U l" control-panel="none" background="none"></twisty-player><span class="algoritmo">r' U' L U' L' U2 l F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 20</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="r U R' U' M2 U R U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U' M2 U R U' r'</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">3. Cruz Hecha / OCLL (OLL 21 al 27)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>OLL 21</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' U R U' R' U R U' R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F (R U R' U')3 F'</span></div>
+                        <div class="caso-item"><h4>OLL 22</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R2 U2 R D R' U2 R D' R2" control-panel="none" background="none"></twisty-player><span class="algoritmo">R2 D R' U2 R D' R' U2 R'</span></div>
+                        <div class="caso-item"><h4>OLL 23</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' r U R' U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U' r' F R F'</span></div>
+                        <div class="caso-item"><h4>OLL 24</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R' F' r U R' U' r' F" control-panel="none" background="none"></twisty-player><span class="algoritmo">F' r U R' U' r' F R</span></div>
+                        <div class="caso-item"><h4>OLL 25</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R2 D' R U2 R' D R U2 R" control-panel="none" background="none"></twisty-player><span class="algoritmo">R2 D' R U2 R' D R U2 R</span></div>
+                        <div class="caso-item"><h4>OLL 26</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U R U2 R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U2 R' U' R U' R'</span></div>
+                        <div class="caso-item"><h4>OLL 27</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U2 R' U' R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U R U2 R'</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">4. Formas de C, T, I y P (OLL 28 al 46)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>OLL 28</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U M U R U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U' M' U R U' R'</span></div>
+                        <div class="caso-item"><h4>OLL 29</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="M F R' F' R U R U' R' U' M'" control-panel="none" background="none"></twisty-player><span class="algoritmo">M U R U R' U' R' F R F' M'</span></div>
+                        <div class="caso-item"><h4>OLL 30</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' F' U' F U R U' R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R U R' U' F' U F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 31</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R' F R U R' U' F' U R" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' U' F U R U' R' F' R</span></div>
+                        <div class="caso-item"><h4>OLL 32</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L F' L' U' L U F L'" control-panel="none" background="none"></twisty-player><span class="algoritmo">L U F' U' L' U L F L'</span></div>
+                        <div class="caso-item"><h4>OLL 33</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' R U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R' F R F'</span></div>
+                        <div class="caso-item"><h4>OLL 34</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R' U' R' F' R U R2 U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R2 U' R' F R U R U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 35</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U2 R' F R F' R2 U2 R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U2 R2 F R F' R U2 R'</span></div>
+                        <div class="caso-item"><h4>OLL 36</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F' L' F L U' L' U L U L' U" control-panel="none" background="none"></twisty-player><span class="algoritmo">L U' L' U' L U L' F' L F</span></div>
+                        <div class="caso-item"><h4>OLL 37</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R U' R' U R U R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R U' R' U' R U R' F'</span></div>
+                        <div class="caso-item"><h4>OLL 38</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' R U R U' R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U R U' R' U' R' F R F'</span></div>
+                        <div class="caso-item"><h4>OLL 39</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F' U F L F' L' U L F L'" control-panel="none" background="none"></twisty-player><span class="algoritmo">L F' L' U' L F L' y' R' U' R</span></div>
+                        <div class="caso-item"><h4>OLL 40</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U F' R' F R U' R' F' R" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' F R U R' F' R y L U L'</span></div>
+                        <div class="caso-item"><h4>OLL 41</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R U R' U' F' R U2 R' U' R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U R U2 R' F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 42</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R U R' U' F' L' U2 L U L' U L" control-panel="none" background="none"></twisty-player><span class="algoritmo">L' U' L U' L' U2 L F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 43</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="f' U' L' U L f" control-panel="none" background="none"></twisty-player><span class="algoritmo">f' L' U' L U f</span></div>
+                        <div class="caso-item"><h4>OLL 44</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="f U R U' R' f'" control-panel="none" background="none"></twisty-player><span class="algoritmo">f R U R' U' f'</span></div>
+                        <div class="caso-item"><h4>OLL 45</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 46</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R' U' F R' F' R U R" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' U' R' F R F' U R</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">5. Formas de L y Grandes (OLL 47 al 57)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>OLL 47</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F' U' L' U L U' L' U L F" control-panel="none" background="none"></twisty-player><span class="algoritmo">F' L' U' L U L' U' L U F</span></div>
+                        <div class="caso-item"><h4>OLL 48</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F U R U' R' U R U' R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R U R' U' R U R' U' F'</span></div>
+                        <div class="caso-item"><h4>OLL 49</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U' R' r U R U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U' r' R U R U' R'</span></div>
+                        <div class="caso-item"><h4>OLL 50</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="L U' L' U L l' U' L' U l" control-panel="none" background="none"></twisty-player><span class="algoritmo">l' U' L U l L' U' L U L'</span></div>
+                        <div class="caso-item"><h4>OLL 51</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="f U R U' R' U R U' R' f'" control-panel="none" background="none"></twisty-player><span class="algoritmo">f R U R' U' R U R' U' f'</span></div>
+                        <div class="caso-item"><h4>OLL 52</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R B U B' U' R' U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U R U' B U' B' R'</span></div>
+                        <div class="caso-item"><h4>OLL 53</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="l' U' L U L' U L U' L' U2 l" control-panel="none" background="none"></twisty-player><span class="algoritmo">l' U2 L U L' U' L U L' U l</span></div>
+                        <div class="caso-item"><h4>OLL 54</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="r U R' U R U' R' U R U2 r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U2 R' U' R U R' U' R U' r'</span></div>
+                        <div class="caso-item"><h4>OLL 55</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' R U2 R U' R' U' R2 U2 R" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' U2 R2 U R' U R U2 R' F R F'</span></div>
+                        <div class="caso-item"><h4>OLL 56</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="l' U2 L U L' U l r U2 R' U' R U' r'" control-panel="none" background="none"></twisty-player><span class="algoritmo">r U R' U R U2 r' r' U' L U' L' U2 l</span></div>
+                        <div class="caso-item"><h4>OLL 57</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="r U R' U M U R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' M' U R U' r'</span></div>
+                    </div>
+                </div>
+
+                <!-- FULL PLL (21 CASOS COMPLETO) -->
+                <div class="fase-card">
+                    <h3><span class="fase-badge">PLL</span> 3. Permutation of the Last Layer (21 Casos Completos)</h3>
+                    <p>Permutación y ordenación final de todas las esquinas y aristas orientadas.</p>
+
+                    <h3>1. Solo Aristas (4 Casos)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>Ua Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R2 U R U R' U' R' U' R' U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R U R U R U' R' U' R2</span></div>
+                        <div class="caso-item"><h4>Ub Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U' R U R U R U' R' U' R2" control-panel="none" background="none"></twisty-player><span class="algoritmo">R2 U R U R' U' R' U' R' U R'</span></div>
+                        <div class="caso-item"><h4>H Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="M2 U M2 U2 M2 U M2" control-panel="none" background="none"></twisty-player><span class="algoritmo">M2 U M2 U2 M2 U M2</span></div>
+                        <div class="caso-item"><h4>Z Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="M2 U2 M' U' M2 U' M2 U' M'" control-panel="none" background="none"></twisty-player><span class="algoritmo">M' U M2 U M2 U M' U2 M2</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">2. Solo Esquinas (3 Casos)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>Aa Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="x U R' D2 R U' R' D2 R x'" control-panel="none" background="none"></twisty-player><span class="algoritmo">x R' D2 R U R' D2 R U' x'</span></div>
+                        <div class="caso-item"><h4>Ab Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="x R2 D2 R' U' R D2 R' U R' x'" control-panel="none" background="none"></twisty-player><span class="algoritmo">x R U' R D2 R' U R D2 R2 x'</span></div>
+                        <div class="caso-item"><h4>E Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="x D R' U R D' R' U' R D R' U R D' R' U' R x'" control-panel="none" background="none"></twisty-player><span class="algoritmo">x' R U' R' D R U R' D' R U R' D R U' R' D' x</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">3. Esquinas y Aristas (14 Casos)</h3>
+                    <div class="grid-casos">
+                        <div class="caso-item"><h4>F Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R' U' R U R2 F' R U R U' R' F R U' R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R</span></div>
+                        <div class="caso-item"><h4>Ga Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R' U R y R2 u R' U R U' R u' R2" control-panel="none" background="none"></twisty-player><span class="algoritmo">R2 u R' U R' U' R u' R2 y' R' U R</span></div>
+                        <div class="caso-item"><h4>Gb Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R2 u R' U R U' R u' R2 F' U' F" control-panel="none" background="none"></twisty-player><span class="algoritmo">F' U' F R2 u R' U R U' R u' R2</span></div>
+                        <div class="caso-item"><h4>Gc Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' y' R2 u' R U' R' U R' u R2" control-panel="none" background="none"></twisty-player><span class="algoritmo">R2 u' R U' R U R' u R2 y R U' R'</span></div>
+                        <div class="caso-item"><h4>Gd Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R2 u' R U R' U' R u R2 y R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' y' R2 u' R U' R' U R' u R2</span></div>
+                        <div class="caso-item"><h4>Ja Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="x U2 r' U' r U2 R' F R' F' R2 x'" control-panel="none" background="none"></twisty-player><span class="algoritmo">x R2 F R F' R U2 r' U r U2 x'</span></div>
+                        <div class="caso-item"><h4>Jb Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R2 F' R U R U' R' F R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' F' R U R' U' R' F R2 U' R'</span></div>
+                        <div class="caso-item"><h4>Ra Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U2 R D R' U R D' R' U' R' U R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U' R' U' R U R D R' U' R D' R' U2 R'</span></div>
+                        <div class="caso-item"><h4>Rb Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R2 F R U R U' R' F' R U2 R' U2 R" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' U2 R U2 R' F R U R' U' R' F' R2</span></div>
+                        <div class="caso-item"><h4>T Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R U R' U' R' F' R2 U' R' U' R U R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U' R' F R2 U' R' U' R U R' F'</span></div>
+                        <div class="caso-item"><h4>V Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F' R' F R U' R U R' F' R U R' U' R U R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' U R' U' y R' F' R2 U' R' U R' F R F</span></div>
+                        <div class="caso-item"><h4>Y Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="F R' F' R U R U' R' F R U' R' U' R U R' F'" control-panel="none" background="none"></twisty-player><span class="algoritmo">F R U' R' U' R U R' F' R U R' U' R' F R F'</span></div>
+                        <div class="caso-item"><h4>Na Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R U R' U2 R U R' F' R U R' U' R' F R2 U' R' U' R U' R'" control-panel="none" background="none"></twisty-player><span class="algoritmo">R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'</span></div>
+                        <div class="caso-item"><h4>Nb Perm</h4><twisty-player puzzle="3x3x3" experimental-setup-alg="R' U R F R F' R' U' R F' U F R U R' U' R" control-panel="none" background="none"></twisty-player><span class="algoritmo">R' U R U' R' F' U' F R U R' F R' F' R U' R</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: TUTORIAL 4X4 COMPLETO -->
+            <section id="4x4" class="seccion-pagina">
+                <h1 class="titulo-sec">TUTORIAL 4X4</h1>
+                <hr><br>
+                
+                <ol type="1">
+                    <li><b>Resolver los Centros</b>
+                        <ul type="square">
+                            <li>En el 4x4 los centros no son fijos (cada centro consta de 4 piezas). El objetivo es formar bloques de 2x2 para cada color manteniendo la estructura del esquema oficial de colores (Blanco opuesto a Amarillo, y alrededor con el blanco abajo: Verde, Rojo, Azul, Naranja en sentido horario).</li>
+                            <li><b>Centro Blanco:</b> Junta 2 barras de 2 piezas blancas y únelas en la cara superior.</li>
+                            <li><b>Centro Amarillo:</b> Pon el blanco abajo y arma el centro amarillo arriba usando el movimiento <span class="algoritmo">Rw U Rw'</span> para no deshacer el blanco.</li>
+                            <li><b>Centros Laterales:</b> Pon el blanco a la izquierda y el amarillo a la derecha. Completa en orden los centros laterales respetando el esquema de colores.</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Emparejar Aristas (Crear los 12 Bloques de Aristas)</b>
+                        <ul type="square">
+                            <li>Cada arista en el 4x4 está dividida en 2 piezas. Debes juntar todas las parejas del mismo color sin romper los centros.</li>
+                            <li>Busca dos piezas de arista iguales y colócalas en la cara frontal, una en el lado izquierdo y otra en el derecho, de forma que queden en línea horizontal alineadas (una frente a la otra).</li>
+                            <li>Si están en diagonal, orienta una de ellas con <span class="algoritmo">R U R' F R' F' R</span>.</li>
+                            <li>Aplica la secuencia de emparejamiento: <span class="algoritmo">Uw' (R U R' F R' F' R) Uw</span></li>
+                            <li>Repite este proceso con las 12 parejas de aristas.</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Resolver como un 3x3</b>
+                        <ul type="square">
+                            <li>Una vez formados los 6 centros y las 12 aristas dobles, el cubo se comporta exactamente como un 3x3. Respeta todos los pasos del método principiante del 3x3 (Cruz blanca, esquinas, capa central, etc.).</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Paridad de la Cruz Amarilla (Paridad de Arista / OLL)</b>
+                        <ul type="square">
+                            <li>En el 4x4 puede surgir una situación imposible en un 3x3: una sola arista invertida en la cruz amarilla. Si al intentar hacer la cruz amarilla ves un número impar de aristas orientadas (1 o 3 en lugar de 0, 2 o 4):</li>
+                            <li>Coloca la arista con la paridad en la parte frontal-superior y aplica: <span class="algoritmo">Rw U2 x Rw U2 Rw U2 Rw' U2 Lw U2 Rw' U2 Rw U2 Rw' U2 Rw'</span> (Donde <span class="algoritmo">x</span> significa rotar todo el cubo hacia arriba).</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Paridad de Permutación (Paridad de PLL)</b>
+                        <ul type="square">
+                            <li>Al llegar al final, puede ocurrir otra situación imposible en un 3x3: dos esquinas o dos aristas deben intercambiarse entre sí.</li>
+                            <li>Coloca las dos piezas a intercambiar de frente y aplica: <span class="algoritmo">r2 U2 r2 Uw2 r2 Uw2</span> (Donde <span class="algoritmo">r</span> representa mover únicamente la capa interna derecha).</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Ajustes Finales de 3x3</b>
+                        <ul type="square">
+                            <li>Aplica el último algoritmo de permutación o colocación del 3x3 para dejar el cubo completamente resuelto.</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <br>
+                <div class="contenedor-imagenes">
+                    <img src="img/4x4caso1.png" width="120" height="110" alt="Caso 1 4x4">
+                    <img src="img/4x4caso2.png" width="110" height="100" alt="Caso 2 4x4">
+                    <img src="img/4x4caso3.png" width="110" height="100" alt="Caso 3 4x4">
+                    <img src="img/4x4caso4.png" width="110" height="100" alt="Caso 4 4x4">
+                    <img src="img/4x4caso5.png" width="110" height="100" alt="Caso 5 4x4">
+                </div>
+            </section>
+
+            <!-- SECCIÓN: TUTORIAL 5X5 COMPLETO -->
+            <section id="5x5" class="seccion-pagina">
+                <h1 class="titulo-sec">TUTORIAL 5X5</h1>
+                <hr><br>
+                
+                <ol type="1">
+                    <li><b>Resolver los Centros (Bloques de 3x3)</b>
+                        <ol type="A">
+                            <li><b>Centro Blanco y Centro Amarillo:</b>
+                                <ul type="square">
+                                    <li>Forma primero una barra central de 1x3 (usando el centro fijo).</li>
+                                    <li>Crea dos barras laterales de 1x3 y únelas a la barra central para formar un bloque de 3x3.</li>
+                                    <li>Haz lo mismo con el centro amarillo opuesto usando <span class="algoritmo">Rw U Rw'</span> para no deshacer el blanco.</li>
+                                </ul>
+                            </li>
+                            <li><b>Cuatro Centros Laterales:</b>
+                                <ul type="square">
+                                    <li>Con el blanco y el amarillo en los lados izquierdo y derecho, resuelve los centros adyacentes uno a uno mediante la creación e inserción de barras de 1x3.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+
+                    <li><b>Emparejar Aristas (Crear los 12 Bloques de 3 piezas)</b>
+                        <ol type="A">
+                            <li><b>Emparejar las primeras 8 o 10 aristas:</b>
+                                <ul type="square">
+                                    <li>Localiza la arista central del trío y colócala en el centro de la capa frontal.</li>
+                                    <li>Trae las dos aristas laterales correspondientes a las capas adyacentes usando giros de capas internas (<span class="algoritmo">u</span> o <span class="algoritmo">d</span>).</li>
+                                    <li>Guarda la arista armada en la capa superior (U) y reemplázala por una desordenada antes de regresar los centros con <span class="algoritmo">u'</span> o <span class="algoritmo">d'</span>.</li>
+                                </ul>
+                            </li>
+                            <li><b>Emparejar las Últimas 2 Aristas (Paridad de Aristas):</b>
+                                <ul type="square">
+                                    <li>Cuando solo quedan 2 aristas compuestas por resolver, no hay aristas desarmadas libres para intercambiar.</li>
+                                    <li>Coloca las dos aristas una frente a la otra alineadas horizontalmente. Si una de las piezas externas de la arista está invertida respecto a las demás, aplica el algoritmo de volteo de arista: <span class="algoritmo">Rw2 B2 U2 Lw U2 Rw' U2 Rw U2 F2 Rw F2 Lw' B2 Rw2</span></li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+
+                    <li><b>Resolver como un 3x3 Estándar</b>
+                        <ol type="A">
+                            <li>Trata los centros de 3x3 como piezas centrales individuales.</li>
+                            <li>Trata cada grupo de 3 aristas como si fuera una sola arista de un 3x3.</li>
+                            <li>Aplica todos los pasos del método de principiantes del 3x3 (Cruz, esquinas, capa central, cruz superior, etc.).</li>
+                        </ol>
+                    </li>
+                </ol>
+                
+                <br>
+                <div class="contenedor-imagenes">
+                    <img src="img/5x5caso1.png" width="100" height="100" alt="Caso 1 5x5">
+                    <img src="img/5x5caso2.png" width="100" height="100" alt="Caso 2 5x5">
+                    <img src="img/5x5caso3.png" width="100" height="100" alt="Caso 3 5x5">
+                </div>
+            </section>
+
+            <!-- SECCIÓN: TUTORIAL PYRAMINX COMPLETO -->
+            <section id="pyraminx" class="seccion-pagina">
+                <h1 class="titulo-sec">TUTORIAL PYRAMINX</h1>
+                <hr><br>
+                
+                <ol type="1">
+                    <li><b>Orientar las Puntas (Esquinas Exteriores)</b>
+                        <ul type="square">
+                            <li>Las 4 puntas piramidales giran de forma independiente y no afectan a ninguna otra pieza. Gira cada una de las 4 puntas exteriores hasta que coincidan con el color del bloque triangular inmediatamente inferior (los centros).</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Orientar los Centros de una Cara Base (La Cara Azul)</b>
+                        <ul type="square">
+                            <li>En el Pyraminx, los centros son las piezas con 3 pegatinas situadas justo debajo de las puntas (tienen 1 sola cara visible por lado).</li>
+                            <li>Elige una cara base para empezar (habitualmente la Azul).</li>
+                            <li>Busca las 3 puntas que tienen el color azul.</li>
+                            <li>Gira las caras grandes para que las 3 pegatinas azules de los centros queden en la misma cara. Esto formará una figura tipo "hélice" o "trébol" en la cara base.</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Resolver la Primera Cara (Insertar las 3 Aristas Inferiores)</b>
+                        <ul type="square">
+                            <li>Coloca la cara azul hacia abajo. Ahora debes insertar las 3 aristas azules (piezas con 2 colores) en la capa inferior.</li>
+                            <li>Busca en la capa superior una arista que contenga color azul y colócala sobre su posición correspondiente:</li>
+                            <li>Si la pegatina azul te mira a la izquierda, aplica la secuencia derecha: <span class="algoritmo">R U' R'</span></li>
+                            <li>Si la pegatina azul te mira a la derecha, aplica la secuencia izquierda: <span class="algoritmo">L' U L</span></li>
+                            <li>Si una arista azul está abajo pero girada o fuera de sitio, aplica <span class="algoritmo">R U' R'</span> para subirla a la capa superior y luego insértala correctamente.</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Resolver la Capa Superior (Últimas 3 Aristas)</b>
+                        <ul type="square">
+                            <li>Con la cara azul resuelta en la base, gira la punta superior (U) para alinear los centros superiores con sus caras correspondientes. Te quedarán solo 3 aristas por resolver en la parte superior:</li>
+                            <li>Giro cíclico de 3 aristas (Tres piezas fuera de sitio). Aplica la secuencia de "pescadito": <span class="algoritmo">R U R' U R U R'</span> (Si no se resuelve a la primera, vuelve a aplicarlo una vez más).</li>
+                            <li>Dos aristas en su sitio pero volteadas sobre sí mismas. Coloca las dos aristas mal orientadas de frente y aplica: <span class="algoritmo">R' L R L' U' L U R'</span></li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <br>
+                <div class="contenedor-imagenes">
+                    <img src="img/pyraminx-resolución.png" alt="Resolución Pyraminx">
+                </div>
+            </section>
+
+            <!-- SECCIÓN: TUTORIAL MEGAMINX COMPLETO -->
+            <section id="megaminx" class="seccion-pagina">
+                <h1 class="titulo-sec">TUTORIAL MEGAMINX</h1>
+                <hr><br>
+                
+                <ol type="1">
+                    <li><b>Estrella Blanca (La Base)</b>
+                        <ul type="square">
+                            <li>Mantiene el centro blanco en la cara inferior o frontal.</li>
+                            <li>Busca las 5 aristas blancas y únelas al centro blanco haciendo coincidir el segundo color de cada arista con su centro lateral (creando una estrella de 5 puntas en lugar de una cruz).</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Esquinas Blancas (Primera Capa)</b>
+                        <ul type="square">
+                            <li>Busca las 5 esquinas que contienen color blanco.</li>
+                            <li>Coloca cada esquina sobre el hueco donde debe ir haciendo coincidir sus 3 colores.</li>
+                            <li>Inserta la esquina en su sitio usando la secuencia: <span class="algoritmo">R U R' U'</span> (Repite de 1 a 5 veces hasta que el blanco baje orientado).</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Capa Central e Inferior (Primera Banda / F2L Extendido)</b>
+                        <ol type="A">
+                            <li><b>Ahora debes resolver las caras laterales adyacentes a la base blanca (que forman la mitad inferior del rompecabezas):</b>
+                                <ul type="square">
+                                    <li><b>Insertar Aristas de la primera banda:</b> Coloca las aristas que van entre los centros adyacentes a la cara blanca usando el algoritmo de aristas del 3x3:
+                                        <ul type="circle">
+                                            <li>Insertar a la derecha: <span class="algoritmo">U R U' R' U' F' U F</span></li>
+                                            <li>Insertar a la izquierda: <span class="algoritmo">U' L' U L U F U' F'</span></li>
+                                        </ul>
+                                    </li>
+                                    <li><b>Completar las caras laterales inferiores:</b> Trabaja de abajo hacia arriba rellenando las esquinas y aristas adyacentes a la cara blanca hasta que solo quede la cara superior (generalmente la cara Gris) sin resolver.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+
+                    <li><b>Estrella Gris (Capa Superior)</b>
+                        <ul type="square">
+                            <li>Algoritmo para la estrella: <span class="algoritmo">F R U R' U' F'</span></li>
+                            <li>Aplícalo desde diferentes ángulos hasta lograr que las 5 puntas grises queden orientadas en la cara superior.</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Alinear la Estrella Gris con los Centros</b>
+                        <ul type="square">
+                            <li>Gira la cara superior (U) para ver cuántas aristas de la estrella coinciden con los centros laterales adyacentes:</li>
+                            <li>Busca que al menos 2 aristas continuas coincidan con sus centros laterales.</li>
+                            <li>Coloca las aristas correctas en la parte frontal e izquierda y aplica el algoritmo de permutación de aristas: <span class="algoritmo">R U R' U R U3 R' U</span></li>
+                            <li>Repite hasta que las 5 puntas de la estrella coincidan con sus 5 centros laterales.</li>
+                        </ul>
+                    </li>
+
+                    <li><b>Colocar y Orientar Esquinas Grises (Resolver el Megaminx)</b>
+                        <ol type="A">
+                            <li><b>Colocar las Esquinas en su Sitio:</b>
+                                <ul type="square">
+                                    <li>Busca una esquina que esté en su posición correcta (aunque esté girada).</li>
+                                    <li>Usa el algoritmo para permutar las esquinas restantes: <span class="algoritmo">U R U' L' U R' U' L</span></li>
+                                </ul>
+                            </li>
+                            <li><b>Orientar las Esquinas:</b>
+                                <ul type="square">
+                                    <li>Voltea el Megaminx para que la cara gris quede abajo.</li>
+                                    <li>Trae una esquina gris no orientada a la posición inferior derecha.</li>
+                                    <li>Repite la secuencia <span class="algoritmo">R U R' U'</span> hasta que el gris quede mirando hacia abajo.</li>
+                                    <li>Gira únicamente la cara inferior (D) para colocar la siguiente esquina sin resolver en el mismo hueco y repite la secuencia hasta armar todo el Megaminx.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+                
+                <br>
+                <div class="contenedor-imagenes">
+                    <img src="img/megaminx-caso1.png" alt="Megaminx Caso 1">
+                    <img src="img/megaminx-caso2.png" alt="Megaminx Caso 2">
+                    <img src="img/megaminx-caso3.png" alt="Megaminx Caso 3">
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ==================== PIE DE PÁGINA COMPLETO ==================== -->
+        <footer class="pie-principal">
+            <table align="center" cellpadding="8">
+                <tr>
+                    <td><h2 style="margin:0; color:var(--accent-color);">DONACIONES:</h2></td>
+                    <td><p><b>Si el contenido de esta página web te ha ayudado, puedes hacer una donación al creador, porque así podrá mejorar y actualizar el contenido. Muchas gracias :)</b></p></td>
+                    <td>
+                        <a href="https://www.paypal.com/qrcodes/p2pqrc/NCNDSJVPZML5C" target="_blank">
+                            <img src="img/paypal.jpg" width="120" height="120" alt="Código QR PayPal">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://www.paypal.com/qrcodes/p2pqrc/NCNDSJVPZML5C" target="_blank" style="color:var(--accent-color); font-weight:bold;">Click aquí para hacer donación :)</a>
+                    </td>
+                </tr>
+            </table>
+        </footer>
+    </div>
+
+    <!-- ==================== SCRIPT GOOGLE TRANSLATE (SELECCIÓN DE IDIOMA CON ESPAÑOL INCLUIDO) ==================== -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: '', 
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- ==================== SCRIPTS JS: TEMA, SPA, TIMER & CONTROL MÓVIL ==================== -->
     <script>
-        // Sincronización mediante BroadcastChannel con el botón del Navegador
-        const canalTema = new BroadcastChannel('canal_tema_web');
+        // 1. MENÚ HAMBURGUESA PARA MÓVILES
+        const btnMenuMovil = document.getElementById('btnMenuMovil');
+        const navegador = document.getElementById('navegador');
 
+        btnMenuMovil.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navegador.classList.toggle('abierto');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 900 && !navegador.contains(e.target) && e.target !== btnMenuMovil) {
+                navegador.classList.remove('abierto');
+            }
+        });
+
+        // 2. MODO NOCHE GLOBAL Y LOCALSTORAGE
+        const btnTema = document.getElementById('btnTema');
+        
         function aplicarTema(esNoche) {
             if (esNoche) {
                 document.body.classList.add('modo-noche');
                 document.documentElement.classList.add('modo-noche');
+                btnTema.textContent = '☀️ Modo Día';
             } else {
                 document.body.classList.remove('modo-noche');
                 document.documentElement.classList.remove('modo-noche');
+                btnTema.textContent = '🌙 Modo Noche';
+            }
+        }
+
+        const temaInicial = localStorage.getItem('tema') === 'noche';
+        aplicarTema(temaInicial);
+
+        btnTema.addEventListener('click', () => {
+            const esNocheActual = document.body.classList.contains('modo-noche');
+            const nuevoEstado = !esNocheActual;
+            localStorage.setItem('tema', nuevoEstado ? 'noche' : 'dia');
+            aplicarTema(nuevoEstado);
+        });
+
+        // 3. ENRUTAMIENTO SPA (Single Page Application)
+        function navegar() {
+            const hash = window.location.hash.substring(1) || 'inicio';
+            const secciones = document.querySelectorAll('.seccion-pagina');
+            
+            secciones.forEach(sec => {
+                if (sec.id === hash) {
+                    sec.classList.add('activa');
+                } else {
+                    sec.classList.remove('activa');
+                }
+            });
+
+            // Cerrar menú móvil automáticamente tras elegir una sección
+            if (window.innerWidth <= 900) {
+                navegador.classList.remove('abierto');
+            }
+        }
+
+        window.addEventListener('hashchange', navegar);
+        window.addEventListener('DOMContentLoaded', () => {
+            navegar();
+            
+            // Forzar actualización inicial de visores 3D en CFOP Avanzado
+            const players = document.querySelectorAll('twisty-player');
+            players.forEach(player => {
+                const setupAlg = player.getAttribute('experimental-setup-alg');
+                if (setupAlg) {
+                    player.alg = setupAlg;
+                    player.jumpToAlgEnd();
+                }
+            });
+        });
+
+        // 4. LÓGICA DEL TIMER SPEEDCUBING WCA
+        const PUZZLE_MAP = {
+            '2x2': '2x2x2',
+            '3x3': '3x3x3',
+            '4x4': '4x4x4',
+            '5x5': '5x5x5',
+            '6x6': '6x6x6',
+            '7x7': '7x7x7',
+            'clock': 'clock',
+            'megaminx': 'megaminx',
+            'pyraminx': 'pyraminx',
+            'skewb': 'skewb',
+            'sq1': 'square1'
+        };
+
+        function elementoAleatorio(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        function generarScrambleStandard(caras, sufijos, longitud) {
+            let scramble = [];
+            let ult = '', penult = '';
+            while (scramble.length < longitud) {
+                let c = elementoAleatorio(caras);
+                if (c !== ult && c !== penult) {
+                    scramble.push(c + elementoAleatorio(sufijos));
+                    penult = ult;
+                    ult = c;
+                }
+            }
+            return scramble.join(' ');
+        }
+
+        function generarScramble(categoria) {
+            const sufijosStd = ['', "'", '2'];
+            switch (categoria) {
+                case '2x2': return generarScrambleStandard(['R', 'U', 'F'], sufijosStd, 9);
+                case '3x3': return generarScrambleStandard(['U', 'D', 'L', 'R', 'F', 'B'], sufijosStd, 20);
+                case '4x4': return generarScrambleStandard(['U', 'D', 'L', 'R', 'F', 'B', 'Uw', 'Rw', 'Fw'], sufijosStd, 40);
+                case '5x5': return generarScrambleStandard(['U', 'D', 'L', 'R', 'F', 'B', 'Uw', 'Dw', 'Lw', 'Rw', 'Fw', 'Bw'], sufijosStd, 60);
+                case '6x6': return generarScrambleStandard(['U', 'D', 'L', 'R', 'F', 'B', '2U', '2D', '2L', '2R', '2F', '2B'], sufijosStd, 80);
+                case '7x7': return generarScrambleStandard(['U', 'D', 'L', 'R', 'F', 'B', '3Uw', '3Dw', '3Lw', '3Rw'], sufijosStd, 100);
+                case 'pyraminx': return generarScrambleStandard(['U', 'L', 'R', 'B'], ['', "'"], 11);
+                case 'skewb': return generarScrambleStandard(['U', 'L', 'R', 'B'], ['', "'"], 11);
+                default: return generarScrambleStandard(['U', 'D', 'L', 'R', 'F', 'B'], sufijosStd, 20);
+            }
+        }
+
+        let tiempoInicio = 0, tiempoTranscurrido = 0, intervalo = null, corriendo = false;
+        let scrambleActual = '', historialResoluciones = [];
+
+        const pantalla = document.getElementById('pantalla');
+        const selectorCategoria = document.getElementById('categoria');
+        const elementoScramble = document.getElementById('scramble');
+        const player2D = document.getElementById('player2D');
+        const player3D = document.getElementById('player3D');
+        const listaTiempos = document.getElementById('listaTiempos');
+        const btnLimpiar = document.getElementById('btnLimpiar');
+
+        const statMejor = document.getElementById('statMejor');
+        const statPeor = document.getElementById('statPeor');
+        const statPromedio = document.getElementById('statPromedio');
+        const statTotal = document.getElementById('statTotal');
+
+        function actualizarVistas(scramble, cat) {
+            const puzzleName = PUZZLE_MAP[cat] || '3x3x3';
+            player2D.setAttribute('puzzle', puzzleName);
+            player2D.setAttribute('alg', scramble);
+            player3D.setAttribute('puzzle', puzzleName);
+            player3D.setAttribute('alg', scramble);
+        }
+
+        function actualizarScramble() {
+            scrambleActual = generarScramble(selectorCategoria.value);
+            elementoScramble.textContent = scrambleActual;
+            actualizarVistas(scrambleActual, selectorCategoria.value);
+        }
+
+        function formatearTiempo(ms) {
+            let minutos = Math.floor(ms / 60000);
+            let segundos = Math.floor((ms % 60000) / 1000);
+            let milisegundos = Math.floor((ms % 1000) / 10);
+            return `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}.${String(milisegundos).padStart(2, '0')}`;
+        }
+
+        function actualizarPantalla() {
+            const diferencia = Date.now() - tiempoInicio + tiempoTranscurrido;
+            pantalla.textContent = formatearTiempo(diferencia);
+        }
+
+        function alternarCronometro() {
+            if (!corriendo) {
+                corriendo = true;
+                tiempoTranscurrido = 0;
+                tiempoInicio = Date.now();
+                intervalo = setInterval(actualizarPantalla, 10);
+            } else {
+                corriendo = false;
+                clearInterval(intervalo);
+                const msFinal = Date.now() - tiempoInicio;
+                guardarResolucion(msFinal, scrambleActual);
+                actualizarScramble();
+                tiempoTranscurrido = 0;
+                pantalla.textContent = '00:00.00';
+            }
+        }
+
+        function reiniciarCronometro() {
+            corriendo = false;
+            clearInterval(intervalo);
+            tiempoInicio = 0;
+            tiempoTranscurrido = 0;
+            pantalla.textContent = '00:00.00';
+        }
+
+        function guardarResolucion(ms, scramble) {
+            historialResoluciones.unshift({ id: Date.now(), msBase: ms, scramble: scramble, masDos: false, dnf: false });
+            actualizarTodo();
+        }
+
+        window.alternarMasDos = function(id) {
+            const s = historialResoluciones.find(x => x.id === id);
+            if (s) { s.masDos = !s.masDos; if (s.masDos) s.dnf = false; actualizarTodo(); }
+        };
+
+        window.alternarDNF = function(id) {
+            const s = historialResoluciones.find(x => x.id === id);
+            if (s) { s.dnf = !s.dnf; if (s.dnf) s.masDos = false; actualizarTodo(); }
+        };
+
+        window.eliminarResolucion = function(id) {
+            historialResoluciones = historialResoluciones.filter(x => x.id !== id);
+            actualizarTodo();
+        };
+
+        function calcularEstadisticas() {
+            statTotal.textContent = historialResoluciones.length;
+            const validos = historialResoluciones.filter(s => !s.dnf).map(s => s.msBase + (s.masDos ? 2000 : 0));
+
+            if (validos.length === 0) {
+                statMejor.textContent = '--:--.--';
+                statPeor.textContent = '--:--.--';
+                statPromedio.textContent = '--:--.--';
+                return;
             }
 
-            // Mantenemos como respaldo la propagación directa por DOM
-            const marcos = document.querySelectorAll('iframe, frame');
-            marcos.forEach(marco => {
-                try {
-                    if (marco.contentDocument && marco.contentDocument.body) {
-                        if (esNoche) {
-                            marco.contentDocument.body.classList.add('modo-noche');
-                            marco.contentDocument.documentElement.classList.add('modo-noche');
-                        } else {
-                            marco.contentDocument.body.classList.remove('modo-noche');
-                            marco.contentDocument.documentElement.classList.remove('modo-noche');
-                        }
-                    }
-                } catch (e) {
-                    // Ignorar posibles restricciones de origen en desarrollo local
-                }
+            statMejor.textContent = formatearTiempo(Math.min(...validos));
+            statPeor.textContent = formatearTiempo(Math.max(...validos));
+            statPromedio.textContent = formatearTiempo(Math.round(validos.reduce((a, b) => a + b, 0) / validos.length));
+        }
+
+        function renderizarHistorial() {
+            listaTiempos.innerHTML = '';
+            if (historialResoluciones.length === 0) {
+                listaTiempos.innerHTML = '<li class="sin-tiempos">Aún no has registrado ninguna resolución.</li>';
+                return;
+            }
+
+            historialResoluciones.forEach(s => {
+                const li = document.createElement('li');
+                li.className = 'item-tiempo';
+                let msMostrar = s.msBase + (s.masDos ? 2000 : 0);
+                let textoTiempo = formatearTiempo(msMostrar);
+                let claseEstado = s.dnf ? 'dnf' : (s.masDos ? 'penalizado' : '');
+                if (s.dnf) textoTiempo = 'DNF (' + textoTiempo + ')';
+                else if (s.masDos) textoTiempo += ' (+2)';
+
+                li.innerHTML = `
+                    <div class="info-tiempo">
+                        <span class="valor-tiempo ${claseEstado}">${textoTiempo}</span>
+                        <span class="scramble-historial">${s.scramble}</span>
+                    </div>
+                    <div class="acciones-tiempo">
+                        <button class="btn-penalizacion ${s.masDos ? 'activo-mas2' : ''}" onclick="alternarMasDos(${s.id})">+2</button>
+                        <button class="btn-penalizacion ${s.dnf ? 'activo-dnf' : ''}" onclick="alternarDNF(${s.id})">DNF</button>
+                        <button class="btn-eliminar" onclick="eliminarResolucion(${s.id})">✕</button>
+                    </div>
+                `;
+                listaTiempos.appendChild(li);
             });
         }
 
-        // Escuchar la orden emitida desde navegadir.html / navegador.html
-        canalTema.onmessage = (e) => {
-            if (e.data && typeof e.data.modoNoche === 'boolean') {
-                aplicarTema(e.data.modoNoche);
+        function actualizarTodo() {
+            renderizarHistorial();
+            calcularEstadisticas();
+        }
+
+        // CONTROL DEL TIMER CON TECLADO O TOQUE EN PANTALLA
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && document.getElementById('timer').classList.contains('activa')) {
+                e.preventDefault();
+                document.activeElement.blur();
+                if (!e.repeat) alternarCronometro();
             }
-        };
+            if (e.code === 'KeyR' && document.getElementById('timer').classList.contains('activa')) {
+                reiniciarCronometro();
+            }
+        });
+
+        pantalla.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            alternarCronometro();
+        });
+
+        selectorCategoria.addEventListener('change', () => {
+            reiniciarCronometro();
+            actualizarScramble();
+        });
+
+        btnLimpiar.addEventListener('click', () => {
+            if (historialResoluciones.length > 0 && confirm('¿Borrar todas las resoluciones?')) {
+                historialResoluciones = [];
+                actualizarTodo();
+            }
+        });
+
+        actualizarScramble();
     </script>
 </body>
 </html>

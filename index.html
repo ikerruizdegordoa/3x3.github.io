@@ -585,7 +585,144 @@ body.modo-noche .orbit-two{border-color:rgba(56,189,248,.32)}
 .tutorial-index a{display:inline-block;padding:7px 11px;border-radius:999px;border:1px solid var(--borde,#d8dee8);text-decoration:none;font-size:.9rem;font-weight:600;color:var(--texto,#263449);background:var(--fondo,#fff);transition:background .15s,transform .15s}
 .tutorial-index a:hover{background:var(--acento-suave,#e8efff);transform:translateY(-1px)}
 .tutorial-index [id]{scroll-margin-top:90px}
-</style></head>
+</style>
+<style>
+.home-game-promo{display:flex;align-items:center;gap:22px;margin:22px 0 4px;padding:24px 28px;border:1px solid var(--border-color);border-radius:20px;background:linear-gradient(115deg,var(--bg-card),var(--bg-subcard));box-shadow:0 10px 28px rgba(15,23,42,.06)}
+.home-game-icon{width:62px;height:62px;flex:0 0 62px;display:grid;place-items:center;border-radius:17px;background:color-mix(in srgb,var(--accent-color) 12%,var(--bg-body));font-size:1.9rem}
+.home-game-copy{flex:1}.home-game-copy .home-kicker{color:var(--accent-color)}.home-game-copy h2{margin:4px 0 3px;color:var(--text-main);font-size:clamp(1.2rem,2.4vw,1.65rem)}.home-game-copy p{color:var(--text-sub);max-width:720px}
+.home-game-link,.memory-reset{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:12px 19px;border:0;border-radius:11px;background:var(--accent-color);color:#fff;text-decoration:none;font-weight:800;cursor:pointer;transition:transform .18s,filter .18s}.home-game-link:hover,.memory-reset:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.mini-game-page{max-width:920px;margin:0 auto;padding:8px 0 28px}.mini-game-back{display:inline-block;margin-bottom:18px;color:var(--accent-color);font-weight:700;text-decoration:none}.mini-game-heading{text-align:center;margin:0 auto 22px;max-width:700px}.mini-game-heading h1{margin:8px 0;color:var(--text-main)}.mini-game-heading p,.mini-game-tip{color:var(--text-sub)}
+.mini-game-shell{max-width:650px;margin:0 auto;padding:clamp(16px,3vw,28px);border:1px solid var(--border-color);border-radius:22px;background:var(--bg-card);box-shadow:0 14px 35px rgba(15,23,42,.08)}
+.mini-game-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}.mini-game-stats div{padding:10px;border-radius:12px;background:var(--bg-subcard);text-align:center}.mini-game-stats span{display:block;color:var(--text-sub);font-size:.78rem}.mini-game-stats strong{display:block;color:var(--text-main);font-size:1.25rem;font-variant-numeric:tabular-nums}
+.memory-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:480px;margin:0 auto}.memory-card{aspect-ratio:1.15;border:2px solid var(--border-color);border-radius:14px;background:linear-gradient(145deg,var(--bg-subcard),var(--bg-body));cursor:pointer;display:grid;place-items:center;transition:transform .16s,border-color .16s,background .16s;min-width:0}.memory-card:hover:not(:disabled){transform:translateY(-3px);border-color:var(--accent-color)}.memory-card:focus-visible{outline:3px solid var(--accent-color);outline-offset:3px}.memory-card:disabled{cursor:default}.memory-card .memory-question{font-size:clamp(1.35rem,4vw,2rem);font-weight:900;color:var(--accent-color)}.memory-card .memory-color{width:62%;height:62%;border:3px solid rgba(15,23,42,.14);border-radius:11px;box-shadow:inset 0 2px 4px rgba(255,255,255,.35),0 3px 7px rgba(0,0,0,.12)}.memory-card.is-matched{border-color:#16a34a;background:color-mix(in srgb,#16a34a 9%,var(--bg-card))}
+.memory-message{min-height:30px;margin:18px 0 12px;text-align:center;color:var(--text-sub);font-weight:650}.mini-game-actions{text-align:center}
+/* Celebración al completar el reto */
+.memory-victory{position:relative;isolation:isolate;overflow:hidden;margin:18px auto 4px;padding:24px 18px 20px;max-width:500px;text-align:center;border:1px solid color-mix(in srgb,var(--accent-color) 38%,var(--border-color));border-radius:20px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--accent-color) 20%,var(--bg-card)),var(--bg-card) 68%);box-shadow:0 12px 34px rgba(14,165,233,.15);animation:victory-pop .65s cubic-bezier(.2,.9,.25,1.25) both}
+.memory-victory[hidden]{display:none}.memory-victory-cube{font-size:clamp(2.8rem,8vw,4.2rem);line-height:1.2;display:inline-block;filter:drop-shadow(0 7px 8px rgba(0,0,0,.18));animation:victory-cube-spin 1.8s cubic-bezier(.2,.75,.25,1) both}
+.memory-victory h2{margin:8px 0 5px;color:var(--text-main);font-size:clamp(1.35rem,4vw,1.8rem)}.memory-victory p{margin:0;color:var(--text-sub)}.memory-victory strong{color:var(--accent-color)}
+.memory-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}.memory-confetti i{position:absolute;top:-18px;left:var(--x);width:var(--w);height:var(--h);border-radius:2px;background:var(--c);opacity:0;animation:confetti-fall var(--dur) var(--delay) ease-out forwards;transform:rotate(var(--rot))}
+@keyframes victory-pop{0%{opacity:0;transform:translateY(18px) scale(.88)}70%{transform:translateY(-3px) scale(1.02)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes victory-cube-spin{0%{transform:rotate(-22deg) scale(.5)}55%{transform:rotate(18deg) scale(1.18)}100%{transform:rotate(0) scale(1)}}
+@keyframes confetti-fall{0%{opacity:0;transform:translate3d(0,-12px,0) rotate(0)}10%{opacity:1}100%{opacity:0;transform:translate3d(var(--drift),340px,0) rotate(620deg)}}
+@media(prefers-reduced-motion:reduce){.memory-victory,.memory-victory-cube,.memory-confetti i{animation:none!important}.memory-victory{opacity:1;transform:none}.memory-confetti i{display:none}}
+.mini-game-tip{text-align:center;margin:16px 0 0;font-size:.9rem}
+@media(max-width:650px){.home-game-promo{align-items:flex-start;flex-wrap:wrap;padding:19px}.home-game-icon{width:48px;height:48px;flex-basis:48px;font-size:1.5rem}.home-game-copy{flex:1 1 calc(100% - 70px)}.home-game-link{width:100%}.memory-board{gap:8px}.memory-card{border-radius:10px}.mini-game-stats{gap:6px}.mini-game-stats div{padding:8px 4px}}
+body.modo-noche .home-game-promo,body.modo-noche .mini-game-shell{box-shadow:0 14px 35px rgba(0,0,0,.2)}
+</style>
+
+<style id="memory-game-visual-refresh">
+/* Renovación visual del minijuego: fichas tipo cubo, paneles y jerarquía visual */
+.mini-game-page{max-width:980px;padding:14px 0 42px}
+.mini-game-heading{max-width:760px;margin-bottom:28px}
+.mini-game-heading .home-kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid color-mix(in srgb,var(--accent-color) 28%,var(--border-color));border-radius:999px;background:color-mix(in srgb,var(--accent-color) 9%,var(--bg-card));font-size:.72rem;font-weight:900;letter-spacing:.13em;color:var(--accent-color)}
+.mini-game-heading h1{font-size:clamp(2rem,5vw,3.15rem);letter-spacing:-.045em;margin:13px 0 8px}
+.mini-game-heading p{max-width:650px;margin:0 auto;line-height:1.7;font-size:1.02rem}
+.mini-game-shell{position:relative;max-width:720px;padding:clamp(18px,4vw,34px);overflow:hidden;border-radius:28px;background:radial-gradient(circle at 8% 0%,color-mix(in srgb,var(--accent-color) 10%,transparent),transparent 34%),linear-gradient(145deg,var(--bg-card),var(--bg-subcard));box-shadow:0 20px 55px rgba(15,23,42,.10)}
+.mini-game-shell:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#22d3ee,#3b82f6,#a78bfa,#34d399);opacity:.9}
+.mini-game-stats{gap:12px;margin:0 auto 24px;max-width:560px}
+.mini-game-stats div{position:relative;padding:13px 10px 12px;border:1px solid var(--border-color);border-radius:16px;background:color-mix(in srgb,var(--bg-card) 78%,var(--bg-subcard));box-shadow:0 5px 14px rgba(15,23,42,.045)}
+.mini-game-stats span{text-transform:uppercase;letter-spacing:.1em;font-size:.68rem;font-weight:850}
+.mini-game-stats strong{font-size:clamp(1.25rem,3vw,1.65rem);margin-top:3px}
+.memory-board{max-width:520px;gap:clamp(9px,2vw,15px);padding:clamp(10px,2.5vw,18px);border:1px solid color-mix(in srgb,var(--border-color) 80%,transparent);border-radius:23px;background:color-mix(in srgb,var(--bg-body) 58%,var(--bg-subcard));box-shadow:inset 0 2px 12px rgba(15,23,42,.045)}
+.memory-card{position:relative;isolation:isolate;aspect-ratio:1;border:1px solid color-mix(in srgb,var(--border-color) 75%,var(--accent-color));border-radius:17px;overflow:hidden;background:linear-gradient(145deg,color-mix(in srgb,var(--bg-card) 92%,white),var(--bg-subcard));box-shadow:0 5px 0 color-mix(in srgb,var(--border-color) 75%,transparent),0 8px 16px rgba(15,23,42,.07);transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,border-color .22s,background .22s}
+.memory-card:before{content:"";position:absolute;inset:7px;border:1px solid color-mix(in srgb,var(--border-color) 65%,transparent);border-radius:11px;pointer-events:none;opacity:.75}
+.memory-card:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.24),transparent 42%);pointer-events:none}
+.memory-card:hover:not(:disabled){transform:translateY(-4px) scale(1.025);box-shadow:0 8px 0 color-mix(in srgb,var(--accent-color) 22%,var(--border-color)),0 14px 22px rgba(15,23,42,.12)}
+.memory-card .memory-question{display:grid;place-items:center;width:42%;height:42%;border-radius:13px;background:color-mix(in srgb,var(--accent-color) 12%,var(--bg-card));font-size:clamp(1.4rem,4vw,2.2rem);line-height:1;color:var(--accent-color);box-shadow:inset 0 1px 3px rgba(255,255,255,.35),0 4px 10px rgba(15,23,42,.07)}
+.memory-card.is-open{transform:scale(.97);border-color:var(--accent-color);background:linear-gradient(145deg,var(--bg-card),color-mix(in srgb,var(--accent-color) 7%,var(--bg-subcard)));box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-color) 13%,transparent),0 5px 13px rgba(15,23,42,.08)}
+.memory-card .memory-color{position:relative;z-index:1;width:58%;height:58%;border:4px solid rgba(15,23,42,.13);border-radius:14px;box-shadow:inset 0 3px 5px rgba(255,255,255,.45),inset 0 -5px 8px rgba(0,0,0,.12),0 7px 13px rgba(0,0,0,.16);animation:memory-reveal .24s ease-out both}
+.memory-card.is-matched{border:2px solid #22c55e;background:linear-gradient(145deg,color-mix(in srgb,#22c55e 13%,var(--bg-card)),color-mix(in srgb,#22c55e 5%,var(--bg-subcard)));box-shadow:0 0 0 3px color-mix(in srgb,#22c55e 12%,transparent),0 5px 0 color-mix(in srgb,#16a34a 35%,var(--border-color));cursor:default}
+.memory-card.is-matched .memory-color{transform:scale(.92)}
+.memory-message{max-width:520px;min-height:42px;margin:20px auto 14px;padding:11px 14px;border-radius:13px;background:color-mix(in srgb,var(--accent-color) 7%,var(--bg-card));border:1px solid color-mix(in srgb,var(--accent-color) 18%,var(--border-color));font-size:.93rem}
+.memory-reset{padding:13px 22px;border-radius:13px;box-shadow:0 7px 16px color-mix(in srgb,var(--accent-color) 22%,transparent)}
+.mini-game-tip{max-width:650px;margin:19px auto 0;padding:12px 16px;border-radius:13px;background:var(--bg-subcard);line-height:1.55}
+@keyframes memory-reveal{from{opacity:0;transform:scale(.72) rotate(-8deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+body.modo-noche .mini-game-shell{background:radial-gradient(circle at 8% 0%,rgba(56,189,248,.12),transparent 34%),linear-gradient(145deg,var(--bg-card),var(--bg-subcard));box-shadow:0 20px 55px rgba(0,0,0,.25)}
+body.modo-noche .memory-board{background:color-mix(in srgb,var(--bg-body) 82%,#0f172a);border-color:var(--border-color)}
+body.modo-noche .memory-card{background:linear-gradient(145deg,#26364a,#182638);box-shadow:0 5px 0 #101b2a,0 8px 16px rgba(0,0,0,.24)}
+body.modo-noche .memory-card .memory-question{background:#20364e}
+body.modo-noche .mini-game-stats div{background:color-mix(in srgb,var(--bg-card) 88%,#0f172a)}
+@media(max-width:650px){.mini-game-heading{margin-bottom:20px}.mini-game-shell{border-radius:21px}.memory-board{padding:9px;gap:8px;border-radius:17px}.memory-card{border-radius:12px;box-shadow:0 4px 0 color-mix(in srgb,var(--border-color) 75%,transparent),0 6px 12px rgba(15,23,42,.07)}.memory-card:before{inset:5px;border-radius:8px}.memory-card .memory-color{border-width:3px;border-radius:10px}.mini-game-stats div{padding:10px 4px}.memory-message{font-size:.86rem}}
+@media(prefers-reduced-motion:reduce){.memory-card,.memory-card .memory-color{animation:none!important;transition:none!important}}
+</style>
+
+
+<style id="sequence-game-styles">
+.sequence-game-over{margin:18px auto 0;padding:18px;border:2px solid #ef4444;border-radius:16px;background:color-mix(in srgb,#ef4444 12%,var(--bg-card));color:var(--text-main);display:flex;flex-direction:column;gap:5px;animation:sequence-loss-in .22s ease-out}.sequence-game-over[hidden]{display:none}.sequence-game-over strong{font-size:1.35rem;color:#dc2626}.sequence-game-over span{font-weight:650}.sequence-game-win{margin:18px auto 0;padding:20px;border:2px solid #16a34a;border-radius:16px;background:color-mix(in srgb,#16a34a 14%,var(--bg-card));color:var(--text-main);display:flex;flex-direction:column;gap:6px;animation:sequence-loss-in .3s ease-out}.sequence-game-win[hidden]{display:none}.sequence-game-win strong{font-size:1.5rem;color:#15803d}.sequence-game-win span{font-weight:700}.sequence-promo{margin-top:14px}.sequence-icon{background:linear-gradient(145deg,#8b5cf6,#2563eb);color:white}.sequence-shell{--seq-glow:rgba(59,130,246,.22);max-width:760px;margin:0 auto;padding:clamp(18px,4vw,32px);border:1px solid var(--border-color);border-radius:28px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,#8b5cf6 12%,transparent),transparent 42%),linear-gradient(145deg,var(--bg-card),var(--bg-subcard));box-shadow:0 20px 55px rgba(15,23,42,.1);text-align:center}.sequence-topline{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px;color:var(--text-sub);font-size:.88rem}.sequence-status{font-weight:800;color:var(--accent-color)}.sequence-best strong{color:var(--text-main);font-size:1.1rem}.sequence-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}.sequence-stats div{padding:11px;border:1px solid var(--border-color);border-radius:14px;background:var(--bg-card)}.sequence-stats span{display:block;text-transform:uppercase;letter-spacing:.1em;font-size:.68rem;color:var(--text-sub);font-weight:800}.sequence-stats strong{display:block;margin-top:3px;font-size:1.45rem;color:var(--text-main);font-variant-numeric:tabular-nums}.sequence-cube{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:430px;margin:0 auto;padding:15px;border-radius:25px;background:color-mix(in srgb,var(--bg-body) 72%,var(--bg-subcard));border:1px solid var(--border-color);box-shadow:inset 0 3px 14px rgba(15,23,42,.08)}.sequence-pad{aspect-ratio:1;border:4px solid rgba(15,23,42,.16);border-radius:19px;cursor:pointer;opacity:.76;transform:scale(.97);box-shadow:inset 0 4px 7px rgba(255,255,255,.28),inset 0 -7px 12px rgba(0,0,0,.16),0 6px 0 rgba(15,23,42,.16),0 10px 18px rgba(15,23,42,.1);transition:filter .16s,transform .16s,opacity .16s,box-shadow .16s;display:grid;place-items:center}.sequence-pad span{font-weight:1000;font-size:clamp(1.4rem,5vw,2.2rem);color:rgba(15,23,42,.48);text-shadow:0 1px rgba(255,255,255,.35)}.sequence-pad:focus-visible{outline:4px solid var(--accent-color);outline-offset:4px}.sequence-pad.is-lit{opacity:1;filter:brightness(1.45) saturate(1.18);transform:scale(1.045);box-shadow:0 0 0 5px rgba(255,255,255,.55),0 0 30px var(--seq-glow),0 8px 0 rgba(15,23,42,.12)}.sequence-pad:disabled{cursor:default}.pad-white{background:#f8fafc}.pad-red{background:#ef4444}.pad-blue{background:#2563eb}.pad-yellow{background:#facc15}.pad-green{background:#16a34a}.pad-orange{background:#f97316}.sequence-instruction{min-height:28px;margin:19px 0 14px;color:var(--text-main);font-weight:750}.sequence-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}.sequence-secondary{padding:12px 18px;border:1px solid var(--border-color);border-radius:13px;background:var(--bg-card);color:var(--text-main);font-weight:800;cursor:pointer}.sequence-secondary:disabled{opacity:.45;cursor:not-allowed}.sequence-progress{height:7px;max-width:430px;margin:19px auto 0;border-radius:99px;background:var(--bg-body);overflow:hidden}.sequence-progress span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8b5cf6,#06b6d4,#22c55e);transition:width .2s}.sequence-help{max-width:560px;margin:15px auto 0;color:var(--text-sub);font-size:.88rem;line-height:1.55}body.modo-noche .sequence-shell{box-shadow:0 20px 55px rgba(0,0,0,.26)}body.modo-noche .sequence-cube{background:color-mix(in srgb,var(--bg-body) 85%,#0f172a)}@media(max-width:560px){.sequence-shell{border-radius:21px}.sequence-cube{gap:8px;padding:10px;border-radius:19px}.sequence-pad{border-width:3px;border-radius:13px}.sequence-topline{font-size:.78rem}.sequence-stats{gap:6px}.sequence-stats div{padding:9px 4px}}@media(prefers-reduced-motion:reduce){.sequence-pad,.sequence-progress span{transition:none!important}}
+</style>
+
+
+<style id="notation-game-styles">
+.notation-promo{border-color:color-mix(in srgb,#8b5cf6 35%,var(--border-color))}
+.notation-icon{background:linear-gradient(145deg,#8b5cf6,#06b6d4);color:#fff}
+.notation-shell{max-width:760px;margin:0 auto;padding:clamp(18px,4vw,32px);border:1px solid var(--border-color);border-radius:28px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,#8b5cf6 12%,transparent),transparent 42%),linear-gradient(145deg,var(--bg-card),var(--bg-subcard));box-shadow:0 20px 55px rgba(15,23,42,.1);text-align:center}
+.notation-topline{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px;color:var(--text-sub);font-size:.88rem;font-weight:750}
+.notation-best strong{color:var(--text-main);font-size:1.1rem}
+.notation-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+.notation-stats div{padding:11px;border:1px solid var(--border-color);border-radius:14px;background:var(--bg-card)}
+.notation-stats span{display:block;text-transform:uppercase;letter-spacing:.1em;font-size:.68rem;color:var(--text-sub);font-weight:800}
+.notation-stats strong{display:block;margin-top:3px;font-size:1.4rem;color:var(--text-main);font-variant-numeric:tabular-nums}
+.notation-question{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:190px;margin:0 auto 20px;padding:20px;border:1px solid var(--border-color);border-radius:20px;background:color-mix(in srgb,var(--bg-body) 65%,var(--bg-subcard))}
+.notation-label{font-size:.72rem;font-weight:900;letter-spacing:.12em;color:var(--text-sub)}
+.notation-question strong{font-family:monospace;font-size:clamp(4rem,12vw,6rem);line-height:1.1;color:var(--accent-color);text-shadow:0 5px 18px color-mix(in srgb,var(--accent-color) 20%,transparent)}
+.notation-question>span:last-child{font-size:.88rem;color:var(--text-sub)}
+.notation-options{display:grid;grid-template-columns:1fr 1fr;gap:11px;max-width:600px;margin:0 auto}
+.notation-option{min-height:70px;padding:13px;border:2px solid var(--border-color);border-radius:14px;background:var(--bg-card);color:var(--text-main);font:700 .94rem/1.4 inherit;cursor:pointer;transition:transform .16s,border-color .16s,background .16s}
+.notation-option:hover:not(:disabled){transform:translateY(-2px);border-color:var(--accent-color)}
+.notation-option:focus-visible{outline:3px solid var(--accent-color);outline-offset:3px}
+.notation-option:disabled{cursor:default;opacity:1}
+.notation-option.is-correct{border-color:#16a34a;background:color-mix(in srgb,#16a34a 13%,var(--bg-card));color:#15803d}
+.notation-option.is-wrong{border-color:#dc2626;background:color-mix(in srgb,#dc2626 12%,var(--bg-card));color:#dc2626}
+.notation-feedback{min-height:48px;display:grid;place-items:center;margin:16px auto 10px;padding:10px 14px;border-radius:12px;background:color-mix(in srgb,var(--accent-color) 7%,var(--bg-card));color:var(--text-sub);font-weight:700}
+.notation-feedback.good{color:#15803d;background:color-mix(in srgb,#16a34a 10%,var(--bg-card))}
+.notation-feedback.bad{color:#dc2626;background:color-mix(in srgb,#dc2626 9%,var(--bg-card))}
+.notation-progress{height:8px;margin:16px auto 20px;border-radius:99px;background:var(--bg-body);overflow:hidden}
+.notation-progress span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8b5cf6,#06b6d4,#22c55e);transition:width .25s}
+.notation-actions{display:flex;justify-content:center}
+.notation-result{margin:20px auto 0;padding:22px 16px;border:2px solid #16a34a;border-radius:17px;background:color-mix(in srgb,#16a34a 12%,var(--bg-card));color:var(--text-main)}
+.notation-result[hidden]{display:none}
+.notation-result strong{display:block;font-size:1.55rem;color:#15803d;margin-bottom:5px}
+.notation-result p{color:var(--text-sub);margin:0}
+.notation-help{margin:18px auto 0;padding:13px 15px;border-radius:12px;background:var(--bg-subcard);color:var(--text-sub);font-size:.86rem;line-height:1.6}
+body.modo-noche .notation-shell{box-shadow:0 20px 55px rgba(0,0,0,.26)}
+@media(max-width:560px){.notation-shell{border-radius:21px}.notation-options{gap:8px}.notation-option{min-height:76px;padding:9px;font-size:.84rem}.notation-topline{font-size:.78rem}.notation-stats{gap:6px}.notation-stats div{padding:9px 4px}}
+@media(prefers-reduced-motion:reduce){.notation-option,.notation-progress span{transition:none!important}}
+</style>
+
+<style id="extra-mini-games-style">
+.reflex-shell,.colorhunt-shell{max-width:760px;margin:28px auto 0;padding:clamp(18px,4vw,30px);border:1px solid var(--border-color);border-radius:22px;background:var(--bg-card);box-shadow:0 14px 38px rgba(20,35,60,.08);text-align:center}
+.reflex-topline,.colorhunt-topline{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--text-sub);font-size:.9rem;margin-bottom:22px}
+.reflex-topline strong,.colorhunt-topline strong{color:var(--text-main)}
+.reflex-stats,.colorhunt-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.reflex-stats>div,.colorhunt-stats>div{padding:12px 8px;border-radius:13px;background:var(--bg-subcard)}
+.reflex-stats span,.colorhunt-stats span{display:block;font-size:.78rem;color:var(--text-sub)}
+.reflex-stats strong,.colorhunt-stats strong{display:block;font-size:1.25rem;margin-top:4px;color:var(--text-main)}
+.reflex-target{width:100%;min-height:220px;border:0;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:white;cursor:pointer;transition:background .18s,transform .18s;background:#64748b}
+.reflex-target span{font-size:clamp(1.5rem,5vw,2.4rem);font-weight:850;letter-spacing:.03em}
+.reflex-target small{font-size:.9rem;opacity:.9}
+.reflex-target.is-idle{background:#64748b}.reflex-target.is-waiting{background:#c2410c}.reflex-target.is-ready{background:#16a34a}.reflex-target.is-result{background:#2563eb}
+.reflex-target:focus-visible,.colorhunt-grid button:focus-visible{outline:4px solid #f59e0b;outline-offset:4px}
+.reflex-feedback,.colorhunt-feedback{min-height:28px;margin:18px 0;color:var(--text-sub)}
+.reflex-result,.colorhunt-result{margin-top:18px;padding:16px;border-radius:14px;background:var(--bg-subcard);color:var(--text-main)}
+.reflex-result strong,.colorhunt-result strong{display:block;font-size:1.2rem;margin-bottom:5px}
+.colorhunt-target{display:flex;flex-direction:column;align-items:center;gap:8px;margin:8px auto 22px}
+.colorhunt-target span{font-size:.75rem;letter-spacing:.12em;font-weight:800;color:var(--texto-secundario,#64748b)}
+.colorhunt-target strong{display:grid;place-items:center;min-width:190px;min-height:78px;padding:12px 24px;border-radius:16px;background:#172033;color:#fff;font-size:clamp(1.5rem,5vw,2rem);text-transform:capitalize}
+.colorhunt-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.colorhunt-grid button{min-height:82px;border:3px solid rgba(20,30,50,.12);border-radius:15px;font-weight:800;font-size:1rem;cursor:pointer;transition:transform .15s,filter .15s}
+.colorhunt-grid button:hover:not(:disabled){transform:translateY(-3px);filter:brightness(1.05)}
+.colorhunt-grid button:disabled{cursor:default;opacity:.72}
+.hunt-white{background:#fff;color:#172033}.hunt-red{background:#dc2626;color:#fff}.hunt-blue{background:#2563eb;color:#fff}.hunt-yellow{background:#facc15;color:#172033}.hunt-green{background:#16a34a;color:#fff}.hunt-orange{background:#f97316;color:#172033}
+.colorhunt-progress{height:9px;border-radius:99px;background:var(--fondo-suave,#e8edf4);overflow:hidden;margin:15px 0 20px}
+.colorhunt-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,#2563eb,#16a34a);transition:width .25s}
+.reflex-promo .reflex-icon{background:linear-gradient(135deg,#f97316,#dc2626)}.colorhunt-promo .colorhunt-icon{background:linear-gradient(135deg,#0ea5e9,#16a34a)}
+@media(max-width:560px){.reflex-stats,.colorhunt-stats{gap:6px}.reflex-stats>div,.colorhunt-stats>div{padding:10px 4px}.reflex-target{min-height:180px}.colorhunt-grid{gap:8px}.colorhunt-grid button{min-height:70px;font-size:.88rem}}
+@media(prefers-reduced-motion:reduce){.reflex-target,.colorhunt-grid button,.colorhunt-progress span{transition:none}}
+</style>
+
+
+
+</head>
 <body>
 <div class="layout-grid">
 <!-- ==================== CABECERA CON CUBOS UNIFORMES ==================== -->
@@ -651,7 +788,240 @@ body.modo-noche .orbit-two{border-color:rgba(56,189,248,.32)}
 
 
 <footer class="home-signoff"><span>UN GIRO A LA VEZ.</span><p>Empieza por lo sencillo, disfruta del proceso y sigue mejorando.</p></footer>
+<div class="home-game-promo">
+  <div class="home-game-icon" aria-hidden="true">🎮</div>
+  <div class="home-game-copy">
+    <span class="home-kicker">HAZ UNA PAUSA Y JUEGA</span>
+    <h2>¿Aceptas el reto de los colores?</h2>
+    <p>Encuentra las seis parejas de colores del cubo en el menor número de intentos posible. ¡Pon a prueba tu memoria!</p>
+  </div>
+  <a class="home-game-link" href="#minijuego">Jugar Ahora <span aria-hidden="true">↗</span></a>
 </div>
+<div class="home-game-promo sequence-promo">
+  <div class="home-game-icon sequence-icon" aria-hidden="true">🧠</div>
+  <div class="home-game-copy">
+    <span class="home-kicker">MINIJUEGO · REFLEJOS Y MEMORIA</span>
+    <h2>¿Puedes repetir la secuencia?</h2>
+    <p>Memoriza los colores que se iluminan y repítelos en el orden correcto. Cada ronda añade un nuevo movimiento. ¿Hasta dónde llegarás?</p>
+  </div>
+  <a class="home-game-link" href="#minijuego-secuencia">Jugar Ahora <span aria-hidden="true">↗</span></a>
+</div>
+<div class="home-game-promo notation-promo">
+  <div class="home-game-icon notation-icon" aria-hidden="true">🔄</div>
+  <div class="home-game-copy">
+    <span class="home-kicker">MINIJUEGO · NOTACIÓN Y AGILIDAD</span>
+    <h2>¿Dominas la notación del cubo?</h2>
+    <p>Identifica el movimiento correcto para cada símbolo. Pon a prueba tus conocimientos de notación y consigue la máxima puntuación.</p>
+  </div>
+  <a class="home-game-link" href="#minijuego-notacion">Jugar Ahora <span aria-hidden="true">↗</span></a>
+</div>
+<div class="home-game-promo reflex-promo">
+  <div class="home-game-icon reflex-icon" aria-hidden="true">⚡</div>
+  <div class="home-game-copy">
+    <span class="home-kicker">MINIJUEGO · VELOCIDAD Y REFLEJOS</span>
+    <h2>Reto de reflejos</h2>
+    <p>Espera a que aparezca la señal y pulsa lo más rápido posible. Completa cinco rondas y comprueba tus tiempos.</p>
+  </div>
+  <a class="home-game-link" href="#minijuego-reflejos">Jugar Ahora <span aria-hidden="true">↗</span></a>
+</div>
+<div class="home-game-promo quiz-promo">
+  <div class="home-game-icon quiz-icon" aria-hidden="true">🏆</div>
+  <div class="home-game-copy">
+    <span class="home-kicker">MINIJUEGO · CULTURA CUBERA</span>
+    <h2>¿Cuánto sabes del mundo Rubik?</h2>
+    <p>Historia, campeonatos, leyendas del speedcubing y récords. Responde 10 preguntas y demuestra que eres un auténtico experto.</p>
+  </div>
+  <a class="home-game-link" href="#minijuego-trivial">Jugar Ahora <span aria-hidden="true">↗</span></a>
+</div>
+
+</div>
+</section>
+<!-- MINIJUEGO: MEMORIA DE COLORES -->
+<section class="seccion-pagina" id="minijuego">
+  <div class="mini-game-page">
+    <a class="mini-game-back" href="#inicio">← Volver al inicio</a>
+    <header class="mini-game-heading">
+      <span class="home-kicker">MINIJUEGO · CUBO DE RUBIK</span>
+      <h1 class="titulo-sec">Reto de memoria</h1>
+      <p>Encuentra las seis parejas de colores. Levanta dos fichas en cada turno e intenta completar el tablero con el menor número de movimientos.</p>
+    </header>
+    <div class="mini-game-shell">
+      <div class="mini-game-stats" aria-live="polite">
+        <div><span>Intentos</span><strong id="memoryMoves">0</strong></div>
+        <div><span>Parejas</span><strong id="memoryPairs">0 / 6</strong></div>
+        <div><span>Tiempo</span><strong id="memoryTime">00:00</strong></div>
+      </div>
+      <div class="memory-board" id="memoryBoard" aria-label="Tablero de doce fichas de memoria"></div>
+      <p class="memory-message" id="memoryMessage" aria-live="polite">Pulsa una ficha para empezar. ¡Busca las parejas!</p>
+      <div class="mini-game-actions">
+        <button type="button" class="memory-reset" id="memoryReset">Mezclar y volver a jugar</button>
+      </div>
+    </div>
+    <p class="mini-game-tip">Consejo: fíjate en la posición de cada color cuando las fichas estén descubiertas.</p>
+  </div>
+</section>
+<!-- MINIJUEGO 2: SECUENCIA DE COLORES -->
+<section class="seccion-pagina" id="minijuego-secuencia">
+  <div class="mini-game-page sequence-page">
+    <a class="mini-game-back" href="#inicio">← Volver al inicio</a>
+    <header class="mini-game-heading">
+      <span class="home-kicker">MINIJUEGO · REFLEJOS Y MEMORIA</span>
+      <h1 class="titulo-sec">Secuencia Rubik</h1>
+      <p>Observa cómo se iluminan las caras y repite la secuencia en el mismo orden. Cada ronda será un poco más larga. ¡No pierdas la concentración!</p>
+    </header>
+    <div class="sequence-shell">
+      <div class="sequence-topline"><span class="sequence-status" id="sequenceStatus" aria-live="polite">Preparado para jugar</span><span class="sequence-best">Récord: <strong id="sequenceBest">0</strong></span></div>
+      <div class="sequence-stats" aria-live="polite"><div><span>Ronda</span><strong id="sequenceRound">0</strong></div><div><span>Secuencia</span><strong id="sequenceLength">0</strong></div><div><span>Fallos</span><strong id="sequenceErrors">0</strong></div></div>
+      <div class="sequence-cube" id="sequenceCube" aria-label="Panel de seis colores">
+        <button class="sequence-pad pad-white" data-pad="0" aria-label="Blanco"><span>W</span></button><button class="sequence-pad pad-red" data-pad="1" aria-label="Rojo"><span>R</span></button><button class="sequence-pad pad-blue" data-pad="2" aria-label="Azul"><span>B</span></button><button class="sequence-pad pad-yellow" data-pad="3" aria-label="Amarillo"><span>Y</span></button><button class="sequence-pad pad-green" data-pad="4" aria-label="Verde"><span>G</span></button><button class="sequence-pad pad-orange" data-pad="5" aria-label="Naranja"><span>O</span></button>
+      </div>
+      <p class="sequence-instruction" id="sequenceInstruction">Pulsa «Empezar» y memoriza la secuencia.</p>
+      <div class="sequence-actions"><button type="button" class="memory-reset" id="sequenceStart">Empezar partida</button><button type="button" class="sequence-secondary" id="sequenceReplay" disabled>Repetir secuencia</button></div>
+      <div class="sequence-progress" aria-label="Progreso de la respuesta"><span id="sequenceProgress"></span></div>
+      <p class="sequence-help">Primero observa; después pulsa los colores en el mismo orden. Si te equivocas, podrás intentarlo otra vez, pero sumarás un fallo.</p>
+    </div>
+  </div>
+</section>
+<!-- MINIJUEGO 3: MAESTRO DE LA NOTACIÓN -->
+<section class="seccion-pagina" id="minijuego-notacion">
+  <div class="mini-game-page notation-page">
+    <a class="mini-game-back" href="#inicio">← Volver al inicio</a>
+    <header class="mini-game-heading">
+      <span class="home-kicker">MINIJUEGO · NOTACIÓN Y AGILIDAD</span>
+      <h1 class="titulo-sec">Maestro de la notación</h1>
+      <p>Lee el movimiento y elige su significado. Tienes 10 preguntas para demostrar cuánto sabes de notación del cubo de Rubik.</p>
+    </header>
+    <div class="notation-shell">
+      <div class="notation-topline">
+        <span id="notationStatus" aria-live="polite">¡Prepárate para el reto!</span>
+        <span class="notation-best">Récord: <strong id="notationBest">0/10</strong></span>
+      </div>
+      <div class="notation-stats" aria-live="polite">
+        <div><span>Pregunta</span><strong id="notationRound">0/10</strong></div>
+        <div><span>Aciertos</span><strong id="notationScore">0</strong></div>
+        <div><span>Racha</span><strong id="notationStreak">0 🔥</strong></div>
+      </div>
+      <div class="notation-question">
+        <span class="notation-label">¿QUÉ SIGNIFICA ESTE MOVIMIENTO?</span>
+        <strong id="notationMove">R</strong>
+        <span id="notationHint">Selecciona la respuesta correcta</span>
+      </div>
+      <div class="notation-options" id="notationOptions">
+        <button type="button" class="notation-option" disabled>Opción 1</button>
+        <button type="button" class="notation-option" disabled>Opción 2</button>
+        <button type="button" class="notation-option" disabled>Opción 3</button>
+        <button type="button" class="notation-option" disabled>Opción 4</button>
+      </div>
+      <p class="notation-feedback" id="notationFeedback" aria-live="polite">Pulsa «Empezar reto» cuando estés listo.</p>
+      <div class="notation-progress"><span id="notationProgress"></span></div>
+      <div class="notation-actions">
+        <button type="button" class="memory-reset" id="notationStart">Empezar reto</button>
+      </div>
+      <div class="notation-result" id="notationResult" hidden aria-live="polite"></div>
+      <p class="notation-help">Recuerda: sin símbolo adicional significa giro horario (90°), el apóstrofo (') indica giro antihorario y el 2 indica medio giro (180°). El sentido se interpreta mirando directamente la cara que gira.</p>
+    </div>
+  </div>
+</section>
+<!-- MINIJUEGO 4: RETO DE REFLEJOS -->
+<section class="seccion-pagina" id="minijuego-reflejos">
+  <div class="mini-game-page reflex-page">
+    <a class="mini-game-back" href="#inicio">← Volver al inicio</a>
+    <header class="mini-game-heading">
+      <span class="home-kicker">MINIJUEGO · VELOCIDAD Y REFLEJOS</span>
+      <h1 class="titulo-sec">Reto de reflejos</h1>
+      <p>Inicia la ronda y espera a que el panel cambie a verde. Pulsa tan rápido como puedas: si te adelantas, tendrás que repetir la ronda.</p>
+    </header>
+    <div class="reflex-shell">
+      <div class="reflex-topline"><span id="reflexStatus" aria-live="polite">¿Preparado para reaccionar?</span><span>Récord: <strong id="reflexBest">—</strong></span></div>
+      <div class="reflex-stats">
+        <div><span>Ronda</span><strong id="reflexRound">0/5</strong></div>
+        <div><span>Último tiempo</span><strong id="reflexLast">—</strong></div>
+        <div><span>Media</span><strong id="reflexAverage">—</strong></div>
+      </div>
+      <button type="button" class="reflex-target is-idle" id="reflexTarget">
+        <span id="reflexTargetTitle">Pulsa para empezar</span>
+        <small id="reflexTargetHint">No pulses hasta que aparezca VERDE</small>
+      </button>
+      <p class="reflex-feedback" id="reflexFeedback" aria-live="polite">Cinco rondas. ¡Intenta conseguir el menor tiempo medio!</p>
+      <button type="button" class="memory-reset" id="reflexStart">Empezar reto</button>
+      <div class="reflex-result" id="reflexResult" hidden aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<style id="rubik-quiz-styles">
+.quiz-promo .quiz-icon{background:linear-gradient(135deg,#7c3aed,#2563eb)}
+.quiz-shell{width:min(100%,820px);margin:28px auto 0;padding:clamp(18px,3vw,30px);border:1px solid var(--border-color);border-radius:24px;background:var(--bg-card);box-shadow:0 18px 50px rgba(0,0,0,.09);color:var(--text-main)}
+.quiz-topline{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--text-sub);font-size:.92rem;font-weight:700;flex-wrap:wrap}
+.quiz-best strong{color:var(--text-main);font-variant-numeric:tabular-nums}
+.quiz-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.quiz-stats>div{padding:13px 10px;text-align:center;border-radius:14px;background:var(--bg-subcard);border:1px solid var(--border-color)}
+.quiz-stats span{display:block;color:var(--text-sub);font-size:.78rem;margin-bottom:5px}
+.quiz-stats strong{font-size:1.35rem;color:var(--text-main);font-variant-numeric:tabular-nums}
+.quiz-progress{height:9px;border-radius:99px;background:var(--bg-subcard);overflow:hidden;margin:0 0 22px}
+.quiz-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#7c3aed,#06b6d4);border-radius:inherit;transition:width .3s ease}
+.quiz-question-card{position:relative;padding:clamp(20px,4vw,32px);border-radius:19px;background:var(--bg-subcard);border:1px solid var(--border-color);min-height:190px;display:flex;flex-direction:column;justify-content:center}
+.quiz-category{font-size:.72rem;letter-spacing:.12em;font-weight:900;color:#8b5cf6}
+.quiz-question-number{position:absolute;right:20px;top:16px;font-size:2rem;opacity:.12;color:var(--text-main)}
+.quiz-question-card h2{font-size:clamp(1.15rem,2.5vw,1.55rem);line-height:1.35;margin:15px 0 0;color:var(--text-main)}
+.quiz-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:17px 0}
+.quiz-option{font:inherit;text-align:left;padding:15px 16px;min-height:62px;border-radius:13px;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-main);cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+.quiz-option:not(:disabled):hover{transform:translateY(-2px);border-color:#8b5cf6}
+.quiz-option:disabled{cursor:default;opacity:1}
+.quiz-option.is-correct{border-color:#16a34a;background:rgba(22,163,74,.13);color:var(--text-main)}
+.quiz-option.is-wrong{border-color:#dc2626;background:rgba(220,38,38,.12);color:var(--text-main)}
+.quiz-feedback{min-height:58px;padding:14px 16px;border-radius:13px;background:var(--bg-subcard);border:1px solid var(--border-color);color:var(--text-sub);line-height:1.5}
+.quiz-feedback.good{border-color:rgba(22,163,74,.55);color:var(--text-main)}
+.quiz-feedback.bad{border-color:rgba(220,38,38,.55);color:var(--text-main)}
+.quiz-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:17px}
+.quiz-next{border:1px solid var(--border-color);border-radius:12px;padding:12px 20px;background:var(--bg-subcard);color:var(--text-main);font:inherit;font-weight:800;cursor:pointer}
+.quiz-next:disabled{opacity:.45;cursor:not-allowed}
+.quiz-result{margin-top:18px;padding:22px;border-radius:16px;text-align:center;background:var(--bg-subcard);border:1px solid var(--border-color);color:var(--text-main)}
+.quiz-result strong{font-size:1.35rem;display:block;margin-bottom:8px}
+.quiz-result p{margin:6px 0;color:var(--text-sub);line-height:1.5}
+.quiz-footnote{margin:17px 0 0;color:var(--text-sub);font-size:.82rem;line-height:1.5}
+@media(max-width:560px){.quiz-options{grid-template-columns:1fr}.quiz-stats{gap:7px}.quiz-stats>div{padding:11px 5px}.quiz-stats strong{font-size:1.15rem}.quiz-shell{padding:15px;border-radius:18px}}
+</style>
+<!-- MINIJUEGO 5: TRIVIAL DEL CUBO DE RUBIK -->
+<section class="seccion-pagina" id="minijuego-trivial">
+  <div class="mini-game-page quiz-page">
+    <a class="mini-game-back" href="#inicio">← Volver al inicio</a>
+    <header class="mini-game-heading">
+      <span class="home-kicker">MINIJUEGO 5 · HISTORIA, COMPETICIÓN Y RÉCORDS</span>
+      <h1 class="titulo-sec">Trivial del universo Rubik</h1>
+      <p>Diez preguntas aleatorias sobre la historia del cubo, la WCA, las competiciones y los grandes nombres del speedcubing. ¿Cuántas puedes acertar?</p>
+    </header>
+    <div class="quiz-shell">
+      <div class="quiz-topline">
+        <span id="rubikQuizStatus" aria-live="polite">¿Preparado para el desafío?</span>
+        <span class="quiz-best">Récord: <strong id="rubikQuizBest">0/10</strong></span>
+      </div>
+      <div class="quiz-stats">
+        <div><span>Pregunta</span><strong id="rubikQuizRound">0/10</strong></div>
+        <div><span>Aciertos</span><strong id="rubikQuizScore">0</strong></div>
+        <div><span>Racha</span><strong id="rubikQuizStreak">0 🔥</strong></div>
+      </div>
+      <div class="quiz-progress" aria-label="Progreso del cuestionario"><span id="rubikQuizProgress"></span></div>
+      <div class="quiz-question-card">
+        <span class="quiz-category" id="rubikQuizCategory">HISTORIA DEL CUBO</span>
+        <strong class="quiz-question-number" id="rubikQuizNumber">01</strong>
+        <h2 id="rubikQuizQuestion">Pulsa «Empezar» para poner a prueba tus conocimientos.</h2>
+      </div>
+      <div class="quiz-options" id="rubikQuizOptions">
+        <button type="button" class="quiz-option" disabled>Respuesta A</button>
+        <button type="button" class="quiz-option" disabled>Respuesta B</button>
+        <button type="button" class="quiz-option" disabled>Respuesta C</button>
+        <button type="button" class="quiz-option" disabled>Respuesta D</button>
+      </div>
+      <div class="quiz-feedback" id="rubikQuizFeedback" aria-live="polite">Tendrás una explicación después de cada respuesta.</div>
+      <div class="quiz-actions">
+        <button type="button" class="memory-reset" id="rubikQuizStart">Empezar trivial</button>
+        <button type="button" class="quiz-next" id="rubikQuizNext" disabled>Siguiente pregunta →</button>
+      </div>
+      <div class="quiz-result" id="rubikQuizResult" hidden aria-live="polite"></div>
+      <p class="quiz-footnote">El trivial utiliza datos históricos y marcas oficiales conocidas. Los récords evolucionan con cada competición; por eso las preguntas sobre tiempos indican siempre el año y el contexto.</p>
+    </div>
+  </div>
 </section>
 <!-- SECCIÓN: TIMER SPEEDCUBING COMPLETO -->
 <section class="seccion-pagina" id="timer">
@@ -9102,5 +9472,235 @@ body.modo-noche .orbit-two{border-color:rgba(56,189,248,.32)}
 
         actualizarScramble();
     </script>
+
+<script>
+(() => {
+  const board = document.getElementById('memoryBoard');
+  if (!board) return;
+  const movesEl = document.getElementById('memoryMoves');
+  const pairsEl = document.getElementById('memoryPairs');
+  const timeEl = document.getElementById('memoryTime');
+  const messageEl = document.getElementById('memoryMessage');
+  const resetBtn = document.getElementById('memoryReset');
+  const colors = [
+    {name:'Blanco',hex:'#f8fafc'}, {name:'Amarillo',hex:'#facc15'},
+    {name:'Rojo',hex:'#ef4444'}, {name:'Naranja',hex:'#f97316'},
+    {name:'Azul',hex:'#2563eb'}, {name:'Verde',hex:'#16a34a'}
+  ];
+  let first = null, locked = false, moves = 0, pairs = 0, seconds = 0, clock = null, started = false;
+  let deck = [];
+  function formatTime(n){return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
+  function shuffle(items){
+    for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}
+    return items;
+  }
+  function startClock(){if(started)return;started=true;clock=setInterval(()=>{seconds++;timeEl.textContent=formatTime(seconds);},1000);}
+  function reveal(card){card.classList.add('is-open');card.innerHTML='<span class="memory-color" style="background:'+colors[Number(card.dataset.color)].hex+'" role="img" aria-label="'+colors[Number(card.dataset.color)].name+'"></span>';}
+  function conceal(card){card.classList.remove('is-open');card.innerHTML='<span class="memory-question" aria-hidden="true">?</span>';}
+  function choose(card){
+    if(locked||card.disabled||card===first||card.classList.contains('is-open'))return;
+    startClock();reveal(card);
+    if(!first){first=card;return;}
+    moves++;movesEl.textContent=moves;
+    if(first.dataset.color===card.dataset.color){
+      first.disabled=true;card.disabled=true;first.classList.add('is-matched');card.classList.add('is-matched');pairs++;pairsEl.textContent=pairs+' / 6';first=null;
+      if(pairs===6){
+        clearInterval(clock);
+        messageEl.textContent='¡Reto completado! '+moves+' intentos en '+formatTime(seconds)+'. ¡Buen trabajo!';
+        showVictory();
+      }
+      else messageEl.textContent='¡Pareja encontrada! Sigue así.';
+    }else{
+      locked=true;const previous=first;first=null;messageEl.textContent='No coinciden. Prueba con otras dos fichas.';
+      setTimeout(()=>{conceal(previous);conceal(card);locked=false;},850);
+    }
+  }
+  function showVictory(){
+    let panel=document.getElementById('memoryVictory');
+    if(!panel){
+      panel=document.createElement('div');panel.id='memoryVictory';panel.className='memory-victory';panel.hidden=true;panel.setAttribute('role','status');panel.setAttribute('aria-live','polite');
+      panel.innerHTML='<div class="memory-confetti" aria-hidden="true"></div><div class="memory-victory-cube" aria-hidden="true">🏆</div><h2>¡Lo has conseguido!</h2><p>Has encontrado las 6 parejas en <strong class="memory-victory-result"></strong>.</p>';
+      board.insertAdjacentElement('afterend',panel);
+    }
+    const result=panel.querySelector('.memory-victory-result');
+    result.textContent=moves+' intentos · '+formatTime(seconds);
+    const confetti=panel.querySelector('.memory-confetti');confetti.innerHTML='';
+    const palette=['#0ea5e9','#14b8a6','#facc15','#f97316','#ef4444','#8b5cf6','#22c55e'];
+    for(let i=0;i<42;i++){
+      const piece=document.createElement('i');
+      piece.style.setProperty('--x',(Math.random()*100)+'%');
+      piece.style.setProperty('--w',(5+Math.random()*6)+'px');
+      piece.style.setProperty('--h',(8+Math.random()*9)+'px');
+      piece.style.setProperty('--c',palette[i%palette.length]);
+      piece.style.setProperty('--dur',(1.8+Math.random()*1.5)+'s');
+      piece.style.setProperty('--delay',(Math.random()*.65)+'s');
+      piece.style.setProperty('--rot',(Math.random()*180)+'deg');
+      piece.style.setProperty('--drift',((Math.random()-.5)*150)+'px');
+      confetti.appendChild(piece);
+    }
+    panel.hidden=false;
+    panel.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
+  }
+  function newGame(){
+    const victory=document.getElementById('memoryVictory');if(victory)victory.hidden=true;
+    if(clock)clearInterval(clock);first=null;locked=false;moves=0;pairs=0;seconds=0;started=false;clock=null;
+    movesEl.textContent='0';pairsEl.textContent='0 / 6';timeEl.textContent='00:00';messageEl.textContent='Pulsa una ficha para empezar. ¡Busca las parejas!';
+    deck=shuffle([...Array(6).keys(),...Array(6).keys()]);board.innerHTML='';
+    deck.forEach((color,index)=>{const card=document.createElement('button');card.type='button';card.className='memory-card';card.dataset.color=String(color);card.setAttribute('aria-label','Ficha '+(index+1)+', oculta');card.innerHTML='<span class="memory-question" aria-hidden="true">?</span>';card.addEventListener('click',()=>choose(card));board.appendChild(card);});
+  }
+  resetBtn.addEventListener('click',newGame);newGame();
+})();
+</script>
+
+<script id="sequence-game-script">
+(()=>{
+ const root=document.getElementById('minijuego-secuencia');if(!root)return;
+ const pads=[...root.querySelectorAll('.sequence-pad')],status=root.querySelector('#sequenceStatus'),roundEl=root.querySelector('#sequenceRound'),lengthEl=root.querySelector('#sequenceLength'),errorsEl=root.querySelector('#sequenceErrors'),bestEl=root.querySelector('#sequenceBest'),instruction=root.querySelector('#sequenceInstruction'),startBtn=root.querySelector('#sequenceStart'),replayBtn=root.querySelector('#sequenceReplay'),progress=root.querySelector('#sequenceProgress');
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;let sequence=[],input=[],round=0,errors=0,active=false,showing=false,runToken=0;
+ let best=0;try{best=Number(localStorage.getItem('rubikSequenceBest')||0)}catch(e){}bestEl.textContent=best;
+ const wait=ms=>new Promise(r=>setTimeout(r,reduce?Math.min(ms,180):ms));
+ function light(i,on){pads[i].classList.toggle('is-lit',on)}
+ async function flash(i,token){if(token!==runToken)return;light(i,true);await wait(440);light(i,false);await wait(150)}
+ async function playSequence(){if(showing||!sequence.length)return;showing=true;active=false;input=[];progress.style.width='0%';status.textContent='Observa la secuencia';instruction.textContent='Memoriza los colores iluminados…';pads.forEach(p=>p.disabled=true);replayBtn.disabled=true;const token=runToken;await wait(450);for(const i of sequence){await flash(i,token);if(token!==runToken)return}showing=false;active=true;pads.forEach(p=>p.disabled=false);status.textContent='¡Tu turno!';instruction.textContent='Repite la secuencia en el mismo orden.';replayBtn.disabled=false}
+ function update(){roundEl.textContent=round;lengthEl.textContent=sequence.length;errorsEl.textContent=errors}
+ function nextRound(){round++;sequence.push(Math.floor(Math.random()*6));update();playSequence()}
+ function start(){runToken++;sequence=[];input=[];round=0;errors=0;active=false;showing=false;root.querySelectorAll('.sequence-game-over,.sequence-game-win').forEach(panel=>panel.hidden=true);pads.forEach(p=>{p.disabled=true;p.classList.remove('is-lit')});update();status.textContent='Preparando…';startBtn.textContent='Reiniciar partida';nextRound()}
+ function showVictory(){
+   let panel=root.querySelector('.sequence-game-win');
+   if(!panel){panel=document.createElement('div');panel.className='sequence-game-win';panel.setAttribute('role','status');panel.setAttribute('aria-live','polite');panel.innerHTML='<strong>🏆 ¡Victoria! ¡Has llegado a 20!</strong><span>Has completado la secuencia de 20 colores. ¡Enhorabuena, tienes una memoria increíble!</span>';root.querySelector('.sequence-shell').appendChild(panel)}
+   panel.hidden=false;active=false;showing=false;pads.forEach(p=>p.disabled=true);replayBtn.disabled=true;status.textContent='¡Desafío completado!';instruction.textContent='Has alcanzado el límite de 20. ¡Lo has conseguido!';startBtn.textContent='Jugar otra vez';
+ }
+ function showGameOver(){
+   let panel=root.querySelector('.sequence-game-over');
+   if(!panel){panel=document.createElement('div');panel.className='sequence-game-over';panel.setAttribute('role','alert');panel.setAttribute('aria-live','assertive');panel.innerHTML='<strong>¡Has perdido!</strong><span>La secuencia no era correcta. La partida se reiniciará…</span>';root.querySelector('.sequence-shell').appendChild(panel)}
+   panel.hidden=false;
+   runToken++;active=false;showing=false;pads.forEach(p=>{p.disabled=true;p.classList.remove('is-lit')});replayBtn.disabled=true;
+   setTimeout(()=>{panel.hidden=true;sequence=[];input=[];round=0;errors=0;progress.style.width='0%';update();status.textContent='Partida reiniciada';instruction.textContent='Pulsa «Empezar partida» para volver a jugar.';startBtn.textContent='Empezar partida';},1500);
+ }
+ function choose(i){if(!active||showing)return;const expected=sequence[input.length];if(i!==expected){errors++;update();status.textContent='¡Has perdido!';instruction.textContent='Respuesta incorrecta.';showGameOver();return}input.push(i);flash(i,runToken);progress.style.width=(input.length/sequence.length*100)+'%';if(input.length===sequence.length){active=false;pads.forEach(p=>p.disabled=true);status.textContent='¡Ronda superada!';instruction.textContent='Muy bien. Preparando la siguiente ronda…';if(round>best){best=round;bestEl.textContent=best;try{localStorage.setItem('rubikSequenceBest',String(best))}catch(e){}}const completedToken=runToken;setTimeout(()=>{if(completedToken!==runToken)return;if(round>=20){showVictory();return}nextRound()},850)}}
+ pads.forEach(p=>{p.disabled=true;p.addEventListener('click',()=>choose(Number(p.dataset.pad)))});startBtn.addEventListener('click',start);replayBtn.addEventListener('click',()=>{if(!showing&&sequence.length)playSequence()});
+})();
+</script>
+
+
+<script id="notation-game-script">
+(()=>{
+ const root=document.getElementById('minijuego-notacion');if(!root)return;
+ const $=id=>root.querySelector('#'+id);
+ const moveEl=$('notationMove'),hint=$('notationHint'),optionsEl=$('notationOptions'),feedback=$('notationFeedback'),startBtn=$('notationStart'),progress=$('notationProgress'),result=$('notationResult');
+ const roundEl=$('notationRound'),scoreEl=$('notationScore'),streakEl=$('notationStreak'),status=$('notationStatus'),bestEl=$('notationBest');
+ const faces=[['R','derecha'],['L','izquierda'],['U','superior'],['D','inferior'],['F','frontal'],['B','trasera']];
+ const directions=[['','horario'],["'",'antihorario'],['2','doble (180°)']];
+ const all=faces.flatMap(([letter,name])=>directions.map(([suffix,direction])=>({move:letter+suffix,answer:'Cara '+name+' · giro '+direction})));
+ let questions=[],index=0,score=0,streak=0,locked=true,best=0;
+ try{best=Number(localStorage.getItem('rubikNotationBest')||0)}catch(e){}
+ bestEl.textContent=best+'/10';
+ const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+ function update(){roundEl.textContent=index+'/10';scoreEl.textContent=score;streakEl.textContent=streak+' 🔥';progress.style.width=(index/10*100)+'%'}
+ function ask(){
+  if(index>=10){finish();return}
+  locked=false;const q=questions[index],choices=shuffle([q,...shuffle(all.filter(x=>x.answer!==q.answer)).slice(0,3)]);
+  moveEl.textContent=q.move;hint.textContent='Selecciona la descripción correcta';feedback.textContent='Elige una de las cuatro respuestas.';feedback.className='notation-feedback';
+  optionsEl.innerHTML='';
+  choices.forEach(choice=>{const b=document.createElement('button');b.type='button';b.className='notation-option';b.textContent=choice.answer;b.addEventListener('click',()=>answer(choice,q,b));optionsEl.appendChild(b)});
+  status.textContent='Pregunta '+(index+1)+' de 10';update();
+ }
+ function answer(choice,q,button){
+  if(locked)return;locked=true;
+  const buttons=[...optionsEl.querySelectorAll('button')];
+  buttons.forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add('is-correct')});
+  if(choice.answer===q.answer){score++;streak++;feedback.textContent='¡Correcto! '+q.move+' significa '+q.answer+'.';feedback.className='notation-feedback good'}
+  else{streak=0;button.classList.add('is-wrong');feedback.textContent='¡Casi! La respuesta correcta era: '+q.answer+'.';feedback.className='notation-feedback bad'}
+  index++;update();progress.style.width=(index/10*100)+'%';
+  setTimeout(ask,1050);
+ }
+ function finish(){
+  locked=true;status.textContent='Reto terminado';startBtn.textContent='Volver a jugar';
+  const record=score>best;if(record){best=score;bestEl.textContent=best+'/10';try{localStorage.setItem('rubikNotationBest',String(best))}catch(e){}}
+  result.innerHTML='<strong>'+(score>=8?'🏆 ¡Excelente trabajo!':score>=5?'👏 ¡Buen intento!':'💪 ¡Sigue practicando!')+'</strong><p>Has conseguido '+score+' de 10 aciertos.'+(record?' ¡Nuevo récord personal!':'')+'</p>';
+  result.hidden=false;feedback.textContent='Has completado las diez preguntas.';progress.style.width='100%';
+ }
+ function start(){
+  questions=shuffle([...all]).slice(0,10);index=0;score=0;streak=0;locked=true;result.hidden=true;startBtn.textContent='Reiniciar reto';update();ask();
+ }
+ startBtn.addEventListener('click',start);
+})();
+</script>
+
+<script id="reflex-game-script">
+(()=>{
+ const root=document.getElementById('minijuego-reflejos');if(!root)return;
+ const $=id=>root.querySelector('#'+id),target=$('reflexTarget'),title=$('reflexTargetTitle'),hint=$('reflexTargetHint');
+ const status=$('reflexStatus'),roundEl=$('reflexRound'),lastEl=$('reflexLast'),avgEl=$('reflexAverage'),bestEl=$('reflexBest'),feedback=$('reflexFeedback'),startBtn=$('reflexStart'),result=$('reflexResult');
+ let state='idle',round=0,times=[],timer=null,startedAt=0,delayTimer=null,best=null;
+ try{const v=Number(localStorage.getItem('rubikReflexBest'));if(v>0)best=v}catch(e){}
+ const fmt=n=>n===null?'—':Math.round(n)+' ms';bestEl.textContent=fmt(best);
+ function clearTimers(){clearTimeout(timer);clearTimeout(delayTimer)}
+ function update(){roundEl.textContent=round+'/5';lastEl.textContent=fmt(times.length?times[times.length-1]:null);avgEl.textContent=fmt(times.length?times.reduce((a,b)=>a+b,0)/times.length:null)}
+ function setPanel(cls,t,h){target.className='reflex-target '+cls;title.textContent=t;hint.textContent=h}
+ function schedule(){state='waiting';setPanel('is-waiting','Espera…','No pulses todavía');status.textContent='Concéntrate…';feedback.textContent='La señal aparecerá en cualquier momento.';delayTimer=setTimeout(()=>{if(state!=='waiting')return;state='ready';startedAt=performance.now();setPanel('is-ready','¡VERDE! ¡PULSA!','Haz clic ahora');status.textContent='¡Ahora!'},1200+Math.random()*2800)}
+ function start(){clearTimers();round=0;times=[];state='idle';result.hidden=true;update();startBtn.textContent='Reiniciar reto';schedule()}
+ function finish(){state='finished';setPanel('is-result','¡Reto completado!','Cinco tiempos registrados');const avg=times.reduce((a,b)=>a+b,0)/times.length;let record=best===null||avg<best;if(record){best=avg;bestEl.textContent=fmt(best);try{localStorage.setItem('rubikReflexBest',String(best))}catch(e){}}result.innerHTML='<strong>Media: '+fmt(avg)+'</strong><span>'+(record?'¡Nuevo récord personal!':'Tu mejor media sigue siendo '+fmt(best)+'.')+'</span>';result.hidden=false;status.textContent='Partida terminada';feedback.textContent='¡Buen trabajo! ¿Puedes mejorar tu tiempo?';startBtn.textContent='Jugar otra vez'}
+ target.addEventListener('click',()=>{if(state==='idle'){start();return}if(state==='waiting'){clearTimers();state='idle';setPanel('is-idle','¡Demasiado pronto!','Espera a que aparezca VERDE');feedback.textContent='Te has adelantado. Esta ronda no cuenta; vuelve a empezar.';status.textContent='Falsa salida';return}if(state==='ready'){const ms=performance.now()-startedAt;times.push(ms);round++;update();state='result';setPanel('is-result',fmt(ms),'Tiempo de reacción');feedback.textContent='Ronda '+round+' de 5 completada.';if(round>=5){finish()}else{delayTimer=setTimeout(schedule,950)}}});
+ startBtn.addEventListener('click',start);update();
+})();
+</script>
+
+
+
+<script id="rubik-quiz-script">
+(()=>{
+ const root=document.getElementById('minijuego-trivial');if(!root)return;
+ const $=id=>root.querySelector('#'+id);
+ const status=$('rubikQuizStatus'),bestEl=$('rubikQuizBest'),roundEl=$('rubikQuizRound'),scoreEl=$('rubikQuizScore'),streakEl=$('rubikQuizStreak'),progress=$('rubikQuizProgress'),category=$('rubikQuizCategory'),number=$('rubikQuizNumber'),question=$('rubikQuizQuestion'),options=$('rubikQuizOptions'),feedback=$('rubikQuizFeedback'),startBtn=$('rubikQuizStart'),nextBtn=$('rubikQuizNext'),result=$('rubikQuizResult');
+ const bank=[
+  {c:'HISTORIA',q:'¿En qué año creó Ernő Rubik el prototipo de su famoso cubo?',a:['1974','1979','1982','1968'],k:0,e:'Ernő Rubik desarrolló el rompecabezas en 1974 mientras enseñaba diseño en Budapest.'},
+  {c:'HISTORIA',q:'¿Cómo se llamó originalmente el rompecabezas antes de adoptar el nombre de Rubik?',a:['Cubo mágico','Cubo húngaro','Cubo de colores','Bloque espacial'],k:0,e:'Se conoció inicialmente como «Cubo mágico» (Bűvös kocka). El nombre Rubik’s Cube se popularizó con su lanzamiento internacional en 1980.'},
+  {c:'HISTORIA',q:'¿En qué ciudad se celebró el primer Campeonato del Mundo de Rubik en 1982?',a:['Budapest','Nueva York','Londres','Tokio'],k:0,e:'El primer mundial tuvo lugar en Budapest, Hungría, el 5 de junio de 1982.'},
+  {c:'COMPETICIONES',q:'¿Quién ganó el Campeonato del Mundo de 1982 con una resolución de 22,95 segundos?',a:['Minh Thai','Jessica Fridrich','Ernő Rubik','Guus Razoux Schultz'],k:0,e:'Minh Thai, representante de Estados Unidos, ganó con 22,95 segundos: el primer récord mundial oficial de 3×3 registrado en aquel campeonato.'},
+  {c:'COMPETICIONES',q:'¿En qué año se fundó la World Cube Association (WCA)?',a:['2004','1996','2001','2010'],k:0,e:'La WCA se formó en agosto de 2004 para unificar reglas, homologar resultados y coordinar competiciones oficiales.'},
+  {c:'COMPETICIONES',q:'En una media estándar de 5 resoluciones (Ao5), ¿qué se hace con los dos tiempos extremos?',a:['Se descartan el mejor y el peor','Se descartan los dos del medio','Se suman y se dividen entre cinco','Solo cuenta el mejor'],k:0,e:'En el Ao5 se elimina el mejor y el peor tiempo; la media se calcula con los tres resultados restantes.'},
+  {c:'MÉTODOS Y TÉCNICA',q:'¿Qué método popular de speedcubing debe su nombre a Jessica Fridrich?',a:['CFOP','Roux','ZZ','Petrus'],k:0,e:'CFOP también es conocido como método Fridrich. Sus fases son Cross, F2L, OLL y PLL.'},
+  {c:'LEYENDAS',q:'¿De qué país es el conocido speedcuber Feliks Zemdegs?',a:['Australia','Estados Unidos','Polonia','China'],k:0,e:'Feliks Zemdegs es australiano y ha sido una de las grandes figuras de la historia moderna del speedcubing.'},
+  {c:'LEYENDAS',q:'¿Qué cubero estadounidense es famoso por sus numerosos récords y por resolver cubos de gran tamaño a velocidad extraordinaria?',a:['Max Park','Minh Thai','Ron van Bruchem','Tymon Kolasiński'],k:0,e:'Max Park es uno de los speedcubers más laureados, especialmente conocido por sus resultados en 3×3 y cubos grandes.'},
+  {c:'RÉCORDS',q:'¿Quién consiguió el récord mundial oficial de 3×3 en 3,47 segundos en 2018?',a:['Yusheng Du','Feliks Zemdegs','Max Park','Minh Thai'],k:0,e:'Yusheng Du logró 3,47 segundos en Wuhu Open 2018, rebajando el récord que entonces tenía Feliks Zemdegs.'},
+  {c:'COMPETICIONES',q:'¿Cada cuánto tiempo suele celebrarse el Campeonato del Mundo de la WCA?',a:['Cada dos años','Cada año','Cada cuatro años','Cada seis meses'],k:0,e:'La WCA organiza el campeonato mundial, por norma general, cada dos años.'},
+  {c:'CUBOS Y EVENTOS',q:'¿Cuál de estas pruebas oficiales de la WCA consiste en resolver el cubo con los ojos vendados?',a:['3×3×3 a ciegas','Pyraminx a ciegas','Megaminx a ciegas','Square-1 a ciegas'],k:0,e:'3×3×3 Blindfolded es una prueba oficial: el competidor memoriza el cubo y después lo resuelve con los ojos cubiertos.'},
+  {c:'HISTORIA',q:'¿En qué década se produjo el gran auge comercial inicial del cubo a nivel mundial?',a:['Años 80','Años 60','Años 90','Años 2000'],k:0,e:'El cubo se lanzó internacionalmente en 1980 y se convirtió en un fenómeno mundial durante los primeros años de esa década.'},
+  {c:'LEYENDAS',q:'¿Quién fue uno de los cofundadores de la WCA junto a Tyson Mao?',a:['Ron van Bruchem','Ernő Rubik','Minh Thai','David Singmaster'],k:0,e:'Ron van Bruchem y Tyson Mao impulsaron la creación de la World Cube Association en 2004.'},
+  {c:'RÉCORDS',q:'¿Qué significa «single» en la tabla de récords de la WCA?',a:['El mejor tiempo de una sola resolución','La media de cinco resoluciones','El tiempo total de una ronda','Un récord conseguido a una mano'],k:0,e:'Single es el mejor resultado individual en una resolución. No debe confundirse con el average, que representa una media.'},
+  {c:'CULTURA CUBERA',q:'¿Qué matemático popularizó la notación moderna y difundió teoría del cubo con su boletín Cubic Circular?',a:['David Singmaster','Alan Turing','John Conway','Martin Gardner'],k:0,e:'David Singmaster fue una figura clave en la documentación temprana del cubo y publicó el boletín Cubic Circular.'}
+ ];
+ const shuffle=a=>{const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x};
+ let questions=[],index=0,score=0,streak=0,locked=true,best=0;
+ try{best=Number(localStorage.getItem('rubikQuizBest')||0)}catch(e){}
+ bestEl.textContent=best+'/10';
+ function update(){roundEl.textContent=index+'/10';scoreEl.textContent=score;streakEl.textContent=streak+' 🔥';progress.style.width=(index/10*100)+'%'}
+ function ask(){
+  if(index>=10){finish();return}
+  const q=questions[index];locked=false;status.textContent='Pregunta '+(index+1)+' de 10';category.textContent=q.c;number.textContent=String(index+1).padStart(2,'0');question.textContent=q.q;feedback.textContent='Elige la respuesta correcta. Después verás una breve explicación.';feedback.className='quiz-feedback';nextBtn.disabled=true;options.innerHTML='';
+  const answers=shuffle(q.a.map((v,i)=>({v,correct:i===q.k})));
+  answers.forEach(item=>{const b=document.createElement('button');b.type='button';b.className='quiz-option';b.textContent=item.v;b.addEventListener('click',()=>answer(item,b,q));options.appendChild(b)});
+  update();
+ }
+ function answer(choice,button,q){
+  if(locked)return;locked=true;
+  [...options.querySelectorAll('button')].forEach(b=>{b.disabled=true;if(b.textContent===q.a[q.k])b.classList.add('is-correct')});
+  if(choice.correct){score++;streak++;feedback.textContent='¡Correcto! '+q.e;feedback.className='quiz-feedback good'}
+  else{streak=0;button.classList.add('is-wrong');feedback.textContent='No exactamente. '+q.e;feedback.className='quiz-feedback bad'}
+  index++;update();nextBtn.disabled=false;nextBtn.textContent=index>=10?'Ver resultado →':'Siguiente pregunta →';
+ }
+ function finish(){
+  locked=true;status.textContent='Trivial completado';nextBtn.disabled=true;startBtn.textContent='Volver a jugar';progress.style.width='100%';
+  const record=score>best;if(record){best=score;bestEl.textContent=best+'/10';try{localStorage.setItem('rubikQuizBest',String(best))}catch(e){}}
+  const msg=score===10?'¡Leyenda del cubing!':score>=8?'¡Nivel experto!':score>=6?'¡Muy buen conocimiento!':score>=4?'¡Vas por buen camino!':'¡Sigue aprendiendo y vuelve a intentarlo!';
+  result.innerHTML='<strong>'+msg+'</strong><p>Has acertado '+score+' de 10 preguntas'+(record?' · ¡Nuevo récord personal!':'')+'.</p><p>'+(score>=8?'Dominas buena parte de la historia y la competición.':'Repasa la historia de la WCA y las grandes figuras del speedcubing para mejorar tu puntuación.')+'</p>';result.hidden=false;feedback.textContent='¡Gracias por jugar! Puedes iniciar otra partida cuando quieras.';
+ }
+ function start(){questions=shuffle(bank).slice(0,10);index=0;score=0;streak=0;locked=true;result.hidden=true;startBtn.textContent='Reiniciar trivial';nextBtn.disabled=true;update();ask()}
+ startBtn.addEventListener('click',start);
+ nextBtn.addEventListener('click',()=>{if(locked&&index<10)ask();else if(index>=10)finish()});
+})();
+</script>
+
 </body>
 </html>
